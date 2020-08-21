@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CarrotMarket</string>
+    <string name="home">홈</string>
+    <string name="neighborhood">내 근처</string>
+    <string name="write">글쓰기</string>
+    <string name="chatting">채팅</string>
+    <string name="mycarrot">나의 당근</string>
 </resources>

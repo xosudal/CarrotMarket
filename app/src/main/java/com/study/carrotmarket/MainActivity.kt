@@ -1,12 +1,48 @@
 package com.study.carrotmarket
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.home.view.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        navigation_bottom.setOnNavigationItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.navigation_home -> FragmentHome("Home")
+                R.id.navigation_neighborhoohood -> FragmentHome("Neighborhood")
+                R.id.navigation_write -> FragmentHome("Writing")
+                R.id.navigation_chatting -> FragmentHome("Chatting")
+                R.id.navigation_mycarrot -> FragmentHome("MyCarrot")
+                else -> FragmentHome("Default")
+            }.let { fragment ->
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit()
+            }
+            true
+        }
     }
+}
+
+data class FragmentHome(private val fragmentName : String) : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.test.text = fragmentName
+        super.onViewCreated(view, savedInstanceState)
+    }
+
 }
