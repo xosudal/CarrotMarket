@@ -5,4 +5,6 @@
     <string name="write">글쓰기</string>
     <string name="chatting">채팅</string>
     <string name="mycarrot">나의 당근</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
