@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mycarrot_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyCarrot">
@@ -116,7 +117,9 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_list_24" />
+                        android:src="@drawable/ic_baseline_list_24"
+                        android:padding="10dp"
+                        android:background="@drawable/radius"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -135,7 +138,9 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_assignment_24" />
+                        android:src="@drawable/ic_baseline_assignment_24"
+                        android:padding="10dp"
+                        android:background="@drawable/radius"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -154,7 +159,9 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_favorite_border_24" />
+                        android:src="@drawable/ic_baseline_favorite_border_24"
+                        android:padding="10dp"
+                        android:background="@drawable/radius"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -173,7 +180,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_setting_my_location"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -195,7 +202,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_auth_my_location"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -239,7 +246,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_collect_list"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -268,7 +275,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_neighbor_written"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -277,7 +284,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_mail_24" />
+                    android:src="@drawable/ic_baseline_notes_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -290,7 +297,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_neighbor_comment"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -299,7 +306,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_mail_24" />
+                    android:src="@drawable/ic_baseline_chat_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -312,7 +319,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_neighbor_subject_list"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -321,7 +328,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_mail_24" />
+                    android:src="@drawable/ic_baseline_view_list_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -341,7 +348,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_invite_friends"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -363,7 +370,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_share_carrot"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:orientation="horizontal">
@@ -385,7 +392,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_notice"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:orientation="horizontal">
@@ -407,7 +414,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_frequentlyAskedQuestion"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:orientation="horizontal">
@@ -429,7 +436,7 @@
 
             <LinearLayout
                 android:id="@+id/mycarrot_app_setting"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:orientation="horizontal">
