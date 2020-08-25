@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mycarrot_fragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyCarrot">
@@ -26,7 +27,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_baseline_settings_24" />
+            android:src="@drawable/ic_baseline_settings_24"
+            android:background="@drawable/selector_view"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -90,7 +92,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
-                    android:text="프로필 보기" />
+                    android:text="프로필 보기"
+                    android:background="@drawable/selector_view"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -100,76 +103,135 @@
                 android:background="@color/colorGray"
                 android:orientation="horizontal" />
 
-            <LinearLayout
-                android:id="@+id/mycarrot_layout_list"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mycarrot_constraintlayout_list"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:gravity="center">
+                android:layout_height="100dp">
 
-                <LinearLayout
-                    android:id="@+id/mycarrot_sales_history"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mycarrot_first_constraintlayout"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/mycarrot_second_constraintlayout">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mycarrot_sales_history"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintWidth_percent="0.6"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintVertical_chainStyle="spread"
+                        android:background="@drawable/selector_view">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_list_24"
-                        android:padding="10dp"
-                        android:background="@drawable/radius"/>
+                        <ImageView
+                            android:id="@+id/mycarrot_imageview_purchase_list"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_list_24"
+                            android:padding="10dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/mycarrot_textview_purchase_list"
+                            android:background="@drawable/radius"/>
+                        <TextView
+                            android:id="@+id/mycarrot_textview_purchase_list"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mycarrot_imageview_purchase_list"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            android:text="판매내역" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="판매내역" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/mycarrot_purchase_history"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mycarrot_second_constraintlayout"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toRightOf="@id/mycarrot_first_constraintlayout"
+                    app:layout_constraintRight_toLeftOf="@+id/mycarrot_third_constraintlayout">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mycarrot_purchase_history"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintWidth_percent="0.6"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintVertical_chainStyle="spread"
+                        android:background="@drawable/selector_view">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_assignment_24"
-                        android:padding="10dp"
-                        android:background="@drawable/radius"/>
+                        <ImageView
+                            android:id="@+id/mycarrot_imageview_purchase_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_assignment_24"
+                            android:padding="10dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/mycarrot_textview_purchase_history"
+                            android:background="@drawable/radius"/>
+                        <TextView
+                            android:id="@+id/mycarrot_textview_purchase_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mycarrot_imageview_purchase_history"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            android:text="구매내역" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="구매내역" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/mycarrot_favorite_list"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mycarrot_third_constraintlayout"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toRightOf="@id/mycarrot_second_constraintlayout"
+                    app:layout_constraintRight_toRightOf="parent">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mycarrot_favorite_list"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintWidth_percent="0.6"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintVertical_chainStyle="spread"
+                        android:background="@drawable/selector_view">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_favorite_border_24"
-                        android:padding="10dp"
-                        android:background="@drawable/radius"/>
+                        <ImageView
+                            android:id="@+id/mycarrot_imageview_favorite_list"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_favorite_border_24"
+                            android:padding="10dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/mycarrot_textview_favorite_list"
+                            android:background="@drawable/radius"/>
+                        <TextView
+                            android:id="@+id/mycarrot_textview_favorite_list"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mycarrot_imageview_favorite_list"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            android:text="관심목록" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="관심목록" />
-                </LinearLayout>
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/mycarrot_layout_list_division"
@@ -183,7 +245,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -205,7 +268,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -227,7 +291,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -249,7 +314,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -278,7 +344,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -300,7 +367,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -322,7 +390,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -351,7 +420,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -373,7 +443,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -395,7 +466,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -417,7 +489,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -439,7 +512,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/selector_view">
 
                 <ImageView
                     android:layout_width="wrap_content"

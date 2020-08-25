@@ -53,12 +53,36 @@ class MyCarrot : Fragment() {
                 Toast.makeText(activity,"list collection",Toast.LENGTH_SHORT).show()
             }
 
+            mycarrot_neighbor_written?.setOnClickListener {
+                Toast.makeText(activity,"neighborhood text",Toast.LENGTH_SHORT).show()
+            }
+
+            mycarrot_neighbor_comment?.setOnClickListener {
+                Toast.makeText(activity,"neighborhood comment",Toast.LENGTH_SHORT).show()
+            }
+
+            mycarrot_neighbor_subject_list?.setOnClickListener {
+                Toast.makeText(activity,"neighborhood list",Toast.LENGTH_SHORT).show()
+            }
+
             mycarrot_invite_friends?.setOnClickListener {
                 Toast.makeText(activity,"invite my friends",Toast.LENGTH_SHORT).show()
             }
 
             mycarrot_share_carrot?.setOnClickListener {
                 Toast.makeText(activity,"share carrot market",Toast.LENGTH_SHORT).show()
+            }
+
+            mycarrot_notice?.setOnClickListener {
+                Toast.makeText(activity,"Notice",Toast.LENGTH_SHORT).show()
+            }
+
+            mycarrot_frequentlyAskedQuestion?.setOnClickListener {
+                Toast.makeText(activity,"FAQ",Toast.LENGTH_SHORT).show()
+            }
+
+            mycarrot_app_setting?.setOnClickListener {
+                Toast.makeText(activity,"app setting",Toast.LENGTH_SHORT).show()
             }
         }
 
