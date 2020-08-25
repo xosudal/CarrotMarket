@@ -18,7 +18,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:text="나의 당근"
-            android:textSize="25dp" />
+            android:textSize="25dp"
+            android:textColor="@android:color/black"/>
 
         <ImageView
             android:id="@+id/mycarrot_imageview_setting"
@@ -59,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
                     android:src="@drawable/ic_baseline_face_24" />
 
                 <RelativeLayout
@@ -91,16 +92,17 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="16dp"
+                    android:textStyle="bold"
                     android:text="프로필 보기"
-                    android:background="@drawable/selector_view"/>
+                    android:background="@drawable/selector_btn"/>
             </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/mycarrot_userInfomation_division"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/colorGray"
+                android:layout_height="5dp"
+                android:background="@color/division"
                 android:orientation="horizontal" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -145,6 +147,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/mycarrot_imageview_purchase_list"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
+                            android:textColor="@android:color/black"
                             android:text="판매내역" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -186,6 +189,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/mycarrot_imageview_purchase_history"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
+                            android:textColor="@android:color/black"
                             android:text="구매내역" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -227,6 +231,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/mycarrot_imageview_favorite_list"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
+                            android:textColor="@android:color/black"
                             android:text="관심목록" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -236,8 +241,8 @@
             <LinearLayout
                 android:id="@+id/mycarrot_layout_list_division"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/colorGray"
+                android:layout_height="5dp"
+                android:background="@color/division"
                 android:orientation="horizontal" />
 
             <LinearLayout
@@ -260,7 +265,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="내 동네 설정"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -283,7 +289,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="동네 인증하기"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -306,7 +313,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="키워드 알림"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -329,14 +337,15 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="모아 보기"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/mycarrot_layout_setting_first_division"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/colorGray"
+                android:layout_height="5dp"
+                android:background="@color/division"
                 android:orientation="horizontal" />
 
             <LinearLayout
@@ -359,7 +368,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="동네 생활 글"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -382,7 +392,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="동네 생활 댓글"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -405,14 +416,15 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="동네 생활 주제 목록"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/mycarrot_layout_setting_second_division"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/colorGray"
+                android:layout_height="5dp"
+                android:background="@color/division"
                 android:orientation="horizontal" />
 
             <LinearLayout
@@ -435,7 +447,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="친구 초대"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -458,7 +471,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="당근 마켓 공유"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -481,7 +495,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="공지사항"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -504,7 +519,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="자주 묻는 질문"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -527,7 +543,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="앱 설정"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
