@@ -15,10 +15,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container,FragmentHome("Home")).commit()
+
         navigation_bottom.setOnNavigationItemSelectedListener { it ->
             when(it.itemId) {
                 R.id.navigation_home -> FragmentHome("Home")
-                R.id.navigation_neighborhoohood -> FragmentHome("Neighborhood")
+                R.id.navigation_neighborhoohood -> NeighborhoodFragment()
                 R.id.navigation_write -> FragmentHome("Writing")
                 R.id.navigation_chatting -> FragmentHome("Chatting")
                 R.id.navigation_mycarrot -> MyCarrot()
