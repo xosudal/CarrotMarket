@@ -1,11 +1,11 @@
 package com.study.carrotmarket
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_my_carrot.view.*
 
 class MyCarrot : Fragment() {
@@ -85,7 +85,7 @@ class MyCarrot : Fragment() {
                 Toast.makeText(activity,"app setting",Toast.LENGTH_SHORT).show()
             }
         }
-
+        //test
         return fragmentView
     }
 }
