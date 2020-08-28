@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_neighborhoohood -> NeighborhoodFragment()
                 R.id.navigation_write -> FragmentHome("Writing")
                 R.id.navigation_chatting -> FragmentHome("Chatting")
-                R.id.navigation_mycarrot -> MyCarrot()
+                R.id.navigation_mycarrot -> MyCarrotFragment()
                 else -> FragmentHome("Default")
             }.let { fragment ->
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit()
