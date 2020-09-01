@@ -10,7 +10,8 @@
     <RelativeLayout
         android:id="@+id/mycarrot_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+        android:background="@drawable/division_layout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,18 +33,10 @@
             android:background="@drawable/selector_view"/>
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/mycarrot_toolbar_division"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/mycarrot_toolbar"
-        android:background="@color/colorGray"
-        android:orientation="horizontal" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/mycarrot_toolbar_division">
+        android:layout_below="@+id/mycarrot_toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +46,8 @@
             <RelativeLayout
                 android:id="@+id/mycarrot_layout_userInformation"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="100dp"
+                android:background="@drawable/division_layout">
 
                 <ImageView
                     android:id="@+id/mycarrot_imageview_userImage"
@@ -98,17 +92,11 @@
                     android:background="@drawable/selector_btn"/>
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/mycarrot_userInfomation_division"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/division"
-                android:orientation="horizontal" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mycarrot_constraintlayout_list"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="100dp"
+                android:background="@drawable/division_layout">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mycarrot_first_constraintlayout"
@@ -239,13 +227,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
-                android:id="@+id/mycarrot_layout_list_division"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/division"
-                android:orientation="horizontal" />
-
-            <LinearLayout
                 android:id="@+id/mycarrot_setting_my_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -344,7 +325,7 @@
             <LinearLayout
                 android:id="@+id/mycarrot_layout_setting_first_division"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="3dp"
                 android:background="@color/division"
                 android:orientation="horizontal" />
 
@@ -423,7 +404,7 @@
             <LinearLayout
                 android:id="@+id/mycarrot_layout_setting_second_division"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="3dp"
                 android:background="@color/division"
                 android:orientation="horizontal" />
 
