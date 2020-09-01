@@ -10,4 +10,8 @@
     <string name="hello_blank_fragment2">Hello blank fragment2222</string>
     <string name="my_village">%1$s님\n%2$s근처 %3$s\n찾고 계신가요?</string>
     <string name="looking_for_store">내 근처에서 주변 가게를 찾아보세요</string>
+    <string name="what_about_myvillage">우리동네 이건 어떠세요?</string>
+    <string name="recommand_store_by_neighbor">이웃들이 추천한 가게를 확인해보세요</string>
+    <string name="review_interest">후기 %1$d 관심 %2$d</string>
+    <string name="review">%1$s님 %2$s</string>
 </resources>

@@ -7,4 +7,5 @@
     <color name="colorGray">#808080</color>
     <color name="selectBackground">#DCDCDC</color>
     <color name="division">#E6E6FA</color>
+    <color name="colorBlack">#000000</color>
 </resources>
