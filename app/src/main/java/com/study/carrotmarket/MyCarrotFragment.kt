@@ -2,15 +2,19 @@ package com.study.carrotmarket
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import com.study.carrotmarket.setting.activity.*
 import kotlinx.android.synthetic.main.fragment_mycarrot.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MyCarrotFragment : Fragment() {
     var fragmentView: View? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,10 +22,6 @@ class MyCarrotFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_mycarrot, container, false).apply {
-            mycarrot_imageview_setting?.setOnClickListener {
-                startActivity(Intent(context, SettingActivity::class.java))
-            }
-
             mycarrot_show_profile_button?.setOnClickListener {
                 startActivity(Intent(context, ProfileActivity::class.java))
             }
@@ -99,6 +99,21 @@ class MyCarrotFragment : Fragment() {
                 startActivity(Intent(context, SettingActivity::class.java))
             }
         }
+        activity?.toolbar_title?.text = "나의 당근"
         return fragmentView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_mycarrot,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.mycarrot_setting -> {
+                startActivity(Intent(context, SettingActivity::class.java))
+            }
+        }
+        return true
     }
 }

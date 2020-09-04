@@ -1,17 +1,15 @@
 package com.study.carrotmarket
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.study.carrotmarket.adapter.SellingItemAdapter
 import com.study.carrotmarket.model.SellListItem
-import kotlinx.android.synthetic.main.fragment_main_market.*
 import kotlinx.android.synthetic.main.fragment_main_market.view.*
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +58,7 @@ class MainMarketFragment : Fragment() {
 
     fun getSampleItems(): List<SellListItem> {
         return listOf(
-            SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
+            /*SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
             SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
             SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000),
             SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
@@ -77,7 +75,7 @@ class MainMarketFragment : Fragment() {
             SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000),
             SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
             SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
-            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000)
+            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000)*/
         )
     }
     companion object {

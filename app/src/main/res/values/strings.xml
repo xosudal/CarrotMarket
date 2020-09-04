@@ -14,4 +14,6 @@
     <string name="recommand_store_by_neighbor">이웃들이 추천한 가게를 확인해보세요</string>
     <string name="review_interest">후기 %1$d 관심 %2$d</string>
     <string name="review">%1$s님 %2$s</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="check_in_current_position">현재 위치가 내 동네로 설정한 \'%1$s\' 내에 있어요.</string>
 </resources>

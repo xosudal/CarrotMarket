@@ -8,19 +8,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
-
     private val mainFragment = MainFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        
+        setSupportActionBar(toolbar).apply {
+            title = null
+        }
+
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container,mainFragment).commit()
 
-        navigation_bottom.setOnNavigationItemSelectedListener { it ->
+        navigation_bottom.setOnNavigationItemSelectedListener {
             when(it.itemId) {
 //                R.id.navigation_home -> FragmentHome("Home")
                 R.id.navigation_home -> mainFragment
@@ -33,6 +36,14 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit()
             }
             true
+        }
+    }
+
+    override fun onBackPressed() {
+        if (navigation_bottom.selectedItemId != R.id.navigation_home) {
+                navigation_bottom.selectedItemId = R.id.navigation_home
+        } else {
+            finishAffinity()
         }
     }
 }

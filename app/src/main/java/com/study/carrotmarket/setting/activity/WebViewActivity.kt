@@ -6,27 +6,16 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.study.carrotmarket.R
-import kotlinx.android.synthetic.main.activity_web_view.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class WebViewActivity : AppCompatActivity() {
     var mode = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
-        web_view_btn_back.setOnClickListener {
-            finish()
-        }
-        mode = intent.getIntExtra("mode", 0)
-        web_view_title_tv.text = when (mode) {
-            0 -> "초대하기"
-            1 -> "공지사항"
-            2 -> "고객센터"
-            else -> "Error"
-        }
+        settingToolbar()
 
-        setSupportActionBar(web_view_toolbar).apply {
-            title = null
-        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,9 +35,27 @@ class WebViewActivity : AppCompatActivity() {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT,"공유할 text")
                 },"당근마켓 공유하기"))
+                return true
+            }
+            android.R.id.home -> {
+                finish()
+                return true
             }
         }
         return true
     }
 
+    private fun settingToolbar() {
+        setSupportActionBar(toolbar).apply {
+            title = null
+        }
+        mode = intent.getIntExtra("mode", 0)
+        toolbar_title.text = when (mode) {
+            0 -> "초대하기"
+            1 -> "공지사항"
+            2 -> "고객센터"
+            else -> "Error"
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 }
