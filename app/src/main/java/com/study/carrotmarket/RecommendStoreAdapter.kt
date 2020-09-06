@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_recommand_store_item.view.*
 
-class RecommandStoreAdapter(val dataSet : List<RecommandStoreItem>) : RecyclerView.Adapter<RecommandStoreAdapter.RecommandStoreViewHolder>() {
+class RecommendStoreAdapter(val dataSet : List<RecommendStoreItem>) : RecyclerView.Adapter<RecommendStoreAdapter.RecommandStoreViewHolder>() {
 
     class RecommandStoreViewHolder(item : View) : RecyclerView.ViewHolder(item) {
         val f_img = item.first_preview
@@ -39,7 +39,7 @@ class RecommandStoreAdapter(val dataSet : List<RecommandStoreItem>) : RecyclerVi
     }
 }
 
-data class RecommandStoreItem(
+data class RecommendStoreItem(
     var firstImg : Int,
     var secondImg : Int,
     var storeName : String,

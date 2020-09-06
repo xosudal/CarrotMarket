@@ -39,7 +39,6 @@ class FavoriteActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

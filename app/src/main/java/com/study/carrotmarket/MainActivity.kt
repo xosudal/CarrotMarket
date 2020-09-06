@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,20 +21,24 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar).apply {
             title = null
         }
-
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container,mainFragment).commit()
 
         navigation_bottom.setOnNavigationItemSelectedListener {
             when(it.itemId) {
-//                R.id.navigation_home -> FragmentHome("Home")
                 R.id.navigation_home -> mainFragment
                 R.id.navigation_neighborhoohood -> NeighborhoodFragment()
-                R.id.navigation_write -> FragmentHome("Writing")
-                R.id.navigation_chatting -> FragmentHome("Chatting")
+                R.id.navigation_write -> WriteBottomSheetDialogFragment()
+                R.id.navigation_chatting -> ChattingFragment()
                 R.id.navigation_mycarrot -> MyCarrotFragment()
                 else -> FragmentHome("Default")
             }.let { fragment ->
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit()
+                if(fragment is WriteBottomSheetDialogFragment) { // Exceptionally to prevent the replace code, compare with BottomSheetDialog class type
+                    fragment.show(supportFragmentManager, "show")
+                }
+                else {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment).commit()
+                }
             }
             true
         }

@@ -9,12 +9,14 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +27,8 @@ import java.util.*
 
 class NeighborhoodFragment : Fragment() {
     private val TAG: String = "Neighborhood"
-    private val recommandList = listOf("원데이트 클래스", "배송가능 용달", "인테리어 서비스", "가볼만한 까페", "머리 잘하는 곳", "저렴한 네일샵")
-    private val recommandStoreList = listOf("클래스", "속눈썹", "이사", "용달", "네일", "공방", "인테리어", "에어컨", "컴퓨터")
+    private val recommendList = listOf("원데이트 클래스", "배송가능 용달", "인테리어 서비스", "가볼만한 까페", "머리 잘하는 곳", "저렴한 네일샵")
+    private val recommendStoreList = listOf("클래스", "속눈썹", "이사", "용달", "네일", "공방", "인테리어", "에어컨", "컴퓨터")
     private lateinit var mRandom : Random
     private lateinit var mRunnable : Runnable
     private lateinit var mHandler : Handler
@@ -34,25 +36,29 @@ class NeighborhoodFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_neighborhood, container, false)
+        val contextThemeWrapper = ContextThemeWrapper(activity, R.style.Theme_MaterialComponents_Light_NoActionBar)
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+
+        return localInflater.inflate(R.layout.fragment_neighborhood, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as AppCompatActivity).supportActionBar?.hide()
         mHandler = Handler()
         mRandom = Random()
         mRunnable = Runnable {
-            val randomRecommand = recommandList[mRandom.nextInt(recommandList.size)]
-            val villagewholeStr = view.resources.getString(R.string.my_village, "화이트푸", "도화동", randomRecommand)
-            showRecommandVillageService(villagewholeStr, randomRecommand).let {
+            val randomrecommend = recommendList[mRandom.nextInt(recommendList.size)]
+            val villagewholeStr = view.resources.getString(R.string.my_village, "화이트푸", "도화동", randomrecommend)
+            showrecommendVillageService(villagewholeStr, randomrecommend).let {
                 lottie_tv?.setText(it)
             }
             mHandler.postDelayed(mRunnable, REPEAT_TIME)
         }
         mHandler.post(mRunnable)
 
-        for(storelist in recommandStoreList) {
+        for(storelist in recommendStoreList) {
             val chip = LayoutInflater.from(view.context).inflate(R.layout.layout_chip_action, chip_group, false) as Chip
             chip.setText(storelist)
             chip.setOnClickListener {
@@ -78,19 +84,24 @@ class NeighborhoodFragment : Fragment() {
         what_about_recyclerview.layoutManager = GridLayoutManager(view.context, 4)
         what_about_recyclerview.adapter = whatAboutAdapter
 
-        /* Recommand store by neighborhood */
-        val recommandStoreDataSet = ArrayList<RecommandStoreItem>()
-        recommandStoreDataSet.add(RecommandStoreItem(R.drawable.maka, R.drawable.maka2, "HZAC", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
-        recommandStoreDataSet.add(RecommandStoreItem(R.drawable.maka, R.drawable.maka2, "엘린뷰티", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
-        recommandStoreDataSet.add(RecommandStoreItem(R.drawable.maka, R.drawable.maka2, "녹기전에", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
-        recommandStoreDataSet.add(RecommandStoreItem(R.drawable.maka, R.drawable.maka2, "소울헤어", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
-        val recommandStoreAdapter = RecommandStoreAdapter(recommandStoreDataSet)
-        recommand_store_recyclerview.layoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
-        recommand_store_recyclerview.adapter = recommandStoreAdapter
+        /* Recommendation store by neighborhood */
+        val recommendStoreDataSet = ArrayList<RecommendStoreItem>()
+        recommendStoreDataSet.add(RecommendStoreItem(R.drawable.maka, R.drawable.maka2, "HZAC", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
+        recommendStoreDataSet.add(RecommendStoreItem(R.drawable.maka, R.drawable.maka2, "엘린뷰티", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
+        recommendStoreDataSet.add(RecommendStoreItem(R.drawable.maka, R.drawable.maka2, "녹기전에", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
+        recommendStoreDataSet.add(RecommendStoreItem(R.drawable.maka, R.drawable.maka2, "소울헤어", "용강동", "어린이 미술 교육", "후기 관심", "봄tiful님 퇴근 후, 저녁 시간을 좀 더 유익하게..."))
+        val recommendStoreAdapter = RecommendStoreAdapter(recommendStoreDataSet)
+        recommend_store_recyclerview.layoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
+        recommend_store_recyclerview.adapter = recommendStoreAdapter
     }
 
-    private fun showRecommandVillageService(wholeString : String, keyword : String) : SpannableString {
-        Log.d(TAG, "whole: $wholeString, keyword: $keyword")
+    override fun onDestroyView() {
+        (activity as AppCompatActivity).supportActionBar?.show()
+        super.onDestroyView()
+    }
+
+    private fun showrecommendVillageService(wholeString : String, keyword : String) : SpannableString {
+        //Log.d(TAG, "whole: $wholeString, keyword: $keyword")
         val span = SpannableString(wholeString)
 
         val start = wholeString.indexOf(keyword)
