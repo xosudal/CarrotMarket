@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -32,12 +34,15 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
     private lateinit var locationCallback: CheckInLocationCallback
     private lateinit var currentLatLng: LatLng
     private val TAG = "CheckInActivity"
+    private lateinit var geoCoder: Geocoder
+    var list = mutableListOf<Address>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.activity_check_in)
         settingToolbar()
 
+        geoCoder = Geocoder(this)
         check_in_map_btn.setOnClickListener {
             findCurrentLocation()
         }
@@ -71,7 +76,6 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
     override fun onResume() {
         super.onResume()
         registerLocationListener()
-        setCurrentPositionText("가양동")
     }
 
     override fun onPause() {
@@ -112,6 +116,8 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
                 currentLatLng = LatLng(latitude,longitude)
                 mMap.addMarker(MarkerOptions().position(currentLatLng).title("currentPosition"))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
+                list = geoCoder.getFromLocation(latitude,longitude,1)
+                setCurrentPositionText(list[0].thoroughfare)
             }
         }
     }

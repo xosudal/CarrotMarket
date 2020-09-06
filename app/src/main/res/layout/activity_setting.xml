@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/setting_push_alarm">
+                app:layout_constraintBottom_toTopOf="@+id/setting_major_alarm">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,32 +45,93 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_push_alarm"
+                android:id="@+id/setting_major_alarm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/setting_alarm_layout"
-                app:layout_constraintBottom_toTopOf="@+id/setting_time_disturb">
+                app:layout_constraintBottom_toTopOf="@+id/setting_minor_alarm">
 
                 <TextView
+                    android:id="@+id/setting_major_alarm_main_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="푸시 알림 설정"
+                    android:text="중요 알림"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/setting_major_alarm_sub_tv"/>
+
+                <TextView
+                    android:id="@+id/setting_major_alarm_sub_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="채팅, 댓글"
+                    app:layout_constraintTop_toBottomOf="@id/setting_major_alarm_main_tv"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/setting_switch_set_major_alarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginEnd="16dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setting_minor_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/setting_major_alarm"
+                app:layout_constraintBottom_toTopOf="@id/setting_time_disturb">
+                <TextView
+                    android:id="@+id/setting_minor_alarm_main_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="기타 알림"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/setting_minor_alarm_sub_tv"/>
+
+                <TextView
+                    android:id="@+id/setting_minor_alarm_sub_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="관심글, 키워드 알림 등"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/setting_minor_alarm_main_tv"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/setting_switch_set_minor_alarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginEnd="16dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/setting_time_disturb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/setting_push_alarm"
-                app:layout_constraintBottom_toBottomOf="@id/setting_vibrate">
+                app:layout_constraintTop_toBottomOf="@id/setting_minor_alarm"
+                app:layout_constraintBottom_toTopOf="@id/setting_disturb_time_setting_layout">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -96,10 +157,38 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_vibrate"
+                android:id="@+id/setting_disturb_time_setting_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/setting_time_disturb"
+                app:layout_constraintBottom_toTopOf="@id/setting_vibrate">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="11:00 오후 ~ 08:00 오전"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setting_vibrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/setting_disturb_time_setting_layout"
                 app:layout_constraintBottom_toTopOf="@id/setting_alarm_sound">
 
                 <TextView
@@ -145,9 +234,9 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
+                    android:id="@+id/setting_alarm_sound_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Default"
                     android:textColor="@android:color/holo_orange_dark"
                     android:textSize="16sp"
                     android:layout_marginEnd="16dp"
