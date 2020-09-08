@@ -5,6 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.study.carrotmarket.adapter.MainLivingCardViewRecyclerAdapter
+import com.study.carrotmarket.adapter.SellingItemAdapter
+import com.study.carrotmarket.adapter.SellingItemRecyclerAdapter
+import com.study.carrotmarket.model.MainLivingCardViewItem
+import kotlinx.android.synthetic.main.fragment_main_living.view.*
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,9 +41,23 @@ class MainLivingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_living, container, false)
+        val view = inflater.inflate(R.layout.fragment_main_living, container, false)
+
+        with (view.main_living_cardview_recyclerview) {
+            layoutManager = LinearLayoutManager(context!!)
+            adapter = MainLivingCardViewRecyclerAdapter(this@MainLivingFragment, getSampleCards())
+        }
+
+        return view
+
     }
 
+    fun getSampleCards(): List<MainLivingCardViewItem> {
+        return listOf(
+            MainLivingCardViewItem(0, Date(Date().time - 10000), "서동재", "의정부지검 인증 181회", "부장님께 내 말씀좀 드려..", 18001),
+            MainLivingCardViewItem(1, Date(Date().time - 1000000), "황시목", "서부지검 인증 18회", "아닌데요", 18010)
+        )
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
