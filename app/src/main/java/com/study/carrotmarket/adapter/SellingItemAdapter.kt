@@ -17,7 +17,7 @@ class SellingItemAdapter(mContext: Context, private val items: List<SellListItem
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = inflater.inflate(R.layout.layout_listview_item, null)
         view.sellingItemName.text = items.get(position).itemName
-        view.sellingItemPoster?.setImageResource(items.get(position).posterId)
+//        view.sellingItemPoster?.setImageResource(items.get(position).posterId)
         view.sellingItemAddress.text = items.get(position).itemAddress
         view.sellingItemPrice.text = items.get(position).itemPrice.toString()
         return view

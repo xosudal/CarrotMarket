@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.study.carrotmarket.adapter.SellingItemAdapter
+import com.study.carrotmarket.adapter.SellingItemRecyclerAdapter
 import com.study.carrotmarket.model.SellListItem
 import kotlinx.android.synthetic.main.fragment_main_market.view.*
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,43 +44,44 @@ class MainMarketFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main_market, container, false)
-        val adapter = SellingItemAdapter(context!!, getSampleItems())
-        view.main_market_listview.adapter = adapter
-        view.main_market_listview.onItemClickListener = object: AdapterView.OnItemClickListener{
-            override fun onItemClick(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                Toast.makeText(context, (adapter.getItem(position) as SellListItem).itemAddress, Toast.LENGTH_SHORT).show()
-            }
+        val sampleItemList = getSampleItems()
 
+        with (view.main_market_recyclerview) {
+            layoutManager = LinearLayoutManager(context!!)
+            adapter = SellingItemRecyclerAdapter(sampleItemList)
         }
+        val adapter = SellingItemAdapter(context!!, getSampleItems())
+
+
         return view
+
     }
 
     fun getSampleItems(): List<SellListItem> {
-        return listOf(
-            /*SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
-            SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
-            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000),
-            SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
-            SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
-            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000),
-            SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
-            SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
-            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000),
-            SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
-            SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
-            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000),
-            SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
-            SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
-            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000),
-            SellListItem("폴리", R.drawable.sample_item_1, "서울시 관악구", Date(), 150000),
-            SellListItem("범블비", R.drawable.sample_item_2, "서울시 중랑구", Date(), 150000),
-            SellListItem("케이캅스",R.drawable.sample_item_3, "서울시 강서구", Date(), 150000)*/
-        )
+
+        context?.let {
+            return listOf(
+                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
+                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
+                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
+                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
+                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
+                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
+                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
+                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
+                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
+                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
+                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
+                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
+                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
+                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
+                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
+                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
+                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
+                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000)
+            )
+        }
+        return listOf()
     }
     companion object {
         /**

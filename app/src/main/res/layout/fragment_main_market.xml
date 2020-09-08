@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".MainMarketFragment">
 
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/main_market_listview"
-        />
+        android:id="@+id/main_market_recyclerview"
+        android:scrollbars="vertical"/>
 </FrameLayout>
