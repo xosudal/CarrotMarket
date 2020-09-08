@@ -5,6 +5,7 @@
     <string name="write">글쓰기</string>
     <string name="chatting">채팅</string>
     <string name="mycarrot">나의 당근</string>
+    <string name="logout">로그아웃</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_blank_fragment2">Hello blank fragment2222</string>
@@ -16,4 +17,10 @@
     <string name="review">%1$s님 %2$s</string>
     <string name="title_activity_maps">Map</string>
     <string name="check_in_current_position">현재 위치가 내 동네로 설정한 \'%1$s\' 내에 있어요.</string>
+    <string name="setting_do_not_disturb_time">%1$s:%2$s %3$s ~ %4$s:%5$s %6$s</string>
+    <string name="dialog_text_cache">임시 저장된 캐시 파일을 삭제하고 디스크 용량을 확보합니다. 진행하시겠습니까?</string>
+    <string name="dialog_text_logout_content">로그아웃 하시겠습니까?</string>
+    <string name="keyword_layout_content">키워드를 등록해 두면, 해당 키워드와 관련된 판매글이\n올라올때 푸시 알림을 받을 수 있어요.</string>
+    <string name="keyword_faq"><u>혹시 키워드 알림이 오지 않나요?</u></string>
+    <string name="keyword_count">키워드 등록 (%1$d/30)</string>
 </resources>

@@ -9,20 +9,18 @@ import android.view.Window
 import android.widget.TabHost
 import android.widget.TabHost.TabContentFactory
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.study.carrotmarket.R
 import kotlinx.android.synthetic.main.activity_setting.*
+import kotlinx.android.synthetic.main.dialog_disturb_time_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
 class SettingActivity : AppCompatActivity() {
-    private var majorAlarmIsChecked: Boolean = false
-    private var minorAlarmIsChecked: Boolean = false
-    private var vibrateIsChecked: Boolean = false
-    private var disturbIsChecked: Boolean = false
-    private var alarmSoundIndex: Int = 0
-
+    private var data = SettingPreference()
+    private var time = DoNotDisturbTime()
     private val alarmSoundList =
         arrayOf(
             "당근(귀요미 챙)",
@@ -32,17 +30,18 @@ class SettingActivity : AppCompatActivity() {
             "애미야 당근 왔다(민주)",
             "기본 알림음"
         )
+    private val languageList =
+        arrayOf(
+            "English",
+            "한국어"
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-
         settingToolbar()
         loadPreference()
-
-
-
 
         setting_switch_set_major_alarm.setOnCheckedChangeListener{ _, isChecked ->
             this.getPreferences(0).edit().apply{
@@ -76,16 +75,29 @@ class SettingActivity : AppCompatActivity() {
         setting_alarm_sound.setOnClickListener {
             showDialogForAlarmSetting(alarmSoundList)
         }
+
+        setting_language.setOnClickListener {
+            showDialogForLanguageSetting(languageList)
+        }
+
+        setting_clear_app_cache.setOnClickListener {
+            showDialogForCache()
+        }
+
+        setting_log_out.setOnClickListener {
+            showDialogForLogout()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        setting_switch_set_major_alarm.isChecked = majorAlarmIsChecked
-        setting_switch_set_minor_alarm.isChecked = minorAlarmIsChecked
-        setting_switch_set_disturb.isChecked = disturbIsChecked
-        setting_switch_set_vibrate.isChecked = vibrateIsChecked
-        setting_disturb_time_setting_layout.visibility = if (disturbIsChecked) View.VISIBLE else View.GONE
-        setting_alarm_sound_tv.text = alarmSoundList[alarmSoundIndex]
+        setting_switch_set_major_alarm.isChecked = data.majorAlarmIsChecked
+        setting_switch_set_minor_alarm.isChecked = data.minorAlarmIsChecked
+        setting_switch_set_disturb.isChecked = data.disturbIsChecked
+        setting_switch_set_vibrate.isChecked = data.vibrateIsChecked
+        setting_disturb_time_setting_layout.visibility = if (data.disturbIsChecked) View.VISIBLE else View.GONE
+        setting_alarm_sound_tv.text = alarmSoundList[data.alarmSoundIndex]
+        setTextDistrubTime(time)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
@@ -106,44 +118,108 @@ class SettingActivity : AppCompatActivity() {
     }
 
     private fun loadPreference() {
-        majorAlarmIsChecked = this.getPreferences(0).getBoolean("MAJOR_ALARM", false)
-        minorAlarmIsChecked = this.getPreferences(0).getBoolean("MINOR_ALARM", false)
-        disturbIsChecked = this.getPreferences(0).getBoolean("DISTURB", false)
-        vibrateIsChecked = this.getPreferences(0).getBoolean("VIBRATE", false)
-        alarmSoundIndex = this.getPreferences(0).getInt("ALARM", 0)
+        data.majorAlarmIsChecked = this.getPreferences(0).getBoolean("MAJOR_ALARM", false)
+        data.minorAlarmIsChecked = this.getPreferences(0).getBoolean("MINOR_ALARM", false)
+        data.disturbIsChecked = this.getPreferences(0).getBoolean("DISTURB", false)
+        data.vibrateIsChecked = this.getPreferences(0).getBoolean("VIBRATE", false)
+        data.alarmSoundIndex = this.getPreferences(0).getInt("ALARM", 0)
+        data.language = this.getPreferences(0).getInt("LANGUAGUE",1)
+        time.fromHour = this.getPreferences(0).getInt("FROM_HOUR",23)
+        time.fromMinute = this.getPreferences(0).getInt("FROM_MINUTE",0)
+        time.toHour = this.getPreferences(0).getInt("TO_HOUR",8)
+        time.toMinute = this.getPreferences(0).getInt("TO_MINUTE",0)
     }
 
     private fun showDialogForAlarmSetting(list: Array<String>) {
-        var index = alarmSoundIndex
+        var index = data.alarmSoundIndex
         AlertDialog.Builder(this).apply {
             setSingleChoiceItems(list, index) { _, which ->
                 index = which
             }
             setPositiveButton("확인") { _, _ ->
-                alarmSoundIndex = index
+                data.alarmSoundIndex = index
                 getPreferences(0).edit().putInt("ALARM", index).apply()
-                setting_alarm_sound_tv.text = alarmSoundList[alarmSoundIndex]
+                setting_alarm_sound_tv.text = alarmSoundList[data.alarmSoundIndex]
+            }
+            setNegativeButton("취소", null)
+        }.create().show()
+    }
+
+    private fun showDialogForLanguageSetting(list: Array<String>) {
+        AlertDialog.Builder(this).apply {
+            setSingleChoiceItems(list, data.language) { dialog, which ->
+                data.language = which
+                getPreferences(0).edit().putInt("LANGUAGE", data.language).apply()
+                dialog.dismiss()
+            }
+            setTitle("언어")
+        }.create().show()
+    }
+
+    private fun showDialogForCache() {
+        AlertDialog.Builder(this).apply {
+            setMessage(R.string.dialog_text_cache)
+            setPositiveButton("확인") { _, _ ->
+                clearCacheByUser()
+            }
+            setNegativeButton("취소", null)
+        }.create().show()
+    }
+
+    private fun clearCacheByUser() {
+        if (cacheDir.delete()) {
+            Toast.makeText(this,"삭제되었습니다.",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this,"삭제를 실패했습니다.",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showDialogForLogout() {
+        AlertDialog.Builder(this).apply {
+            setTitle(R.string.logout)
+            setMessage(R.string.dialog_text_logout_content)
+            setPositiveButton("확인") { _, _ ->
+                Toast.makeText(context,"로그아웃!",Toast.LENGTH_SHORT).show()
             }
             setNegativeButton("취소", null)
         }.create().show()
     }
 
     private fun showTimePickerDialog() {
+        val hourSetting = time
         val dlg = Dialog(this)
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dlg.setContentView(R.layout.dialog_disturb_time_setting)
-        dlg.setCancelable(false)
-        val timePickerFrom = TimePicker(baseContext)
-        val timePickerTo = TimePicker(baseContext)
+        dlg.setCancelable(true)
+        val timePickerFrom = TimePicker(baseContext).apply {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                hour = hourSetting.fromHour
+                minute = hourSetting.fromMinute
+            } else {
+                currentHour = hourSetting.fromHour
+                currentMinute = hourSetting.fromMinute
+            }
+            setIs24HourView(false)
+        }
+        val timePickerTo = TimePicker(baseContext).apply {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                hour = hourSetting.toHour
+                minute = hourSetting.toMinute
+            } else {
+                currentHour = hourSetting.toHour
+                currentMinute = hourSetting.toMinute
+            }
+            setIs24HourView(false)
+        }
         val tabhost: TabHost = dlg.findViewById(R.id.disturb_tab_host)
         tabhost.setup()
-        val ts1 = tabhost.newTabSpec("Tab Spec 1").apply {
+        val ts1 = tabhost.newTabSpec("From").apply {
             setContent(TabContentFactory { timePickerFrom } )
             setIndicator("FROM")
         }
         tabhost.addTab(ts1)
 
-        val ts2 = tabhost.newTabSpec("Tab Spec 2").apply {
+        val ts2 = tabhost.newTabSpec("To").apply {
             setContent(TabContentFactory { timePickerTo })
             setIndicator("TO")
         }
@@ -153,10 +229,69 @@ class SettingActivity : AppCompatActivity() {
 
         timePickerFrom.setOnTimeChangedListener { timePicker, hour, minute ->
             Log.d("heo","$hour, $minute")
+            hourSetting.fromHour = hour
+            hourSetting.fromMinute = minute
         }
 
         timePickerTo.setOnTimeChangedListener { timePicker, hour, minute ->
             Log.d("heo","$hour, $minute")
+            hourSetting.toHour = hour
+            hourSetting.toMinute = minute
+        }
+
+        dlg.dialog_time_setting_yes.setOnClickListener {
+            setPreferenceDistrubTime(hourSetting)
+            setTextDistrubTime(hourSetting)
+            dlg.dismiss()
+        }
+
+        dlg.dialog_time_setting_no.setOnClickListener {
+            dlg.dismiss()
         }
     }
+
+
+
+    private fun setPreferenceDistrubTime (dntTime:DoNotDisturbTime) {
+        time = dntTime
+        this.getPreferences(0).edit().apply {
+            putInt("FROM_HOUR", time.fromHour)
+            putInt("FROM_MINUTE", time.fromMinute)
+            putInt("TO_HOUR", time.toHour)
+            putInt("TO_MINUTE", time.toMinute)
+        }.apply()
+    }
+
+    private fun setTextDistrubTime(dntTime:DoNotDisturbTime) {
+        val from24Hour = if (dntTime.fromHour in 0..11) "오전" else "오후"
+        val to24Hour = if (dntTime.toHour in 0..11) "오전" else "오후"
+
+        val fromHourView = if (dntTime.fromHour > 12) dntTime.fromHour-12 else dntTime.fromHour
+        val toHourView = if (dntTime.toHour > 12) dntTime.toHour-12 else dntTime.toHour
+
+        setting_do_not_disturb_tv.text = getString(R.string.setting_do_not_disturb_time,
+            String.format("%02d",fromHourView),
+            String.format("%02d",dntTime.fromMinute),
+            from24Hour,
+            String.format("%02d",toHourView),
+            String.format("%02d",dntTime.toMinute),
+            to24Hour)
+    }
 }
+
+
+
+data class SettingPreference(
+    var majorAlarmIsChecked: Boolean = false,
+    var minorAlarmIsChecked: Boolean = false,
+    var vibrateIsChecked: Boolean = false,
+    var disturbIsChecked: Boolean = false,
+    var alarmSoundIndex: Int = 0,
+    var language: Int = 1
+)
+data class DoNotDisturbTime (
+    var fromHour: Int = 23,
+    var fromMinute: Int = 0,
+    var toHour: Int = 8,
+    var toMinute : Int = 0
+)
