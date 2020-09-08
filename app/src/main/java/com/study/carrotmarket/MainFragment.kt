@@ -1,18 +1,13 @@
 package com.study.carrotmarket
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.ViewPager
 import com.study.carrotmarket.adapter.MainViewPagerAdapter
-import kotlinx.android.synthetic.main.fragment_main.*
 import android.view.View
 import com.google.android.material.tabs.TabLayout
 import com.jaredrummler.materialspinner.MaterialSpinner
@@ -48,7 +43,6 @@ class MainFragment : Fragment(){
 
         rView = inflater.inflate(R.layout.fragment_main, container, false)
 
-//        val spinner = rView.findViewById(R.id.main_fragment_spinner) as MaterialSpinner
         val spinner = rView.main_fragment_spinner
         spinner.setItems("Hello", "My Name is", "Taeyang")
         spinner.popupWindow.width = 200
@@ -57,8 +51,8 @@ class MainFragment : Fragment(){
                 Log.d(TAG, s)
             }
         )
-        val vp = rView.findViewById(R.id.viewpager_main_fragment) as ViewPager
-        vp.let {
+        val viewPager = rView.findViewById(R.id.viewpager_main_fragment) as ViewPager
+        viewPager.let {
             it.adapter = MainViewPagerAdapter(childFragmentManager)
             it.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(rView.main_tablayout))
         }
@@ -70,7 +64,7 @@ class MainFragment : Fragment(){
             override fun onTabUnselected(tab: TabLayout.Tab?) {            }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                vp.currentItem = tab?.position!!
+                viewPager.currentItem = tab?.position!!
             }
 
         })
