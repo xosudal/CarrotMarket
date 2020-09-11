@@ -6,6 +6,7 @@
     <string name="chatting">채팅</string>
     <string name="mycarrot">나의 당근</string>
     <string name="logout">로그아웃</string>
+    <string name="mannerTemp"><u>매너온도</u></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_blank_fragment2">Hello blank fragment2222</string>
@@ -23,4 +24,7 @@
     <string name="keyword_layout_content">키워드를 등록해 두면, 해당 키워드와 관련된 판매글이\n올라올때 푸시 알림을 받을 수 있어요.</string>
     <string name="keyword_faq"><u>혹시 키워드 알림이 오지 않나요?</u></string>
     <string name="keyword_count">키워드 등록 (%1$d/30)</string>
+    <string name="manner_temp_content">매너온도는 당근마켓c\n사용자로부터받은 칭찬,\n후기, 비매너평가, 운영자\n징계등을 종합해서 만든\n매너 지표입니다.</string>
+    <string name="manner_temp_display">36.5 \u2103</string>
+    <string name="manner_temp_first">첫 온도 36.5 \u2103</string>
 </resources>

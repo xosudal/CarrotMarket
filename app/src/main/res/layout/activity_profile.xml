@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -30,23 +31,29 @@
                 android:id="@+id/profile_layout_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/profile_layout_manner"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="24dp">
 
                 <ImageView
                     android:id="@+id/profile_user_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:src="@drawable/ic_baseline_face_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:scaleType="fitXY"/>
 
                 <TextView
                     android:id="@+id/profile_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="16dp"
                     android:text="UserName"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -59,7 +66,7 @@
                     android:id="@+id/profile_user_name_hash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="#123456"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -71,8 +78,8 @@
                 android:id="@+id/profile_layout_manner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_layout_user">
 
@@ -80,12 +87,12 @@
                     android:id="@+id/profile_textview_mannerTemp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="매너온도"
-                    android:textStyle="bold"
+                    android:text="@string/mannerTemp"
+                    android:textColor="@android:color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/profile_imageview_mannerTemp"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <ImageView
                     android:id="@+id/profile_imageview_mannerTemp"
@@ -96,29 +103,92 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/profile_textview_mannerTemp"
                     app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/profile_progressbar"
+                android:id="@+id/profile_progressbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profile_layout_manner">
+                app:layout_constraintTop_toBottomOf="@id/profile_layout_manner"
+                app:layout_constraintBottom_toTopOf="@id/profile_layout_percent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.95"
+                    app:layout_constraintBottom_toTopOf="@id/profile_progressbar"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/profile_layout_first_temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.36"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/first_temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manner_temp_first"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/layout_text_ballon_triangle"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed"
+                            android:layout_marginBottom="16dp"/>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_text_ballon_triangle"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@drawable/layout_text_manner_triangle"
+                            android:rotation="180"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/first_temp"
+                            app:layout_constraintVertical_chainStyle="packed"
+                            android:layout_marginStart="2dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/profile_temp_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manner_temp_display"
+                        android:textSize="20sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@color/colorBlue"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ProgressBar
+                    android:id="@+id/profile_progressbar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="15dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/btn_background"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintWidth_percent="0.9" />
+                    app:layout_constraintWidth_percent="0.95"
+                    android:progressDrawable="@drawable/bg_progress"
+                    android:max="100"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -127,8 +197,11 @@
                 android:layout_height="80dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_progressbar"
-                app:layout_constraintBottom_toTopOf="@+id/profile_layout_auth">
+                app:layout_constraintTop_toBottomOf="@+id/profile_progressbar_layout"
+                app:layout_constraintBottom_toTopOf="@+id/profile_layout_auth"
+                android:layout_marginTop="16dp">
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -172,7 +245,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:text="활동내역 0개"
+                        android:text="활동 배지 0개"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
