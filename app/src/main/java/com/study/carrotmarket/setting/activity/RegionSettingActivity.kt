@@ -70,7 +70,7 @@ class RegionSettingActivity : AppCompatActivity() {
             3 -> {
                 iv_region_2.alpha = 0.8F
                 iv_region_3.alpha = 0.6F
-                iv_region_4.alpha = 0.4F
+                iv_region_4.alpha = 0.45F
             }
         }
     }
