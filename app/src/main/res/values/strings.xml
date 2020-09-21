@@ -27,4 +27,7 @@
     <string name="manner_temp_content">매너온도는 당근마켓c\n사용자로부터받은 칭찬,\n후기, 비매너평가, 운영자\n징계등을 종합해서 만든\n매너 지표입니다.</string>
     <string name="manner_temp_display">36.5 \u2103</string>
     <string name="manner_temp_first">첫 온도 36.5 \u2103</string>
+    <string name="title_activity_detailed_selling_item">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

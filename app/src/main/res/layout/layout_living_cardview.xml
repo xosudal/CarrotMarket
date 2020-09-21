@@ -15,10 +15,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
-            app:cardCornerRadius="4dp"
-            app:cardElevation="30dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
             app:contentPadding="10dp"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout"

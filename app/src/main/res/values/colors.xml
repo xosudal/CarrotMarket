@@ -10,4 +10,6 @@
     <color name="division">#E6E6FA</color>
     <color name="colorBlack">#000000</color>
     <color name="colorBlue">#4169E1</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

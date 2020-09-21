@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.carrotmarket.adapter.MainLivingCardViewRecyclerAdapter
-import com.study.carrotmarket.adapter.SellingItemAdapter
-import com.study.carrotmarket.adapter.SellingItemRecyclerAdapter
 import com.study.carrotmarket.model.MainLivingCardViewItem
 import kotlinx.android.synthetic.main.fragment_main_living.view.*
 import java.util.*

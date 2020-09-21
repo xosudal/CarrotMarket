@@ -12,6 +12,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/mainlogo"
+        android:src="@drawable/sample_item_1"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

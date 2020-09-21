@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.study.carrotmarket.adapter.SellingItemAdapter
 import com.study.carrotmarket.adapter.SellingItemRecyclerAdapter
 import com.study.carrotmarket.model.SellListItem
 import kotlinx.android.synthetic.main.fragment_main_market.view.*
@@ -38,6 +38,10 @@ class MainMarketFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,11 +52,8 @@ class MainMarketFragment : Fragment() {
 
         with (view.main_market_recyclerview) {
             layoutManager = LinearLayoutManager(context!!)
-            adapter = SellingItemRecyclerAdapter(sampleItemList)
+            adapter = SellingItemRecyclerAdapter(this@MainMarketFragment, sampleItemList)
         }
-        val adapter = SellingItemAdapter(context!!, getSampleItems())
-
-
         return view
 
     }
