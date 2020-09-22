@@ -45,6 +45,8 @@
         <activity android:name=".setting.activity.KeyWordNotifyActivity" />
         <activity android:name=".setting.activity.CheckInActivity" />
         <activity android:name=".setting.activity.RegionSettingActivity" />
+        <activity android:name=".setting.activity.RegionActivity"/>
+        <activity android:name=".setting.activity.RegionShowActivity"/>
         <activity android:name=".setting.activity.WebViewActivity" />
         <activity android:name=".setting.activity.FollowingArticleActivity" />
         <activity android:name=".setting.activity.UserStoryArticlesActivity" />
@@ -53,7 +55,7 @@
         <activity android:name=".setting.activity.PurchaseActivity" />
         <activity android:name=".setting.activity.ProfileActivity" />
         <activity android:name=".setting.activity.SalesActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>

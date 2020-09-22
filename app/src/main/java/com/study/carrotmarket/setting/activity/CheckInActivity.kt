@@ -22,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.study.carrotmarket.R
 import kotlinx.android.synthetic.main.activity_check_in.*
@@ -36,6 +37,7 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
     private val TAG = "CheckInActivity"
     private lateinit var geoCoder: Geocoder
     var list = mutableListOf<Address>()
+    private var mapMarker : Marker? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -83,6 +85,10 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
         unRegisterLocationListener()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     private fun initLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = CheckInLocationCallback()
@@ -114,7 +120,8 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
             val currentLocation = locationResult?.lastLocation
             currentLocation?.run {
                 currentLatLng = LatLng(latitude,longitude)
-                mMap.addMarker(MarkerOptions().position(currentLatLng).title("currentPosition"))
+                mapMarker?.remove()
+                mapMarker = mMap.addMarker(MarkerOptions().position(currentLatLng).title("currentPosition"))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
                 list = geoCoder.getFromLocation(latitude,longitude,1)
                 setCurrentPositionText(list[0].thoroughfare)

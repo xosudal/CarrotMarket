@@ -208,7 +208,7 @@
                 android:id="@+id/profile_layout_auth"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="@color/division"
+                android:background="@color/colorLightGray"
                 app:layout_constraintTop_toBottomOf="@id/profile_layout_percent">
 
                 <TextView

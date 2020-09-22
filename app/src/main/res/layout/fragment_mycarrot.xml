@@ -324,7 +324,7 @@
                 android:id="@+id/mycarrot_layout_setting_first_division"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:background="@color/division"
+                android:background="@color/colorLightGray"
                 android:orientation="horizontal" />
 
             <LinearLayout
@@ -403,7 +403,7 @@
                 android:id="@+id/mycarrot_layout_setting_second_division"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:background="@color/division"
+                android:background="@color/colorLightGray"
                 android:orientation="horizontal" />
 
             <LinearLayout
