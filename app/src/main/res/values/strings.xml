@@ -30,7 +30,7 @@
     <string name="title_activity_detailed_selling_item">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="region_name_count_text">$1%s과 근처 동네 $2%d개</string>
-    <string name="region_count_text">근처 동네 $1%d개</string>
+    <string name="region_name_count_text">%1$s과 근처 동네 %2$d개</string>
+    <string name="region_count_text">근처 동네 %1$d개</string>
 
 </resources>
