@@ -7,21 +7,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
+        android:id="@+id/exit_chat"
         android:text="채팅방 나가기"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
+        android:id="@+id/favorite_chat"
         android:text="중요 채팅방으로 표시"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/exit_chat"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

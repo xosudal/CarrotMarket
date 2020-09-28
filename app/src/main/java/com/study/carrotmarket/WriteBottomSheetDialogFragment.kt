@@ -1,11 +1,10 @@
 package com.study.carrotmarket
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -57,7 +56,11 @@ class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>(
             holder.desc.text = it.desc
 
             holder.itemView.setOnClickListener {view ->
-                Toast.makeText(view.context, "${it.title}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(holder.itemView.context, WriteUsedArticleActivity::class.java)
+                holder.itemView.context.startActivity(intent)
+
             }
         }
     }

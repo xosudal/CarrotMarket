@@ -31,5 +31,4 @@ class ChattingFragment : Fragment() {
         adapter.addItem(ChattingListItem(R.drawable.ic_twotone_event_lesson_24, "허태녕", "서울특별시 가양구, 2일전", "아직 거래 가능한가요?"))
         adapter.addItem(ChattingListItem(R.drawable.ic_twotone_land_24, "최태양", "경기도 김포구, 5일전", "20에 제가 직접  찾아가는 조건이요."))
     }
-
 }

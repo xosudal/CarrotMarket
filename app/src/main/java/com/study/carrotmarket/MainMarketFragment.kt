@@ -57,7 +57,7 @@ class MainMarketFragment : Fragment() {
 
     fun getSampleItems(): List<SellListItem> {
 
-        context?.let {
+        context!!.let {
             return listOf(
                 SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
                 SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),

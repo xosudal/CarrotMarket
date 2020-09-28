@@ -30,7 +30,28 @@
     <string name="title_activity_detailed_selling_item">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="region_name_count_text">%1$s과 근처 동네 %2$d개</string>
-    <string name="region_count_text">근처 동네 %1$d개</string>
+    <string name="region_name_count_text">$1%s과 근처 동네 $2%d개</string>
+    <string name="region_count_text">근처 동네 $1%d개</string>
+    <string name="title">제목</string>
+    <string name="category">카테고리</string>
+    <string name="content_hint"> $1%s에 올릴 게시글 내용을 작성해주세요. 가품 및 판매금지품목은 게시가 제한될 수 있어요.</string>
+    <string name="submit">완료</string>
+
+    <string-array name="category_list">
+        <item>디지털/가전</item>
+        <item>가구/인테리어</item>
+        <item>유아동/유아도서</item>
+        <item>생활/가공식품</item>
+        <item>스포츠/레저</item>
+        <item>여성잡화</item>
+        <item>여성의류</item>
+        <item>남성패션/잡화</item>
+        <item>게임/취미</item>
+        <item>뷰티/미용</item>
+        <item>반려동물용품</item>
+        <item>도서/티켓/음반</item>
+        <item>기타 중고용품</item>
+        <item>삽니다</item>
+    </string-array>
 
 </resources>
