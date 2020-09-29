@@ -60,13 +60,12 @@ class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>(
 
                 val intent = Intent(holder.itemView.context, WriteUsedArticleActivity::class.java)
                 holder.itemView.context.startActivity(intent)
-
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return WriteBsdfAdapter.itemList.size
     }
 
     class WriteViewHolder(item : View) : RecyclerView.ViewHolder(item) {

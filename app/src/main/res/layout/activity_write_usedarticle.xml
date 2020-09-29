@@ -19,6 +19,7 @@
         android:background="@drawable/btn_border_1dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/write_toolbar">
 
@@ -50,10 +51,12 @@
         android:id="@+id/photo_recycler_view"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toRightOf="@id/upload_img_constrant"
         app:layout_constraintTop_toTopOf="@id/upload_img_constrant"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@id/upload_img_constrant"/>
 
     <View
         android:id="@+id/divider_title"
@@ -118,9 +121,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="W"
-        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider_price"/>
+        app:layout_constraintTop_toTopOf="@id/price_edittext"
+        app:layout_constraintBottom_toBottomOf="@id/price_edittext"/>
 
     <EditText
         android:id="@+id/price_edittext"

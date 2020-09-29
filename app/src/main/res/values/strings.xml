@@ -34,7 +34,7 @@
     <string name="region_count_text">근처 동네 $1%d개</string>
     <string name="title">제목</string>
     <string name="category">카테고리</string>
-    <string name="content_hint"> $1%s에 올릴 게시글 내용을 작성해주세요. 가품 및 판매금지품목은 게시가 제한될 수 있어요.</string>
+    <string name="content_hint"> %1$s에 올릴 게시글 내용을 작성해주세요. 가품 및 판매금지품목은 게시가 제한될 수 있어요.</string>
     <string name="submit">완료</string>
 
     <string-array name="category_list">
