@@ -45,7 +45,7 @@
         <activity android:name=".setting.activity.SettingActivity" />
         <activity android:name=".setting.activity.KeyWordNotifyActivity" />
         <activity android:name=".setting.activity.CheckInActivity" />
-        <activity android:name=".setting.activity.RegionSettingActivity" />
+        <activity android:name=".setting.activity.RegionSettingActivity"/>
         <activity android:name=".setting.activity.RegionActivity"/>
         <activity android:name=".setting.activity.RegionShowActivity"/>
         <activity android:name=".setting.activity.WebViewActivity" />
