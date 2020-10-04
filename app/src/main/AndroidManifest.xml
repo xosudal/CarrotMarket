@@ -58,6 +58,9 @@
         <activity android:name=".setting.activity.SalesActivity" />
         <activity android:name=".MainActivity"/>
         <activity android:name=".WriteUsedArticleActivity" />
+        <activity android:name=".NeighborhoodAdvertisementArticleActivity"/>
+        <activity android:name=".NeighborhoodLifeArticleActivity"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

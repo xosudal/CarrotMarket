@@ -1,11 +1,14 @@
 package com.study.carrotmarket
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -17,6 +20,11 @@ class WriteBottomSheetDialogFragment : BottomSheetDialogFragment() {
         fun AddWriteBsdf() : WriteBottomSheetDialogFragment {
             return WriteBottomSheetDialogFragment()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Toast.makeText(context, "$requestCode, $resultCode, $data", Toast.LENGTH_LONG).show()
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onCreateView(
@@ -36,6 +44,7 @@ class WriteBottomSheetDialogFragment : BottomSheetDialogFragment() {
 }
 
 class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>() {
+    private lateinit var context : Context;
     companion object {
         val itemList : List<WriteBottomItem> = arrayListOf(
             WriteBottomItem(R.drawable.ic_outline_used_trade_24, "중고거래", "중고 물건을 판매할 수 있어요"),
@@ -46,21 +55,31 @@ class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WriteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_write_bottom_sheet_item, parent, false)
+        context = parent.context
         return WriteViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: WriteViewHolder, position: Int) {
-        WriteBsdfAdapter.itemList[position].let {
+        WriteBsdfAdapter.itemList[position].let { it ->
             holder.img.setImageDrawable(holder.itemView.context.getDrawable(it.img))
             holder.title.text = it.title
             holder.desc.text = it.desc
 
-            holder.itemView.setOnClickListener {view ->
+            holder.itemView.setOnClickListener { view ->
                 Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
 
-                val intent = Intent(holder.itemView.context, WriteUsedArticleActivity::class.java)
-                holder.itemView.context.startActivity(intent)
+                when (position) {
+                    0 -> WriteUsedArticleActivity::class.java
+                    1 -> NeighborhoodLifeArticleActivity::class.java
+                    2 -> NeighborhoodAdvertisementArticleActivity::class.java
+                    else -> null
+                }?.let { classJava ->
+                    val intent =
+                        Intent(holder.itemView.context, classJava)
+                        context.startActivity(intent)
+                }
             }
+
         }
     }
 

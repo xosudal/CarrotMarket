@@ -1,12 +1,9 @@
 package com.study.carrotmarket
 
-import android.R.attr
 import android.content.ClipData
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
@@ -24,7 +21,7 @@ import kotlinx.android.synthetic.main.layout_write_usedarticle_uploadimages.view
 import kotlinx.android.synthetic.main.toolbar.*
 
 
-class WriteUsedArticleActivity : AppCompatActivity(), removeItem {
+class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
     private val TAG = "WriteUsedArticleActivity"
     private lateinit var categoryList : Array<String>
     private val PICK_IMAGE_MULTIPLE = 1
@@ -47,7 +44,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), removeItem {
         }
         toolbar_title?.text = "중고거래 글쓰기"
 
-        article_content_edittext.hint = getString(R.string.content_hint, "도화동")
+        article_content_edittext.hint = getString(R.string.used_content_hint, "도화동")
         upload_img_constrant.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
@@ -175,7 +172,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), removeItem {
     }
 }
 
-class UploadImageAdapter(private var removeItem : removeItem) : RecyclerView.Adapter<UploadImageAdapter.UploadImageViewHolder>() {
+class UploadImageAdapter(private var removeItem : RemoveItem) : RecyclerView.Adapter<UploadImageAdapter.UploadImageViewHolder>() {
     private var mUploadImagesItems = ArrayList<Uri>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UploadImageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_write_usedarticle_uploadimages, parent, false)
@@ -217,6 +214,6 @@ class UploadImageAdapter(private var removeItem : removeItem) : RecyclerView.Ada
     }
 }
 
-interface removeItem {
+interface RemoveItem {
     fun onRemovedItem()
 }
