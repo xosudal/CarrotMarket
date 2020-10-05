@@ -85,11 +85,11 @@ class RegionSettingActivity : AppCompatActivity() {
         }
 
         region_iv_first.setOnClickListener {
-            startActivity(Intent(this, RegionActivity::class.java))
+            startActivityForResult(Intent(this, RegionActivity::class.java), SELECT_FIRST)
         }
 
         region_iv_second.setOnClickListener {
-            startActivity(Intent(this, RegionActivity::class.java))
+            startActivityForResult(Intent(this, RegionActivity::class.java), SELECT_SECOND)
         }
 
         region_close_first.setOnClickListener {
@@ -98,6 +98,25 @@ class RegionSettingActivity : AppCompatActivity() {
 
         region_close_second.setOnClickListener {
             closeViewNeighborhood()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            SELECT_FIRST -> {
+                if (resultCode == RESULT_OK) {
+                    selectedFirstLocation = data?.getParcelableExtra("selectList")
+                    selectedFirstLocation?.let { setSelectedNeighborhood(it) }
+                }
+            }
+
+            SELECT_SECOND -> {
+                if (resultCode == RESULT_OK) {
+                    selectedSecondLocation = data?.getParcelableExtra("selectList")
+                    selectedSecondLocation?.let { setSelectedNeighborhood(it) }
+                }
+            }
         }
     }
 
@@ -110,12 +129,7 @@ class RegionSettingActivity : AppCompatActivity() {
         region_seek_bar.progress = progressCount
         setImageAlpha(progressCount)
         calNearByRegion(progressCount)
-        val i = intent.getParcelableExtra<LocationInfo>("selectList")
-        if (i == null) {
-            loadSelectedNeighborhood()
-        } else {
-            setSelectedNeighborhood(i)
-        }
+        loadSelectedNeighborhood()
         sortRegionList(currentPosition)
     }
 

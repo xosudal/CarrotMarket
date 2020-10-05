@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -43,7 +44,11 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("heo", "signUp Success")
             } else {
                 Log.d("heo", "signUp Fail")
-                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                if (it.exception is FirebaseAuthUserCollisionException) {
+                    Toast.makeText(this, "Account already exists!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                }
             }
             loadingDialog.dismiss()
         }

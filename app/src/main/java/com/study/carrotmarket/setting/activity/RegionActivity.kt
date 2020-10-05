@@ -5,20 +5,15 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
-import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.study.carrotmarket.R
 import kotlinx.android.synthetic.main.activity_region.*
 import kotlinx.android.synthetic.main.layout_region.view.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.toolbar_region.*
 
 class RegionActivity : AppCompatActivity() {
@@ -101,7 +96,7 @@ class RegionActivity : AppCompatActivity() {
                     putExtra("selectList",regionList[position])
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 }
-                startActivity(intent)
+                setResult(RESULT_OK,intent)
                 finish()
             }
         }
