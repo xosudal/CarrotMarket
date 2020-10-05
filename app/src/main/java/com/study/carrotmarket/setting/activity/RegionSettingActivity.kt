@@ -1,9 +1,6 @@
 package com.study.carrotmarket.setting.activity
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -16,8 +13,6 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
 import com.study.carrotmarket.R
 import kotlinx.android.parcel.Parcelize
@@ -26,7 +21,6 @@ import kotlinx.android.synthetic.main.toolbar.*
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.io.Serializable
 
 const val SELECT_FIRST = 1
 const val SELECT_SECOND = 2
@@ -175,7 +169,6 @@ class RegionSettingActivity : AppCompatActivity() {
             return
         }
         val reader = BufferedReader(InputStreamReader(assets.open("LocationList.txt")))
-        var read: String
         for (read in reader.lines()) {
             read.let {
                 val jArr = JSONArray(it)
@@ -343,7 +336,7 @@ class RegionSettingActivity : AppCompatActivity() {
     private fun loadSelectedLocationList() {
         val loadFirst : String? = this.getPreferences(0).getString("FIRST_LIST", null)
         val loadSecond : String? = this.getPreferences(0).getString("SECOND_LIST", null)
-        selectedFirstLocation = Gson().fromJson(loadFirst,LocationInfo::class.java)
+        selectedFirstLocation = Gson().fromJson(loadFirst,LocationInfo::class.java) ?: LocationInfo("", "서울특별시", "강서구", "가양동", 37.5648322, 126.8342406)
         selectedSecondLocation = Gson().fromJson(loadSecond,LocationInfo::class.java)
     }
 

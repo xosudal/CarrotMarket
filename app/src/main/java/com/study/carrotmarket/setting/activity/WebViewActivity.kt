@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.study.carrotmarket.LoginActivity
 import com.study.carrotmarket.R
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -15,7 +16,7 @@ class WebViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_web_view)
         settingToolbar()
 
-
+        if (mode == 0) startActivity(Intent(this,LoginActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
