@@ -130,7 +130,9 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
     }
 
     private fun findCurrentLocation() {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
+        if (::currentLatLng.isInitialized) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
+        }
         Toast.makeText(this,"현재 위치를 찾고 있어요",Toast.LENGTH_SHORT).show()
     }
 

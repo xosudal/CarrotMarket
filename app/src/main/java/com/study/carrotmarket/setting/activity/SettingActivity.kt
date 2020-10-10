@@ -227,13 +227,13 @@ class SettingActivity : AppCompatActivity() {
 
         dlg.show()
 
-        timePickerFrom.setOnTimeChangedListener { timePicker, hour, minute ->
+        timePickerFrom.setOnTimeChangedListener { _, hour, minute ->
             Log.d("heo","$hour, $minute")
             hourSetting.fromHour = hour
             hourSetting.fromMinute = minute
         }
 
-        timePickerTo.setOnTimeChangedListener { timePicker, hour, minute ->
+        timePickerTo.setOnTimeChangedListener { _, hour, minute ->
             Log.d("heo","$hour, $minute")
             hourSetting.toHour = hour
             hourSetting.toMinute = minute
