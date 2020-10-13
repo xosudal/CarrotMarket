@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.study.carrotmarket.adapter.MainViewPagerAdapter
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import com.jaredrummler.materialspinner.MaterialSpinner
 import kotlinx.android.synthetic.main.fragment_main.view.*
@@ -39,7 +40,7 @@ class MainFragment : Fragment(){
     ): View? {
         Log.d(TAG, "onCreateView")
         super.onCreateView(inflater, container, savedInstanceState)
-
+        (activity as AppCompatActivity).supportActionBar?.hide()
 
         rView = inflater.inflate(R.layout.fragment_main, container, false)
 
@@ -73,6 +74,7 @@ class MainFragment : Fragment(){
     }
 
     override fun onDestroyView() {
+        (activity as AppCompatActivity).supportActionBar?.show()
         super.onDestroyView()
         Log.d(TAG, "onDestroyView")
 

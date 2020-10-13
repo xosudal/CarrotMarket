@@ -19,11 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity"/>
-        <activity
-            android:name=".DetailedSellingItemActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_detailed_selling_item"
-            android:theme="@style/FullscreenTheme" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,9 +54,8 @@
         <activity android:name=".setting.activity.SalesActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".WriteUsedArticleActivity" />
-        <activity android:name=".NeighborhoodAdvertisementArticleActivity"/>
-        <activity android:name=".NeighborhoodLifeArticleActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".DetailedSellingItemActivity" />
     </application>
 
 </manifest>
