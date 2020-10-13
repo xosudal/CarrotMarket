@@ -15,7 +15,10 @@ import com.study.carrotmarket.R
 import com.study.carrotmarket.model.SellListItem
 import kotlinx.android.synthetic.main.layout_listview_item.view.*
 
-class SellingItemRecyclerAdapter(private val mFragment: Fragment, private val dataset: List<SellListItem>): RecyclerView.Adapter<SellingItemRecyclerAdapter.ViewHolder>() {
+class SellingItemRecyclerAdapter(private val mFragment: Fragment,
+                                 private val dataset: List<SellListItem>,
+                                 val itemClick: (SellListItem) -> Unit
+): RecyclerView.Adapter<SellingItemRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.sellingItemPoster
@@ -43,6 +46,7 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment, private val da
             holder.nameView.setText(itemName)
             holder.priceView.setText(itemPrice.toString())
             holder.addressView.setText(itemAddress)
+            holder.itemView.setOnClickListener{itemClick(dataset[position])}
         }
     }
 }
