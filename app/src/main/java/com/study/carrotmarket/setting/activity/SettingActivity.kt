@@ -12,6 +12,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.study.carrotmarket.R
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.dialog_disturb_time_setting.*
@@ -180,6 +181,7 @@ class SettingActivity : AppCompatActivity() {
             setMessage(R.string.dialog_text_logout_content)
             setPositiveButton("확인") { _, _ ->
                 Toast.makeText(context,"로그아웃!",Toast.LENGTH_SHORT).show()
+                FirebaseAuth.getInstance().signOut()
             }
             setNegativeButton("취소", null)
         }.create().show()

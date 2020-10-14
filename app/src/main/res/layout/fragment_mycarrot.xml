@@ -6,31 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyCarrotFragment">
-<!--    <RelativeLayout
-        android:id="@+id/mycarrot_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/division_layout">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:text="나의 당근"
-            android:textSize="25dp"
-            android:textColor="@android:color/black"/>
-
-        <ImageView
-            android:id="@+id/mycarrot_imageview_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_baseline_settings_24"
-            android:background="@drawable/selector_view"/>
-    </RelativeLayout>-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mycarrot_layout_userInformation"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
@@ -49,46 +24,47 @@
 
                 <ImageView
                     android:id="@+id/mycarrot_imageview_userImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_baseline_face_24" />
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_baseline_face_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="16dp"/>
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mycarrot_userInfo_layout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@id/mycarrot_imageview_userImage">
+                    android:layout_toEndOf="@id/mycarrot_imageview_userImage"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/mycarrot_show_profile_button"
+                    app:layout_constraintStart_toEndOf="@id/mycarrot_imageview_userImage"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="16dp">
 
                     <TextView
-                        android:id="@+id/mycarrot_userName_textview"
+                        android:id="@+id/mycarrot_userInfo_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="ID" />
-
-                    <TextView
-                        android:id="@+id/mycarrot_userAddress_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/mycarrot_userName_textview"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:text="address" />
-                </RelativeLayout>
+                        android:lineSpacingExtra="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
                     android:id="@+id/mycarrot_show_profile_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
-                    android:textStyle="bold"
+                    android:background="@drawable/selector_btn"
                     android:text="프로필 보기"
-                    android:background="@drawable/selector_btn"/>
-            </RelativeLayout>
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mycarrot_constraintlayout_list"
