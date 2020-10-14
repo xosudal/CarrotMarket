@@ -1,18 +1,27 @@
 package com.study.carrotmarket
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
+    private val TAG = "MainActivity"
     private val mainFragment = MainFragment()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,6 +50,32 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        /* Init Notification */
+        initNotification()
+        registerFirebaseTokenToServer()
+
+    }
+
+    private fun registerFirebaseTokenToServer() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener( OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId failed ${task.exception}")
+                }
+                val token = task.result?.token
+                Log.d(TAG, "toKen: $token")
+            })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initNotification() {
+        val notificationManager = getSystemService(NotificationManager::class.java) as NotificationManager
+        notificationManager?.createNotificationChannel(
+            NotificationChannel(
+                "0", "CH0", NotificationManager.IMPORTANCE_LOW
+            )
+        )
     }
 
     override fun onBackPressed() {

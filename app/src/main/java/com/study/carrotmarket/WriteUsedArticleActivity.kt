@@ -107,52 +107,16 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
             // When an Image is picked
             if (requestCode === PICK_IMAGE_MULTIPLE && resultCode === RESULT_OK) {
                 // Get the Image from data
-/*
-                if (data?.data != null) {
-                    Log.d(TAG, "onActivityResult ${data.data}")
-                    val mImageUri: Uri? = data.data
+                if (data?.clipData != null) {
+                    val mClipData: ClipData? = data.clipData
+                    for (i in 0 until mClipData!!.itemCount) {
+                        val item = mClipData.getItemAt(i)
+                        val uri: Uri = item.uri
 
-                    // Get the cursor
-                    val cursor: Cursor? = contentResolver.query(
-                        mImageUri!!,
-                        filePathColumn, null, null, null
-                    )
-                    // Move to first row
-                    cursor!!.moveToFirst()
-                    val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-                    imageEncoded = cursor.getString(columnIndex)
-                    cursor.close()
-                } else {
-*/
-                    if (data?.clipData != null) {
-                        val mClipData: ClipData? = data.clipData
-                        for (i in 0 until mClipData!!.itemCount) {
-                            val item = mClipData.getItemAt(i)
-                            val uri: Uri = item.uri
-
-                            uploadImageAdapter.addItem(uri)
-
-/*                            mArrayUri.add(uri)
-                            // Get the cursor
-                            Log.d(TAG, "onActivityResult item: ${mClipData.getItemAt(i)}, uri:${item.uri}")
-                            val cursor: Cursor? =
-                                contentResolver.query(uri, filePathColumn, null, null, null)
-
-                            if(cursor != null) {
-                                // Move to first row
-                                cursor.moveToFirst()
-                                val idColumn: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-                                val dataTakenColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)
-                                val displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
-                                imageEncoded = cursor.getString(displayNameColumn)
-                                imagesEncodedList.add(imageEncoded)
-                                cursor.close()
-                                Log.d(TAG, "onActivityResult cnt: $i, id:$idColumn, dateTaken:$dataTakenColumn, displayName:$imageEncoded ")
-                            }*/
-                        }
-                        image_count.text = "${uploadImageAdapter.itemCount} / 10"
+                        uploadImageAdapter.addItem(uri)
                     }
-//                }
+                    image_count.text = "${uploadImageAdapter.itemCount} / 10"
+                }
             } else {
                 Toast.makeText(
                     this, "You haven't picked Image",

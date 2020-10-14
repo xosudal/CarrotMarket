@@ -54,8 +54,19 @@
         <activity android:name=".setting.activity.SalesActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".WriteUsedArticleActivity" />
-        <activity
-            android:name=".DetailedSellingItemActivity" />
+        <activity android:name=".DetailedSellingItemActivity" />
+        <activity android:name=".NeighborhoodAdvertisementArticleActivity"/>
+        <activity android:name=".NeighborhoodLifeArticleActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <service
+            android:name=".CarrotMarketFirebaseMessagingService"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
