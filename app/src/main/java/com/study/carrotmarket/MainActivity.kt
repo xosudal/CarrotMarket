@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener( OnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Log.w(TAG, "getInstanceId failed ${task.exception}")
+                    return@OnCompleteListener
                 }
                 val token = task.result?.token
                 Log.d(TAG, "toKen: $token")

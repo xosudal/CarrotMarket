@@ -13,12 +13,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_write_usedarticle.*
 import kotlinx.android.synthetic.main.activity_write_usedarticle.category_textview
 import kotlinx.android.synthetic.main.activity_write_usedarticle.view.*
 import kotlinx.android.synthetic.main.layout_category_dialog.view.*
 import kotlinx.android.synthetic.main.layout_write_usedarticle_uploadimages.view.*
 import kotlinx.android.synthetic.main.toolbar.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
+import java.net.URI
 
 
 class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
@@ -80,6 +90,39 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
 
     private fun sendUsedArticle() {
         // Retrofit 2
+        val usedItem = UsedItems("Pooh",
+            "Mapo",
+            Integer.parseInt(price_edittext.text.toString()),
+            category_textview.text.toString(),
+            title_edittext.text.toString(),
+            article_content_edittext.text.toString())
+
+        var body = MultipartBody.Builder()
+            .addFormDataPart("nickname", usedItem.nickname)
+            .addFormDataPart("id", "111")
+
+        for(item in 0 until uploadImageAdapter.itemCount) {
+            Log.d(TAG, "uri: ${uploadImageAdapter.getItem(item).path}")
+
+            uploadImageAdapter.getItem(item).path?.toRequestBody("image/*".toMediaTypeOrNull())?.let {
+                body.addFormDataPart("item_$item", "item_$item", it)
+            }
+        }
+        val jsonString = Gson().toJson(usedItem)
+        body.addFormDataPart("data", jsonString)
+
+        val tmp = RestApi.setUsedArticle(body.build().parts)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.newThread())
+            .subscribe( {
+                Log.d(TAG, "Result: $it")
+                //this@WriteUsedArticleActivity.finish()
+            }, {
+                Log.d(TAG, it.localizedMessage)
+            }
+            )
+        Log.d(TAG, "itemCount:${uploadImageAdapter.itemCount}, json:$jsonString, result: $tmp")
+
     }
 
     private fun showCategoryDialog() {
@@ -94,7 +137,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
         view.category_listview.apply {
             this.adapter = adapter
             this.setOnItemClickListener { parent, view, position, id ->
-                category_textview.text = categoryList[position]
+                this@WriteUsedArticleActivity.category_textview?.text = categoryList[position]
                 alertDialog.dismiss()
             }
         }
@@ -155,6 +198,10 @@ class UploadImageAdapter(private var removeItem : RemoveItem) : RecyclerView.Ada
     }
 
     override fun getItemCount(): Int = mUploadImagesItems.size
+
+    fun getItem(position : Int) : Uri {
+        return mUploadImagesItems[position]
+    }
 
     fun addItem(uri : Uri) {
         if(!mUploadImagesItems.contains(uri))
