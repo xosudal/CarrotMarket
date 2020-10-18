@@ -1,7 +1,8 @@
 package com.study.carrotmarket.setting.activity
 
+import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -14,12 +15,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.Gson
 import com.study.carrotmarket.R
-import com.study.carrotmarket.setting.model.UserData
+import com.study.carrotmarket.setting.model.UserInfo
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.fragment_mycarrot.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +35,8 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var storage: FirebaseStorage
     lateinit var firestore: FirebaseFirestore
     var profileImageUri:Any? = null
+    private val PROFILE_EDIT = 1000
+    var userInfo:UserInfo? = UserInfo()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -71,17 +77,25 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        userInfo = Gson().fromJson(this.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE).getString("USER_INFO",null),UserInfo::class.java)
         getProfile()
     }
 
     private fun getProfile() {
-        firestore.collection("ProfileImage").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener {
-            if (it == null) return@addOnSuccessListener
-            if (it.data != null) {
-                Glide.with(this).load(it.data!!["imageUri"]).apply(RequestOptions().circleCrop()).into(profile_user_image)
-                profile_user_name.text = it.data!!["userId"].toString()
-                profile_user_name_hash.text = it.data!!["uid"].toString()
-            }
+        userInfo?.let {
+            profile_user_name.text = "${it.userId}"
+            profile_user_name_hash.text = "${it.uid}"
+            Glide.with(this).load(it.imageUri).circleCrop().into(profile_user_image)
+            Log.d("heo","Draw in onresume")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PROFILE_EDIT && resultCode == RESULT_OK) {
+            userInfo = data?.getParcelableExtra("USER_INFO")
+            this.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE).edit().putString("USER_INFO",Gson().toJson(userInfo)).apply()
+            Log.d("heo","Draw in ac result")
         }
     }
 
@@ -93,7 +107,10 @@ class ProfileActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.profile_setting -> {
-                Toast.makeText(this, "setting!!!!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this,ProfileEditActivity::class.java).apply {
+                    putExtra("USER_INFO",userInfo)
+                }
+                startActivityForResult(intent,PROFILE_EDIT)
                 return true
             }
             R.id.profile_setting_share -> {
