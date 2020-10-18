@@ -53,17 +53,22 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <Button
+                <TextView
                     android:id="@+id/mycarrot_show_profile_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/selector_btn"
                     android:text="프로필 보기"
-                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

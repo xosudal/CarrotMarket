@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.study.carrotmarket.R
+import com.study.carrotmarket.setting.model.LocationInfo
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_region_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -29,17 +30,6 @@ class RegionSettingActivity : AppCompatActivity() {
     companion object StaticList {
         var regionTotalList: ArrayList<LocationInfo> = arrayListOf()
         lateinit var regionNearByList: List<LocationInfo>
-
-        @Parcelize
-        data class LocationInfo(
-            var province: String = "", // 도
-            var city: String = "", // 시
-            var district: String = "", // 구
-            var neighborhood: String = "", // 동
-            var latitude: Double = 0.0,
-            var longitude: Double = 0.0,
-            var distance: Float = 0.0F
-        ) : Parcelable
     }
 
     private lateinit var currentPosition:LocationInfo

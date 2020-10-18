@@ -57,8 +57,12 @@ class MyCarrotFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_mycarrot, container, false).apply {
-            mycarrot_show_profile_button?.setOnClickListener {
-                startActivity(Intent(context, ProfileActivity::class.java))
+            mycarrot_layout_userInformation?.setOnClickListener {
+                if (auth.currentUser == null) {
+                    Toast.makeText(context,"로그인이 필요합니다.",Toast.LENGTH_SHORT).show()
+                } else {
+                    startActivity(Intent(context, ProfileActivity::class.java))
+                }
             }
 
             mycarrot_sales_history?.setOnClickListener {
@@ -135,10 +139,14 @@ class MyCarrotFragment : Fragment() {
             }
 
             mycarrot_imageview_userImage?.setOnClickListener {
-                val intent = Intent(context, ProfileEditActivity::class.java).apply {
-                    putExtra("USER_INFO",userInfo)
+                if (auth.currentUser == null) {
+                    Toast.makeText(context,"로그인이 필요합니다.",Toast.LENGTH_SHORT).show()
+                } else {
+                    val intent = Intent(context, ProfileEditActivity::class.java).apply {
+                        putExtra("USER_INFO", userInfo)
+                    }
+                    startActivityForResult(intent, PROFILE_EDIT)
                 }
-                startActivityForResult(intent, PROFILE_EDIT)
             }
         }
         activity?.toolbar_title?.text = "나의 당근"

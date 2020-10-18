@@ -18,14 +18,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.study.carrotmarket.R
+import com.study.carrotmarket.setting.model.LocationInfo
 import kotlinx.android.synthetic.main.activity_region.*
 import kotlinx.android.synthetic.main.layout_region.view.*
 import kotlinx.android.synthetic.main.toolbar_region.*
 
 class RegionActivity : AppCompatActivity() {
     private lateinit var regionRecyclerView:RegionRecyclerView
-    private lateinit var regionList:List<RegionSettingActivity.StaticList.LocationInfo>
-    private lateinit var originRegionList:List<RegionSettingActivity.StaticList.LocationInfo>
+    private lateinit var regionList:List<LocationInfo>
+    private lateinit var originRegionList:List<LocationInfo>
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
