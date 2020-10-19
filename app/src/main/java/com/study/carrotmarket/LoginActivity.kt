@@ -2,11 +2,13 @@ package com.study.carrotmarket
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class LoginActivity : AppCompatActivity() {
     companion object {
@@ -20,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         loadingDialog = LoadingDialog(this)
         auth = FirebaseAuth.getInstance()
-
+        settingToolbar()
         email_sign_up_btn.setOnClickListener {
             loadingDialog.show()
             signUp()
@@ -66,5 +68,23 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun settingToolbar() {
+        setSupportActionBar(toolbar).apply {
+            title = null
+        }
+        toolbar_title.text = "로그인 하기"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }

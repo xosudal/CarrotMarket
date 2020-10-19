@@ -1,4 +1,4 @@
-package com.study.carrotmarket.setting.model
+package com.study.carrotmarket.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

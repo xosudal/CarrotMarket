@@ -2,8 +2,6 @@ package com.study.carrotmarket.setting.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
@@ -12,18 +10,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.study.carrotmarket.LoadingDialog
 import com.study.carrotmarket.R
-import com.study.carrotmarket.setting.model.UserInfo
+import com.study.carrotmarket.model.UserInfo
 import kotlinx.android.synthetic.main.activity_profile_edit.*
-import kotlinx.android.synthetic.main.fragment_mycarrot.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 

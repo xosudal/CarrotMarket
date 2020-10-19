@@ -1,31 +1,46 @@
 package com.study.carrotmarket
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.Gson
+import com.study.carrotmarket.model.UserInfo
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home.view.*
+import kotlinx.android.synthetic.main.layout_login_dialog.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     private val mainFragment = MainFragment()
+    lateinit var dlg:AlertDialog
+    lateinit var auth:FirebaseAuth
+    lateinit var loadingDialog:LoadingDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        auth = FirebaseAuth.getInstance()
+        loadingDialog = LoadingDialog(this)
         setSupportActionBar(toolbar).apply {
             title = null
         }
@@ -55,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         initNotification()
         registerFirebaseTokenToServer()
 
+        showLoginDialog()
     }
 
     private fun registerFirebaseTokenToServer() {
@@ -84,6 +100,54 @@ class MainActivity : AppCompatActivity() {
                 navigation_bottom.selectedItemId = R.id.navigation_home
         } else {
             finishAffinity()
+        }
+    }
+
+    private fun showLoginDialog() {
+        if (FirebaseAuth.getInstance().currentUser != null) return
+
+        val builder = AlertDialog.Builder(this).apply {
+            setView(R.layout.layout_login_dialog)
+        }
+        dlg = builder.create()
+        dlg.show()
+
+        dlg.login_dialog_btn_test_account.setOnClickListener {
+            dlg.dismiss()
+            loginTestAccount()
+        }
+        dlg.login_dialog_btn_login.setOnClickListener {
+            dlg.dismiss()
+            startActivity(Intent(this,LoginActivity::class.java))
+        }
+    }
+
+    private fun loginTestAccount() {
+        loadingDialog.show()
+        auth.signInWithEmailAndPassword("helloworld@naver.com", "1123456")
+            .addOnCompleteListener {
+            if (it.isSuccessful) {
+                Log.d("heo","Login Success")
+                loadTestAccountInformation()
+            } else {
+                Log.d("heo","Login Fail")
+                loadingDialog.dismiss()
+                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun loadTestAccountInformation() {
+        FirebaseFirestore.getInstance().collection("ProfileImage").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener {
+            if (it == null) {
+                loadingDialog.dismiss()
+                return@addOnSuccessListener
+            }
+            if (it.data != null) {
+                val userInfo = UserInfo(it.data!!["imageUri"].toString(),it.data!!["nickName"].toString(),it.data!!["uid"].toString(),it.data!!["userId"].toString())
+                getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)?.edit()?.putString("USER_INFO", Gson().toJson(userInfo))?.apply()
+                loadingDialog.dismiss()
+            }
         }
     }
 }

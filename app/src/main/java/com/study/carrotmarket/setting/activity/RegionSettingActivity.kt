@@ -4,7 +4,6 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -15,8 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.study.carrotmarket.R
-import com.study.carrotmarket.setting.model.LocationInfo
-import kotlinx.android.parcel.Parcelize
+import com.study.carrotmarket.model.LocationInfo
 import kotlinx.android.synthetic.main.activity_region_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.json.JSONArray
@@ -32,9 +30,9 @@ class RegionSettingActivity : AppCompatActivity() {
         lateinit var regionNearByList: List<LocationInfo>
     }
 
-    private lateinit var currentPosition:LocationInfo
-    private var selectedFirstLocation:LocationInfo? = LocationInfo("", "서울특별시", "강서구", "가양동", 37.5648322, 126.8342406)
-    private var selectedSecondLocation:LocationInfo? = null
+    private lateinit var currentPosition: LocationInfo
+    private var selectedFirstLocation: LocationInfo? = LocationInfo("", "서울특별시", "강서구", "가양동", 37.5648322, 126.8342406)
+    private var selectedSecondLocation: LocationInfo? = null
     private var progressCount:Int = 0
     private var selectedNumber:Int = 1
 
@@ -220,7 +218,7 @@ class RegionSettingActivity : AppCompatActivity() {
         }
     }
 
-    private fun sortRegionList(currentPosition:LocationInfo) {
+    private fun sortRegionList(currentPosition: LocationInfo) {
         for (list in regionTotalList) list.distance = betweenDistance(
             currentPosition.latitude,
             currentPosition.longitude,
@@ -268,7 +266,7 @@ class RegionSettingActivity : AppCompatActivity() {
         return standard.distanceTo(comparison)
     }
 
-    private fun setSelectedNeighborhood(list:LocationInfo) {
+    private fun setSelectedNeighborhood(list: LocationInfo) {
         if (selectedFirstLocation == null) {
             selectedFirstLocation = list
         } else {
@@ -340,8 +338,8 @@ class RegionSettingActivity : AppCompatActivity() {
     private fun loadSelectedLocationList() {
         val loadFirst : String? = this.getPreferences(0).getString("FIRST_LIST", null)
         val loadSecond : String? = this.getPreferences(0).getString("SECOND_LIST", null)
-        selectedFirstLocation = Gson().fromJson(loadFirst,LocationInfo::class.java) ?: LocationInfo("", "서울특별시", "강서구", "가양동", 37.5648322, 126.8342406)
-        selectedSecondLocation = Gson().fromJson(loadSecond,LocationInfo::class.java)
+        selectedFirstLocation = Gson().fromJson(loadFirst, LocationInfo::class.java) ?: LocationInfo("", "서울특별시", "강서구", "가양동", 37.5648322, 126.8342406)
+        selectedSecondLocation = Gson().fromJson(loadSecond, LocationInfo::class.java)
     }
 
     private fun saveSelectedLocationList() {

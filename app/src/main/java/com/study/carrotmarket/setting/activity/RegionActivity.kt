@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.study.carrotmarket.R
-import com.study.carrotmarket.setting.model.LocationInfo
+import com.study.carrotmarket.model.LocationInfo
 import kotlinx.android.synthetic.main.activity_region.*
 import kotlinx.android.synthetic.main.layout_region.view.*
 import kotlinx.android.synthetic.main.toolbar_region.*
