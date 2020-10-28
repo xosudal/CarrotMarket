@@ -2,11 +2,14 @@ package com.study.carrotmarket.setting.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +23,8 @@ import com.study.carrotmarket.R
 import com.study.carrotmarket.model.UserInfo
 import kotlinx.android.synthetic.main.activity_profile_edit.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 class ProfileEditActivity : AppCompatActivity() {
@@ -49,24 +54,62 @@ class ProfileEditActivity : AppCompatActivity() {
             startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_ALBUM)
         }
         userInfo = intent.getParcelableExtra("USER_INFO") ?: UserInfo()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_FROM_ALBUM) {
-            if (resultCode == Activity.RESULT_OK) {
-                photoUri = data?.data
-                userInfo.imageUri = data?.data.toString()
-                Log.d("heo","onActivityResult in edit ac")
-            }
-        }
+        checkImageDir()
     }
 
     override fun onResume() {
         super.onResume()
         //load uri, nickname and set
         profile_edit_et.setText(userInfo.nickName)
-        Glide.with(this).asBitmap().load(userInfo.imageUri).circleCrop().into(profile_edit_iv)
+        Log.d("heo","[onResume] : ${userInfo.imageUri}")
+        showProfileImage()
+    }
+    private fun showProfileImage() {
+        if (userInfo.imageUri == null) return
+
+        if (userInfo.imageUri!!.startsWith("file")) {
+            val temp = Uri.parse(userInfo.imageUri)
+            Log.d("heo","start file! : ${temp.path}")
+            Glide.with(this).load(File(temp.path!!)).circleCrop().into(profile_edit_iv)
+        }
+        else {
+            Glide.with(this).load(userInfo.imageUri).circleCrop().into(profile_edit_iv)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_FROM_ALBUM) {
+            if (resultCode == Activity.RESULT_OK) {
+                photoUri = resizePhoto(data?.data)
+                //photoUri = data?.data
+                userInfo.imageUri = photoUri.toString()//data?.data.toString()
+                Log.d("heo","onActivityResult in edit ac. ${userInfo.imageUri}")
+            }
+        }
+    }
+
+    private fun resizePhoto(uri:Uri?):Uri {
+        Log.d("heo","[resizePhoto] ${uri?.path}")
+        var bitmap:Bitmap? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (uri != null) {
+                val src = ImageDecoder.createSource(contentResolver,uri)
+                bitmap = ImageDecoder.decodeBitmap(src)
+            }
+        } else {
+            bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
+        }
+
+        val time = System.currentTimeMillis()
+        val file = File("$filesDir/images/${time}.png")
+        Log.d("heo", file.path)
+        val fOut = FileOutputStream(file)
+        val resized = bitmap?.let { Bitmap.createScaledBitmap(it,bitmap.width/8,bitmap.height/8,true) }
+        resized?.compress(Bitmap.CompressFormat.PNG,100, fOut)
+        fOut.flush()
+
+        return Uri.fromFile(file)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -93,10 +136,30 @@ class ProfileEditActivity : AppCompatActivity() {
                     info
                 )
             }
+            deleteFilesInImageDir()
             dialog.dismiss()
             val intent = Intent().putExtra("USER_INFO",userInfo)
             setResult(RESULT_OK, intent)
             finish()
+        }
+    }
+
+    private fun checkImageDir() {
+        val dir = File("$filesDir/images")
+        if (!dir.exists()) {
+            dir.mkdir()
+        }
+    }
+
+    private fun deleteFilesInImageDir() {
+        val dir = File("$filesDir/images")
+        if (dir.exists()) {
+            val list = dir.listFiles()
+            if (list.isNotEmpty()) {
+                for (file in list) {
+                    file.delete()
+                }
+            }
         }
     }
 
