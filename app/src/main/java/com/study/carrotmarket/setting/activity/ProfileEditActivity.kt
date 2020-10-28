@@ -15,6 +15,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -70,7 +71,7 @@ class ProfileEditActivity : AppCompatActivity() {
         if (userInfo.imageUri!!.startsWith("file")) {
             val temp = Uri.parse(userInfo.imageUri)
             Log.d("heo","start file! : ${temp.path}")
-            Glide.with(this).load(File(temp.path!!)).circleCrop().into(profile_edit_iv)
+            Glide.with(this).load(File(temp.path!!)).diskCacheStrategy(DiskCacheStrategy.ALL).circleCrop().into(profile_edit_iv)
         }
         else {
             Glide.with(this).load(userInfo.imageUri).circleCrop().into(profile_edit_iv)

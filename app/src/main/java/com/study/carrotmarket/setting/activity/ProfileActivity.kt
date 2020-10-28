@@ -11,7 +11,10 @@ import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -81,8 +84,8 @@ class ProfileActivity : AppCompatActivity() {
         userInfo?.let {
             profile_user_name.text = "${it.userId}"
             profile_user_name_hash.text = "${it.uid}"
-            Glide.with(this).load(it.imageUri).circleCrop().into(profile_user_image)
-            Log.d("heo","Draw in onresume")
+            Glide.with(this).load(it.imageUri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .circleCrop().override(profile_user_image.width,profile_user_image.height).into(profile_user_image)
         }
     }
 
