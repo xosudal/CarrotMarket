@@ -6,7 +6,6 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,15 +15,20 @@
         android:paddingRight="5dp"
         android:paddingBottom="8dp"
         android:weightSum="10"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/division_layout">
 
-        <ImageView
-            android:id="@+id/sellingItemPoster"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_weight="7"
-            android:scaleType="fitXY"
-            tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+            <ImageView
+                android:id="@+id/sellingItemPoster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
+        </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,12 +62,12 @@
 
     </LinearLayout>
 
-    <View
+<!--    <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="90dp"
         android:layout_weight="7"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

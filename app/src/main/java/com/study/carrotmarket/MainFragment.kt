@@ -1,5 +1,6 @@
 package com.study.carrotmarket
 
+import android.app.ActionBar
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,9 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.study.carrotmarket.adapter.MainViewPagerAdapter
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import com.jaredrummler.materialspinner.MaterialSpinner
+import com.study.carrotmarket.adapter.SpinnerAdapter
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 class MainFragment : Fragment(){
@@ -44,14 +51,21 @@ class MainFragment : Fragment(){
 
         rView = inflater.inflate(R.layout.fragment_main, container, false)
 
-        val spinner = rView.main_fragment_spinner
-        spinner.setItems("Hello", "My Name is", "Taeyang")
-        spinner.popupWindow.width = 200
-        spinner.setOnItemSelectedListener(
-            MaterialSpinner.OnItemSelectedListener<String>() { materialSpinner: MaterialSpinner, i: Int, l: Long, s: String ->
-                Log.d(TAG, s)
+        val items = arrayOf("가양동","마곡동","내 동네 설정")
+
+        val spinnerAdapter = context?.let { SpinnerAdapter(it,items) }
+
+        rView.main_fragment_spinner.adapter = spinnerAdapter
+
+        rView.main_fragment_spinner.onItemSelectedListener = object: OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Toast.makeText(context,items[position],Toast.LENGTH_SHORT).show()
             }
-        )
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
         val viewPager = rView.findViewById(R.id.viewpager_main_fragment) as ViewPager
         viewPager.let {
             it.adapter = MainViewPagerAdapter(childFragmentManager)
@@ -60,9 +74,13 @@ class MainFragment : Fragment(){
         val tabLayout = rView.main_tablayout
         Log.d(TAG, "tablayout null ? ${tabLayout == null}")
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(tab: TabLayout.Tab?) {            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {            }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 viewPager.currentItem = tab?.position!!
