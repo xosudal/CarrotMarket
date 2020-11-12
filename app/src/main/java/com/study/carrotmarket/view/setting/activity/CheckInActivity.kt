@@ -1,22 +1,15 @@
 package com.study.carrotmarket.view.setting.activity
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Typeface
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -25,28 +18,34 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.study.carrotmarket.R
+import com.study.carrotmarket.constant.CheckInContract
+import com.study.carrotmarket.model.setting.CheckInModel
+import com.study.carrotmarket.presenter.setting.CheckInPresenter
 import kotlinx.android.synthetic.main.activity_check_in.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
+class CheckInActivity : AppCompatActivity(), OnMapReadyCallback, CheckInContract.View {
     private lateinit var mMap: GoogleMap
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: CheckInLocationCallback
-    private lateinit var currentLatLng: LatLng
     private val TAG = "CheckInActivity"
-    private lateinit var geoCoder: Geocoder
-    var list = mutableListOf<Address>()
     private var mapMarker : Marker? = null
+
+    private lateinit var presenter: CheckInPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.activity_check_in)
         settingToolbar()
 
-        geoCoder = Geocoder(this)
+        presenter = CheckInPresenter().apply {
+            view = this@CheckInActivity
+            model = CheckInModel(this@CheckInActivity)
+        }
+
+        presenter.initLocation()
+
         check_in_map_btn.setOnClickListener {
-            findCurrentLocation()
+            presenter.getCurrentLocation()
         }
 
         check_in_faq_layout.setOnClickListener {
@@ -63,7 +62,6 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.check_in_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        initLocation()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -77,63 +75,12 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
 
     override fun onResume() {
         super.onResume()
-        registerLocationListener()
+        presenter.registerLocationListener()
     }
 
     override fun onPause() {
         super.onPause()
-        unRegisterLocationListener()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    private fun initLocation() {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        locationCallback = CheckInLocationCallback()
-        locationRequest = LocationRequest()
-        ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION),1000)
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 10000
-        locationRequest.fastestInterval = 5000
-    }
-
-    private fun registerLocationListener() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.e(TAG,"[registerLocationListener] no permission..")
-            return
-        }
-        val result = fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
-        Log.d(TAG,"[registerLocationListener] result : $result")
-    }
-
-    private fun unRegisterLocationListener() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
-
-    inner class CheckInLocationCallback : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            super.onLocationResult(locationResult)
-            val currentLocation = locationResult?.lastLocation
-            currentLocation?.run {
-                currentLatLng = LatLng(latitude,longitude)
-                mapMarker?.remove()
-                mapMarker = mMap.addMarker(MarkerOptions().position(currentLatLng).title("currentPosition"))
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
-                list = geoCoder.getFromLocation(latitude,longitude,1)
-                setCurrentPositionText(list[0].thoroughfare)
-            }
-        }
-    }
-
-    private fun findCurrentLocation() {
-        if (::currentLatLng.isInitialized) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
-        }
-        Toast.makeText(this,"현재 위치를 찾고 있어요",Toast.LENGTH_SHORT).show()
+        presenter.unRegisterLocationListener()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -154,6 +101,18 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun updateCurrentLocation(latLng: LatLng, currentAddress:String) {
+        mapMarker?.remove()
+        mapMarker = mMap.addMarker(MarkerOptions().position(latLng).title("currentPosition"))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+        setCurrentPositionText(currentAddress)
+    }
+
+    override fun showCurrentLocation(latLng: LatLng) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+        Toast.makeText(this,"현재 위치를 찾고 있어요", Toast.LENGTH_SHORT).show()
+    }
+
     private fun setCurrentPositionText(position:String) {
         val totalString = getString(R.string.check_in_current_position,position)
         setSpanText(totalString, position).let {
@@ -163,10 +122,8 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback{
 
     private fun setSpanText(totalString:String, current: String) : SpannableString {
         val span = SpannableString(totalString)
-
         val start = totalString.indexOf(current) - 1
         val end = start + current.length + 1
-
         span.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
         return span
     }

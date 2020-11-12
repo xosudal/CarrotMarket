@@ -21,9 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".setting.activity.ProfileEditActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name="com.study.carrotmarket.view.setting.activity.ProfileEditActivity" />
+        <activity android:name=".view.main.LoginActivity" />
+        <activity android:name=".view.main.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,26 +42,26 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".setting.activity.SettingActivity" />
-        <activity android:name=".setting.activity.KeyWordNotifyActivity" />
-        <activity android:name=".setting.activity.CheckInActivity" />
-        <activity android:name=".setting.activity.RegionSettingActivity" />
-        <activity android:name=".setting.activity.RegionActivity" />
-        <activity android:name=".setting.activity.RegionShowActivity" />
-        <activity android:name=".setting.activity.WebViewActivity" />
-        <activity android:name=".setting.activity.FollowingArticleActivity" />
-        <activity android:name=".setting.activity.UserStoryArticlesActivity" />
-        <activity android:name=".setting.activity.InterestsActivity" />
-        <activity android:name=".setting.activity.FavoriteActivity" />
-        <activity android:name=".setting.activity.PurchaseActivity" />
-        <activity android:name=".setting.activity.ProfileActivity" />
-        <activity android:name=".setting.activity.SalesActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".WriteUsedArticleActivity" />
-        <activity android:name=".DetailedSellingItemActivity" />
-        <activity android:name=".NeighborhoodAdvertisementArticleActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.SettingActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.KeyWordNotifyActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.CheckInActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.RegionSettingActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.RegionActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.RegionShowActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.WebViewActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.FollowingArticleActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.UserStoryArticlesActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.InterestsActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.FavoriteActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.PurchaseActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.ProfileActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.SalesActivity" />
+        <activity android:name=".view.main.MainActivity" />
+        <activity android:name=".view.chat.WriteUsedArticleActivity" />
+        <activity android:name=".view.main.DetailedSellingItemActivity" />
+        <activity android:name=".view.neighborhood.NeighborhoodAdvertisementArticleActivity" />
         <activity
-            android:name=".NeighborhoodLifeArticleActivity"
+            android:name=".view.neighborhood.NeighborhoodLifeArticleActivity"
             android:windowSoftInputMode="adjustResize" />
 
         <service
