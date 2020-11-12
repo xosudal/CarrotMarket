@@ -19,8 +19,8 @@
         android:background="@drawable/division_layout">
 
         <FrameLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp">
+            android:layout_width="120dp"
+            android:layout_height="120dp">
             <ImageView
                 android:id="@+id/sellingItemPoster"
                 android:layout_width="match_parent"

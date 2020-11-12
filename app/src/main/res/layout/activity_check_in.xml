@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".setting.activity.CheckInActivity">
+    tools:context=".view.setting.activity.CheckInActivity">
 
     <include
         android:id="@+id/check_in_toolbar"

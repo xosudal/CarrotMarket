@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".setting.activity.WebViewActivity">
+    tools:context=".view.setting.activity.WebViewActivity">
 
     <include
         android:id="@+id/web_view_toolbar"
