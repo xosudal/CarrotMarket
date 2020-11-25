@@ -1,5 +1,6 @@
 package com.study.carrotmarket.view.setting.activity
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,7 +21,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.CheckInContract
-import com.study.carrotmarket.model.setting.CheckInModel
 import com.study.carrotmarket.presenter.setting.CheckInPresenter
 import kotlinx.android.synthetic.main.activity_check_in.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -37,10 +38,14 @@ class CheckInActivity : AppCompatActivity(), OnMapReadyCallback, CheckInContract
         setContentView(R.layout.activity_check_in)
         settingToolbar()
 
-        presenter = CheckInPresenter().apply {
+        presenter = CheckInPresenter(this).apply {
             view = this@CheckInActivity
-            model = CheckInModel(this@CheckInActivity)
         }
+
+        ActivityCompat.requestPermissions(
+            this,arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION),1000)
 
         presenter.initLocation()
 

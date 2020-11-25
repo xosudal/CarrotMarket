@@ -43,7 +43,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name="com.study.carrotmarket.view.setting.activity.SettingActivity" />
-        <activity android:name="com.study.carrotmarket.view.setting.activity.KeyWordNotifyActivity" />
+        <activity android:name="com.study.carrotmarket.view.setting.activity.KeywordNotifyActivity" />
         <activity android:name="com.study.carrotmarket.view.setting.activity.CheckInActivity" />
         <activity android:name="com.study.carrotmarket.view.setting.activity.RegionSettingActivity" />
         <activity android:name="com.study.carrotmarket.view.setting.activity.RegionActivity" />

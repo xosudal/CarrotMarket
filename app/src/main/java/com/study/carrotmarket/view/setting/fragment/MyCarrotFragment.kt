@@ -81,7 +81,7 @@ class MyCarrotFragment : Fragment() {
             }
 
             mycarrot_alert_keyword?.setOnClickListener {
-                startActivity(Intent(context,KeyWordNotifyActivity::class.java))
+                startActivity(Intent(context,KeywordNotifyActivity::class.java))
             }
 
             mycarrot_collect_list?.setOnClickListener {

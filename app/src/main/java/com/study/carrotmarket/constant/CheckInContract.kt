@@ -1,7 +1,6 @@
 package com.study.carrotmarket.constant
 
 import com.google.android.gms.maps.model.LatLng
-import com.study.carrotmarket.model.setting.CheckInModel
 
 interface CheckInContract {
     interface View {
@@ -11,7 +10,6 @@ interface CheckInContract {
 
     interface Presenter {
         var view:View
-        var model: CheckInModel
 
         fun getCurrentLocation()
         fun initLocation()
