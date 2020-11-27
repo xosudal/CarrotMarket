@@ -12,11 +12,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.SellListItem
+import com.study.carrotmarket.constant.SimpleUsedItemResponse
+import com.study.carrotmarket.constant.UsedItems
 import kotlinx.android.synthetic.main.layout_listview_item.view.*
 
 class SellingItemRecyclerAdapter(private val mFragment: Fragment,
-                                 private val dataset: List<SellListItem>,
-                                 val itemClick: (SellListItem) -> Unit
+                                 private val dataSet: ArrayList<SimpleUsedItemResponse>,
+                                 val itemClick: (SimpleUsedItemResponse) -> Unit
 ): RecyclerView.Adapter<SellingItemRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,20 +34,27 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment,
         return ViewHolder(listView)
     }
 
-    override fun getItemCount(): Int = dataset.size
+    override fun getItemCount(): Int = dataSet.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        with(dataset[position]) {
-            Glide.with(mFragment).load(posterDrawable).apply(
+        dataSet[position].apply {
+            Glide.with(mFragment).load("http://csh0303.iptime.org:8080/static/$nickname/$id/item_0.png").apply(
                 RequestOptions.bitmapTransform(
                 RoundedCorners(50)
             )).into(holder.imageView)
-//            holder.imageView.setImageDrawable(posterDrawable)
-            holder.nameView.setText(itemName)
-            holder.priceView.setText(itemPrice.toString())
-            holder.addressView.setText(itemAddress)
-            holder.itemView.setOnClickListener{itemClick(dataset[position])}
+            holder.nameView.setText(title)
+            holder.priceView.setText(price.toString())
+            holder.addressView.setText(region)
+            holder.itemView.setOnClickListener{itemClick(dataSet[position])}
         }
+    }
+
+
+    fun addAllUsedItems(list : List<SimpleUsedItemResponse>) {
+        if(!dataSet.isEmpty()) dataSet.clear()
+        dataSet.addAll(list)
+
+        notifyDataSetChanged()
     }
 }

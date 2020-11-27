@@ -1,5 +1,6 @@
 package com.study.carrotmarket.model
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,9 +13,13 @@ class RetrofitCreator {
         const val CARROTMARKET_API_BASE_URL = "http://csh0303.iptime.org:8080"
 
         private fun defaultRetrofit(base_url: String): Retrofit {
+            val gson = GsonBuilder()
+                .setLenient()
+                .create()
+
             return Retrofit.Builder()
                 .baseUrl(base_url)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(createOkHttpClient())
                 .build()

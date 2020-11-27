@@ -2,14 +2,21 @@ package com.study.carrotmarket.view.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.study.carrotmarket.R
+import com.study.carrotmarket.constant.DetailUsedItemResponse
+import com.study.carrotmarket.constant.MainMarketContract
 import com.study.carrotmarket.constant.SellListItem
+import com.study.carrotmarket.constant.SimpleUsedItemResponse
+import com.study.carrotmarket.presenter.main.MainMarketPresenter
 import com.study.carrotmarket.view.main.adapter.SellingItemRecyclerAdapter
+import kotlinx.android.synthetic.main.fragment_main_market.*
 import kotlinx.android.synthetic.main.fragment_main_market.view.*
 import java.util.*
 
@@ -23,10 +30,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MainMarketFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainMarketFragment : Fragment() {
+class MainMarketFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MainMarketContract.View {
+    private val TAG = MainMarketFragment::class.java.simpleName
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var presenter : MainMarketPresenter
+    private lateinit var sellingAdapter : SellingItemRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,31 +49,28 @@ class MainMarketFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //(activity as AppCompatActivity).supportActionBar?.hide()
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_main_market, container, false)
-        val sampleItemList = getSampleItems()
+
+        swipe_main_layout.setOnRefreshListener(this)
+        presenter = MainMarketPresenter(this)
+
+        sellingAdapter = SellingItemRecyclerAdapter(this@MainMarketFragment, ArrayList<SimpleUsedItemResponse>()){
+            presenter.getDetailUsedItem()
+        }
 
         with (view.main_market_recyclerview) {
             layoutManager = LinearLayoutManager(context!!)
-            adapter = SellingItemRecyclerAdapter(this@MainMarketFragment, sampleItemList) {
-//                Toast.makeText(context, "Hello ${it.itemName}", Toast.LENGTH_LONG).show()
-                val intent = Intent(context, DetailedSellingItemActivity::class.java)
-                context.startActivity(intent)
-            }
-
+            adapter = sellingAdapter
         }
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_main_market, container, false)
         return view
-
     }
 
     fun getSampleItems(): List<SellListItem> {
-
         context!!.let {
             return listOf(
                 SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
@@ -105,5 +113,22 @@ class MainMarketFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onRefresh() {
+        Log.d(TAG, "onRefresh")
+        presenter.getSimpleUsedItem()
+
+    }
+
+    override fun setUsedItemList(list: List<SimpleUsedItemResponse>) {
+        sellingAdapter.addAllUsedItems(list)
+        swipe_main_layout.isRefreshing = false
+    }
+
+    override fun setDetailUsedItem(item: DetailUsedItemResponse) {
+        val intent = Intent(context, DetailedSellingItemActivity::class.java)
+        intent.putExtra("_id", this.id)
+        context?.startActivity(intent)
     }
 }

@@ -5,9 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".view.main.MainMarketFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/main_market_recyclerview"
-        android:scrollbars="vertical"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_market_recyclerview"
+            android:scrollbars="vertical"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

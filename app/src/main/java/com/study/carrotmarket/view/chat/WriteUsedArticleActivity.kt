@@ -12,11 +12,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.study.carrotmarket.R
+import com.study.carrotmarket.constant.SimpleUsedItemResponse
 import com.study.carrotmarket.constant.UsedItems
+import com.study.carrotmarket.constant.WriteUsedArticleContract
 import com.study.carrotmarket.model.RestApi
+import com.study.carrotmarket.presenter.chat.WriteUsedArticlePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_write_usedarticle.*
@@ -26,13 +28,16 @@ import kotlinx.android.synthetic.main.toolbar.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.util.*
 
 
-class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
-    private val TAG = "WriteUsedArticleActivity"
+class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArticleContract.View {
+    private val TAG = WriteUsedArticleActivity::class.java.simpleName
     private lateinit var categoryList : Array<String>
     private val PICK_IMAGE_MULTIPLE = 1
     private lateinit var uploadImageAdapter : UploadImageAdapter
+
+    private lateinit var presenter : WriteUsedArticlePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +55,8 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
             showCategoryDialog()
         }
         toolbar_title?.text = "중고거래 글쓰기"
+
+        presenter = WriteUsedArticlePresenter(applicationContext, this)
 
         article_content_edittext.hint = getString(R.string.used_content_hint, "도화동")
         upload_img_constrant.setOnClickListener {
@@ -86,40 +93,31 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
     }
 
     private fun sendUsedArticle() {
-        // Retrofit 2
-        val usedItem = UsedItems("Pooh",
-            "Mapo",
+/*        if(!isValidateChecker()) {
+            Toast.makeText(this, "입력 값을 확인해 주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }*/
+
+        val usedItem = UsedItems("코코몽",
+            "서울시 도화동",
             Integer.parseInt(price_edittext.text.toString()),
             category_textview.text.toString(),
+            uploadImageAdapter.itemCount,
             title_edittext.text.toString(),
             article_content_edittext.text.toString())
 
-        var body = MultipartBody.Builder()
-            .addFormDataPart("nickname", usedItem.nickname)
-            .addFormDataPart("id", "111")
+        presenter.sendUsedArticle(usedItem, uploadImageAdapter)
+    }
 
-        for(item in 0 until uploadImageAdapter.itemCount) {
-            Log.d(TAG, "uri: ${uploadImageAdapter.getItem(item).path}")
+    private fun isValidateChecker() :Boolean {
+        if(uploadImageAdapter.itemCount > 1 &&
+            Integer.parseInt(price_edittext.text.toString()) > 0 &&
+            category_textview.text.length > 0 &&
+            title_edittext.text.length > 10 &&
+            article_content_edittext.text.length > 30) return true
 
-            uploadImageAdapter.getItem(item).path?.toRequestBody("image/*".toMediaTypeOrNull())?.let {
-                body.addFormDataPart("item_$item", "item_$item", it)
-            }
-        }
-        val jsonString = Gson().toJson(usedItem)
-        body.addFormDataPart("data", jsonString)
-
-        val tmp = RestApi.setUsedArticle(body.build().parts)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.newThread())
-            .subscribe( {
-                Log.d(TAG, "Result: $it")
-                //this@WriteUsedArticleActivity.finish()
-            }, {
-                Log.d(TAG, it.localizedMessage)
-            }
-            )
-        Log.d(TAG, "itemCount:${uploadImageAdapter.itemCount}, json:$jsonString, result: $tmp")
-
+        Log.d(TAG, "Checker: ${Integer.parseInt(price_edittext.text.toString())}, ${category_textview.text.length}, ${title_edittext.text.length}, ${article_content_edittext.text.length}")
+        return false;
     }
 
     private fun showCategoryDialog() {
@@ -174,51 +172,17 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem {
     override fun onRemovedItem() {
         image_count.text = "${uploadImageAdapter.itemCount} / 10"
     }
-}
 
-class UploadImageAdapter(private var removeItem : RemoveItem) : RecyclerView.Adapter<UploadImageAdapter.UploadImageViewHolder>() {
-    private var mUploadImagesItems = ArrayList<Uri>()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UploadImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_write_usedarticle_uploadimages, parent, false)
-        return UploadImageViewHolder(view)
+    override fun onResult(
+        resultType: WriteUsedArticleContract.ResultType,
+        resultCode: WriteUsedArticleContract.ResultCode
+    ) {
+        Log.d(TAG, "ResultType : $resultType, ResultCode: $resultCode")
+        Toast.makeText(this, "ResultType : $resultType, ResultCode: $resultCode", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onBindViewHolder(holder: UploadImageViewHolder, position: Int) {
-        val context = holder.itemView.context
-        Glide.with(context).load(mUploadImagesItems[position]).into(holder.thumbnail)
-
-        holder.remove.setOnClickListener {
-            removeItem(position)
-            onRemovedItem()
-            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun getItemCount(): Int = mUploadImagesItems.size
-
-    fun getItem(position : Int) : Uri {
-        return mUploadImagesItems[position]
-    }
-
-    fun addItem(uri : Uri) {
-        if(!mUploadImagesItems.contains(uri))
-            mUploadImagesItems.add(uri)
-
-        notifyDataSetChanged()
-    }
-
-    private fun removeItem(position : Int) {
-        mUploadImagesItems.removeAt(position)
-        notifyDataSetChanged()
-    }
-
-    private fun onRemovedItem() {
-        removeItem.onRemovedItem()
-    }
-
-    class UploadImageViewHolder(item : View) : RecyclerView.ViewHolder(item) {
-        val thumbnail = item.thumbnail_upload_img
-        val remove = item.remove_upload_img
+    override fun setUsedItemList(list: List<SimpleUsedItemResponse>) {
+        TODO("Not yet implemented")
     }
 }
 

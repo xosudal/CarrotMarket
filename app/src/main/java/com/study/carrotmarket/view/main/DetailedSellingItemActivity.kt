@@ -17,6 +17,7 @@ class DetailedSellingItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed_selling_item)
+
         main_selling_detailed_image_pager.adapter = SellingItemImagePagerAdapter(
 
             arrayOf(
