@@ -18,8 +18,8 @@ object CarrotMarketDataRepository : CarrotMarketRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getDetailUsedItem(): Observable<List<DetailUsedItemResponse>> {
-        return RestApi.getDetailUsedItem()
+    override fun getDetailUsedItem(id : Int): Observable<List<DetailUsedItemResponse>> {
+        return RestApi.getDetailUsedItem(id)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -6,10 +6,7 @@ import com.study.carrotmarket.constant.UsedItems
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import retrofit2.http.GET
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 class RestApi {
     interface UsedArticleImpl {
@@ -23,7 +20,7 @@ class RestApi {
         fun getSimpleUsedItem() : Observable<List<SimpleUsedItemResponse>>
 
         @GET("/used/getDetailUsedItem")
-        fun getDetailUsedItem() : Observable<List<DetailUsedItemResponse>>
+        fun getDetailUsedItem(@Query("_id") id : Int): Observable<List<DetailUsedItemResponse>>
     }
 
     companion object {
@@ -41,11 +38,11 @@ class RestApi {
             ).getSimpleUsedItem()
         }
 
-        fun getDetailUsedItem(): Observable<List<DetailUsedItemResponse>> {
+        fun getDetailUsedItem(id : Int): Observable<List<DetailUsedItemResponse>> {
             return RetrofitCreator.create(
                 UsedArticleImpl::class.java,
                 RetrofitCreator.CARROTMARKET_API_BASE_URL
-            ).getDetailUsedItem()
+            ).getDetailUsedItem(id)
         }
     }
 }

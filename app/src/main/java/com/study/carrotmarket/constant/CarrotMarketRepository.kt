@@ -7,5 +7,5 @@ import okhttp3.MultipartBody
 interface CarrotMarketRepository {
     fun sendUsedArticle(data : List<MultipartBody.Part> ) : Single<String>
     fun getSimpleUsedItem() : Observable<List<SimpleUsedItemResponse>>
-    fun getDetailUsedItem() : Observable<List<DetailUsedItemResponse>>
+    fun getDetailUsedItem(id : Int) : Observable<List<DetailUsedItemResponse>>
 }

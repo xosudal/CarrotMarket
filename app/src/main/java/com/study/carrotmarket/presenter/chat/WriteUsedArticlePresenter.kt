@@ -1,11 +1,8 @@
 package com.study.carrotmarket.presenter.chat
 
-import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
@@ -15,11 +12,11 @@ import com.study.carrotmarket.constant.WriteUsedArticleContract
 import com.study.carrotmarket.model.CarrotMarketDataRepository
 import com.study.carrotmarket.view.chat.UploadImageAdapter
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 
@@ -27,15 +24,18 @@ class WriteUsedArticlePresenter(private val context : Context, private val view:
     private val TAG = WriteUsedArticlePresenter::class.java.simpleName
 
     override fun sendUsedArticle(usedItem: UsedItems, uploadImageAdapter: UploadImageAdapter): Boolean {
+        Log.d(TAG, "uri : ${uploadImageAdapter.getItem(0)}")
+        //getImgPathFromUri(uploadImageAdapter.getItem(0))
+
         var body = MultipartBody.Builder()
             .addFormDataPart("nickname", usedItem.nickname)
 
         for(item in 0 until uploadImageAdapter.itemCount) {
-            uploadImageAdapter.getItem(item)
-                .path?.toRequestBody("image/*".toMediaTypeOrNull())?.let {
-                body.addFormDataPart("item_$item", "item_$item", it)
-            }
+            val tmpFile = File(getImgPathFromUri(uploadImageAdapter.getItem(item)))
+            val requestBody = tmpFile.asRequestBody("image/*".toMediaTypeOrNull())
+            body.addFormDataPart("item_$item", "item_$item.png", requestBody)
         }
+
         val jsonString = Gson().toJson(usedItem)
         body.addFormDataPart("data", jsonString)
 
@@ -67,6 +67,22 @@ class WriteUsedArticlePresenter(private val context : Context, private val view:
         return true
     }
 
+    private fun getImgPathFromUri(uri : Uri) : String? {
+        var imageUrl : String? = null
+        val projection = arrayOf(MediaStore.Images.Media._ID, "_data")
+        val cursor : Cursor? = context.contentResolver.query(uri, projection, null, null, null)
+
+        cursor?.let {
+            cursor.moveToFirst()
+            val column_idx = cursor.getColumnIndexOrThrow("_data")
+
+            imageUrl = cursor.getString(column_idx)
+            Log.d(TAG, "end : $imageUrl")
+        }?:run {
+            Log.e(TAG, "cursor is null")
+        }
+        return imageUrl
+    }
 
     private fun getRealPathFromUri(uri: Uri): String? {
         // DocumentProvider
@@ -88,8 +104,9 @@ class WriteUsedArticlePresenter(private val context : Context, private val view:
                 split[1]
             )
 
+            Log.d(TAG, "selection: $selection, args: $selectionArgs.toString()")
             Log.d(TAG, "docID: $docId, type:$type, uri:$contentUri")
-            return getDataColumn(context, contentUri, selection, selectionArgs)
+            Log.d(TAG, getDataColumn(context, contentUri, selection, selectionArgs));
         }
         return null
     }

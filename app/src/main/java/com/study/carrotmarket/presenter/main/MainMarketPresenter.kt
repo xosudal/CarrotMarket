@@ -11,17 +11,20 @@ class MainMarketPresenter(private var view : MainMarketContract.View) : MainMark
     override fun getSimpleUsedItem(): Boolean {
         val composite = CompositeDisposable()
         composite.add(
-            CarrotMarketDataRepository.getSimpleUsedItem().subscribe {
+            CarrotMarketDataRepository.getSimpleUsedItem().subscribe ({
                 view.setUsedItemList(it)
-            }
+            }, {
+                Log.e(TAG, it.localizedMessage)
+            })
+
         )
         return true
     }
 
-    override fun getDetailUsedItem(): Boolean {
+    override fun getDetailUsedItem(id : Int): Boolean {
         val composite = CompositeDisposable()
         composite.add(
-            CarrotMarketDataRepository.getDetailUsedItem().subscribe( {
+            CarrotMarketDataRepository.getDetailUsedItem(id).subscribe( {
                 view.setDetailUsedItem(it[0])
             }, {
               Log.e(TAG, it.localizedMessage)

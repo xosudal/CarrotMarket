@@ -1,7 +1,9 @@
 package com.study.carrotmarket.view.chat
 
+import android.Manifest
 import android.content.ClipData
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,24 +12,18 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
 import com.study.carrotmarket.constant.UsedItems
 import com.study.carrotmarket.constant.WriteUsedArticleContract
-import com.study.carrotmarket.model.RestApi
 import com.study.carrotmarket.presenter.chat.WriteUsedArticlePresenter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_write_usedarticle.*
 import kotlinx.android.synthetic.main.layout_category_dialog.view.*
 import kotlinx.android.synthetic.main.layout_write_usedarticle_uploadimages.view.*
 import kotlinx.android.synthetic.main.toolbar.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
 
 
@@ -72,7 +68,33 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
 
         uploadImageAdapter = UploadImageAdapter(this)
         photo_recycler_view.adapter = uploadImageAdapter
-        photo_recycler_view.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, false)
+        photo_recycler_view.layoutManager = LinearLayoutManager(
+            applicationContext,
+            RecyclerView.HORIZONTAL,
+            false
+        )
+
+        val permission =
+            ActivityCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+
+        val REQUEST_EXTERNAL_STORAGE = 1
+        val PERMISSIONS_STORAGE = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                this,
+                PERMISSIONS_STORAGE,
+                REQUEST_EXTERNAL_STORAGE
+            )
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -98,13 +120,15 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
             return
         }*/
 
-        val usedItem = UsedItems("코코몽",
+        val usedItem = UsedItems(
+            "코코몽",
             "서울시 도화동",
             Integer.parseInt(price_edittext.text.toString()),
             category_textview.text.toString(),
             uploadImageAdapter.itemCount,
             title_edittext.text.toString(),
-            article_content_edittext.text.toString())
+            article_content_edittext.text.toString()
+        )
 
         presenter.sendUsedArticle(usedItem, uploadImageAdapter)
     }
@@ -112,11 +136,14 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
     private fun isValidateChecker() :Boolean {
         if(uploadImageAdapter.itemCount > 1 &&
             Integer.parseInt(price_edittext.text.toString()) > 0 &&
-            category_textview.text.length > 0 &&
-            title_edittext.text.length > 10 &&
-            article_content_edittext.text.length > 30) return true
+            category_textview.text.isNotEmpty() &&
+            title_edittext.text.length > 5 &&
+            article_content_edittext.text.length > 10) return true
 
-        Log.d(TAG, "Checker: ${Integer.parseInt(price_edittext.text.toString())}, ${category_textview.text.length}, ${title_edittext.text.length}, ${article_content_edittext.text.length}")
+        Log.d(
+            TAG,
+            "Checker: ${Integer.parseInt(price_edittext.text.toString())}, ${category_textview.text.length}, ${title_edittext.text.length}, ${article_content_edittext.text.length}"
+        )
         return false;
     }
 
@@ -146,6 +173,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
             if (requestCode === PICK_IMAGE_MULTIPLE && resultCode === RESULT_OK) {
                 // Get the Image from data
                 if (data?.clipData != null) {
+                    Log.d(TAG, "Data: ${data.data}")
                     val mClipData: ClipData? = data.clipData
                     for (i in 0 until mClipData!!.itemCount) {
                         val item = mClipData.getItemAt(i)
@@ -178,7 +206,14 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
         resultCode: WriteUsedArticleContract.ResultCode
     ) {
         Log.d(TAG, "ResultType : $resultType, ResultCode: $resultCode")
-        Toast.makeText(this, "ResultType : $resultType, ResultCode: $resultCode", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            "ResultType : $resultType, ResultCode: $resultCode",
+            Toast.LENGTH_SHORT
+        ).show()
+        if(resultCode == WriteUsedArticleContract.ResultCode.OK) {
+            finish()
+        }
     }
 
     override fun setUsedItemList(list: List<SimpleUsedItemResponse>) {

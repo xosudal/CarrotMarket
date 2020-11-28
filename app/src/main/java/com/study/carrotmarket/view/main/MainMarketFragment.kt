@@ -54,13 +54,15 @@ class MainMarketFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Mai
         presenter = MainMarketPresenter(this)
 
         sellingAdapter = SellingItemRecyclerAdapter(this@MainMarketFragment, ArrayList<SimpleUsedItemResponse>()){
-            presenter.getDetailUsedItem()
+            presenter.getDetailUsedItem(it.id)
         }
 
         with (view.main_market_recyclerview) {
             layoutManager = LinearLayoutManager(context!!)
             adapter = sellingAdapter
         }
+
+        presenter.getSimpleUsedItem()
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -70,31 +72,6 @@ class MainMarketFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Mai
         return view
     }
 
-    fun getSampleItems(): List<SellListItem> {
-        context!!.let {
-            return listOf(
-                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
-                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
-                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
-                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
-                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
-                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
-                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
-                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
-                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
-                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
-                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
-                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
-                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
-                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
-                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000),
-                SellListItem("폴리", it.getDrawable((R.drawable.sample_item_1)), "서울시 관악구", Date(), 150000),
-                SellListItem("범블비", it.getDrawable((R.drawable.sample_item_2)), "경기도 의왕시", Date(), 150000),
-                SellListItem("짭새", it.getDrawable((R.drawable.sample_item_3)), "서울시 마포구", Date(), 150000)
-            )
-        }
-        return listOf()
-    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -118,7 +95,6 @@ class MainMarketFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Mai
     override fun onRefresh() {
         Log.d(TAG, "onRefresh")
         presenter.getSimpleUsedItem()
-
     }
 
     override fun setUsedItemList(list: List<SimpleUsedItemResponse>) {
@@ -128,7 +104,9 @@ class MainMarketFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Mai
 
     override fun setDetailUsedItem(item: DetailUsedItemResponse) {
         val intent = Intent(context, DetailedSellingItemActivity::class.java)
-        intent.putExtra("_id", this.id)
+        val bundle = Bundle()
+        bundle.putParcelable("DetailUsedItem", item)
+        intent.putExtra("bundle", bundle)
         context?.startActivity(intent)
     }
 }
