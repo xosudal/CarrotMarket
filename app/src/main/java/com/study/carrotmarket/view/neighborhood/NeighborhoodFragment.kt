@@ -51,9 +51,9 @@ class NeighborhoodFragment : Fragment() {
         mHandler = Handler()
         mRandom = Random()
         mRunnable = Runnable {
-            val randomrecommend = recommendList[mRandom.nextInt(recommendList.size)]
-            val villagewholeStr = view.resources.getString(R.string.my_village, "화이트푸", "도화동", randomrecommend)
-            showrecommendVillageService(villagewholeStr, randomrecommend).let {
+            val randomRecommend = recommendList[mRandom.nextInt(recommendList.size)]
+            val villageWholeStr = view.resources.getString(R.string.my_village, "화이트푸", "도화동", randomRecommend)
+            showRecommendVillageService(villageWholeStr, randomRecommend).let {
                 lottie_tv?.setText(it)
             }
             mHandler.postDelayed(mRunnable, REPEAT_TIME)
@@ -62,7 +62,7 @@ class NeighborhoodFragment : Fragment() {
 
         for(storelist in recommendStoreList) {
             val chip = LayoutInflater.from(view.context).inflate(R.layout.layout_chip_action, chip_group, false) as Chip
-            chip.setText(storelist)
+            chip.text = storelist
             chip.setOnClickListener {
                 Toast.makeText(
                     it.context,
@@ -102,7 +102,7 @@ class NeighborhoodFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun showrecommendVillageService(wholeString : String, keyword : String) : SpannableString {
+    private fun showRecommendVillageService(wholeString : String, keyword : String) : SpannableString {
         //Log.d(TAG, "whole: $wholeString, keyword: $keyword")
         val span = SpannableString(wholeString)
 

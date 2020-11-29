@@ -1,5 +1,6 @@
 package com.study.carrotmarket.view.chat
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -16,18 +18,7 @@ import com.study.carrotmarket.view.neighborhood.NeighborhoodLifeArticleActivity
 import kotlinx.android.synthetic.main.layout_write_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_write_bottom_sheet_item.view.*
 
-class WriteBottomSheetDialogFragment : BottomSheetDialogFragment() {
-    companion object {
-        fun AddWriteBsdf() : WriteBottomSheetDialogFragment {
-            return WriteBottomSheetDialogFragment()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Toast.makeText(context, "$requestCode, $resultCode, $data", Toast.LENGTH_LONG).show()
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
+class WriteBottomSheetDialogFragment : BottomSheetDialogFragment(), OnStartActivity {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,14 +28,25 @@ class WriteBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        write_bs_recylerview.adapter = WriteBsdfAdapter()
+        write_bs_recylerview.adapter = WriteBsdfAdapter(this)
         write_bs_recylerview.layoutManager = LinearLayoutManager(view.context)
 
         super.onViewCreated(view, savedInstanceState)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK)  dismiss()
+    }
+
+    override fun onStartActivityAsResult(intent: Intent) {
+        activity?.let {
+            startActivityForResult(intent, 1)
+        }
+    }
 }
 
-class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>() {
+class WriteBsdfAdapter(private val callback : OnStartActivity) : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>() {
     private lateinit var context : Context;
     companion object {
         val itemList : List<WriteBottomItem> = arrayListOf(
@@ -62,7 +64,8 @@ class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>(
 
     override fun onBindViewHolder(holder: WriteViewHolder, position: Int) {
         itemList[position].let { it ->
-            holder.img.setImageDrawable(holder.itemView.context.getDrawable(it.img))
+            holder.img.setImageDrawable(
+                ContextCompat.getDrawable(holder.itemView.context, it.img))
             holder.title.text = it.title
             holder.desc.text = it.desc
 
@@ -75,12 +78,9 @@ class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>(
                     2 -> NeighborhoodAdvertisementArticleActivity::class.java
                     else -> null
                 }?.let { classJava ->
-                    val intent =
-                        Intent(holder.itemView.context, classJava)
-                        context.startActivity(intent)
+                    callback.onStartActivityAsResult(Intent(holder.itemView.context, classJava))
                 }
             }
-
         }
     }
 
@@ -95,5 +95,8 @@ class WriteBsdfAdapter : RecyclerView.Adapter<WriteBsdfAdapter.WriteViewHolder>(
     }
 
     data class WriteBottomItem(val img : Int, val title : String, val desc : String)
+}
 
+interface OnStartActivity{
+    fun onStartActivityAsResult(intent : Intent)
 }

@@ -15,6 +15,7 @@ import com.study.carrotmarket.constant.SellListItem
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
 import com.study.carrotmarket.constant.UsedItems
 import kotlinx.android.synthetic.main.layout_listview_item.view.*
+import java.text.DecimalFormat
 
 class SellingItemRecyclerAdapter(private val mFragment: Fragment,
                                  private val dataSet: ArrayList<SimpleUsedItemResponse>,
@@ -24,8 +25,8 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment,
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.sellingItemPoster
         val nameView: TextView = itemView.sellingItemName
-        val priceView = itemView.sellingItemPrice
-        val addressView = itemView.sellingItemAddress
+        val priceView: TextView = itemView.sellingItemPrice
+        val addressView: TextView = itemView.sellingItemAddress
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,18 +44,16 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment,
                 RequestOptions.bitmapTransform(
                 RoundedCorners(50)
             )).into(holder.imageView)
-            holder.nameView.setText(title)
-            holder.priceView.setText(price.toString())
-            holder.addressView.setText(region)
+            holder.nameView.text = title
+            holder.priceView.text = DecimalFormat().format(price).toString()
+            holder.addressView.text = region
             holder.itemView.setOnClickListener{itemClick(dataSet[position])}
         }
     }
 
-
     fun addAllUsedItems(list : List<SimpleUsedItemResponse>) {
-        if(!dataSet.isEmpty()) dataSet.clear()
+        if(dataSet.isNotEmpty()) dataSet.clear()
         dataSet.addAll(list)
-
         notifyDataSetChanged()
     }
 }

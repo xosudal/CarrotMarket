@@ -1,15 +1,15 @@
 package com.study.carrotmarket.view.chat
 
 import android.Manifest
-import android.content.ClipData
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.net.Uri
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
+import android.text.*
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.common.net.MediaType
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
 import com.study.carrotmarket.constant.UsedItems
@@ -29,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_write_usedarticle.*
 import kotlinx.android.synthetic.main.layout_category_dialog.view.*
 import kotlinx.android.synthetic.main.layout_write_usedarticle_uploadimages.view.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -39,6 +39,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
     private lateinit var uploadImageAdapter : UploadImageAdapter
 
     private lateinit var presenter : WriteUsedArticlePresenter
+    private var pointNumStr : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,19 +58,34 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
         }
         toolbar_title?.text = "중고거래 글쓰기"
 
+        requestPermission()
+        price_edittext.let {
+            it.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {}
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    if (!TextUtils.isEmpty(p0.toString()) && p0.toString() != pointNumStr) {
+                        pointNumStr =
+                            makeCommaNumber(Integer.parseInt(p0.toString().replace(",", "")))
+                        it.setText(pointNumStr)
+                        it.setSelection(pointNumStr.length)  //커서를 오른쪽 끝으로 보냄
+                    }
+                }
+            })
+        }
+
         presenter = WriteUsedArticlePresenter(applicationContext, this)
 
-        requestPermission()
-
         article_content_edittext.hint = getString(R.string.used_content_hint, "도화동")
-        upload_img_constrant.setOnClickListener {
-            Intent().apply {
+        upload_img_constraint.setOnClickListener {
+            /* Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI */
+            Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
                 type = "image/*"
-                action = Intent.ACTION_GET_CONTENT
-                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-                startActivityForResult(Intent.createChooser(
-                    this, "Select Picture"), PICK_IMAGE_MULTIPLE)
+                //action = Intent.ACTION_GET_CONTENT
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                startActivityForResult(this, PICK_IMAGE_MULTIPLE)
+                /* Multi App */
+/*              startActivityForResult(Intent.createChooser(this, getString(R.string.choose_images)), PICK_IMAGE_MULTIPLE) */
             }
         }
 
@@ -81,6 +97,11 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
             RecyclerView.HORIZONTAL,
             false
         )
+    }
+
+    fun makeCommaNumber(input:Int): String{
+        val formatter = DecimalFormat("###,###")
+        return formatter.format(input)
     }
 
     private fun requestPermission() {
@@ -132,7 +153,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
         val usedItem = UsedItems(
             "코코몽",
             "서울시 도화동",
-            Integer.parseInt(price_edittext.text.toString()),
+            Integer.parseInt(price_edittext.text.toString().replace(",", "")),
             category_textview.text.toString(),
             uploadImageAdapter.itemCount,
             title_edittext.text.toString(),
@@ -144,14 +165,17 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
 
     private fun isValidateChecker() :Boolean {
         if(uploadImageAdapter.itemCount > 0 &&
-            Integer.parseInt(price_edittext.text.toString()) > 0 &&
+            Integer.parseInt(price_edittext.text.toString().replace(",", "")) > 0 &&
             category_textview.text.isNotEmpty() &&
             title_edittext.text.isNotEmpty() &&
             article_content_edittext.text.length > 3) return true
 
         Log.d(
             TAG,
-            "Checker: ${Integer.parseInt(price_edittext.text.toString())}, ${category_textview.text.length}, ${title_edittext.text.length}, ${article_content_edittext.text.length}"
+            "Checker: ${Integer.parseInt(price_edittext.text.toString())}, " +
+                    "${category_textview.text.length}, " +
+                    "${title_edittext.text.length}, " +
+                    "${article_content_edittext.text.length}"
         )
         return false;
     }
@@ -193,10 +217,10 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
                         for (i in 0 until clipData!!.itemCount) {
                             uploadImageAdapter.addItem(clipData.getItemAt(i).uri)
                         }
-                        image_count.text = "${uploadImageAdapter.itemCount} / 10"
                     }
                 }
             }?: Log.d(TAG, "content(data) is null")
+            image_count.text = updateUploadingImageCount(uploadImageAdapter.itemCount)
         } else {
             Toast.makeText(
                 this, getString(R.string.hasnot_select_images),
@@ -206,8 +230,21 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    private fun updateUploadingImageCount(itemCount: Int) : SpannableString {
+        val updatedCountStr = "$itemCount/10"
+        val span = SpannableString(updatedCountStr)
+
+        val start = 0
+        val end = updatedCountStr.split("/")[0].length
+
+        span.setSpan(ForegroundColorSpan(Color.parseColor("#FF5E13")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
+
+        return span
+    }
+
     override fun onRemovedItem() {
-        image_count.text = "${uploadImageAdapter.itemCount} / 10"
+        image_count.text = updateUploadingImageCount(uploadImageAdapter.itemCount)
     }
 
     override fun onResult(
@@ -221,6 +258,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
             Toast.LENGTH_SHORT
         ).show()
         if(resultCode == WriteUsedArticleContract.ResultCode.OK) {
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }

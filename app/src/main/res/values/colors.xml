@@ -5,6 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#808080</color>
+    <color name="colorHintGray">#B0B0B0</color>
     <color name="selectBackground">#DCDCDC</color>
     <color name="colorLightGray">#D3D3D3</color>
     <color name="division">#D3D3D3</color>
