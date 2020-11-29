@@ -3,6 +3,7 @@ package com.study.carrotmarket.view.chat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.study.carrotmarket.R
@@ -28,7 +29,7 @@ class ChattingListAdapter(private val fragmentManager : FragmentManager) : Recyc
         val context = holder.itemView.context
         item[position]?.let {
             holder.apply {
-                profile.setImageDrawable(context.getDrawable(it.profile_img))
+                profile.setImageDrawable(ContextCompat.getDrawable(context, it.profile_img))
                 nickname.text = it.nickname
                 detail.text = it.detail
                 lastmention.text = it.lastMention

@@ -38,6 +38,7 @@
     <string name="submit">완료</string>
     <string name="choice_subject">게시글의 주제를 선택해 주세요</string>
     <string name="neighborlife_content_hint">%1$s 근처 이웃과 우리 동네 관련된 질문이나 이야기를 해보세요.</string>
+    <string name="hasnot_select_images">이미지를 선택하지 않으셨습니다.</string>
 
     <string-array name="category_list">
         <item>디지털/가전</item>

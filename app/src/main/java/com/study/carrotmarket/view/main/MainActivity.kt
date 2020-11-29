@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initNotification() {
         val notificationManager = getSystemService(NotificationManager::class.java) as NotificationManager
-        notificationManager?.createNotificationChannel(
+        notificationManager.createNotificationChannel(
             NotificationChannel(
                 "0", "CH0", NotificationManager.IMPORTANCE_LOW
             )

@@ -14,7 +14,7 @@ class MainMarketPresenter(private var view : MainMarketContract.View) : MainMark
             CarrotMarketDataRepository.getSimpleUsedItem().subscribe ({
                 view.setUsedItemList(it)
             }, {
-                Log.e(TAG, it.localizedMessage)
+                Log.e(TAG, it.localizedMessage!!)
             })
 
         )
@@ -27,7 +27,7 @@ class MainMarketPresenter(private var view : MainMarketContract.View) : MainMark
             CarrotMarketDataRepository.getDetailUsedItem(id).subscribe( {
                 view.setDetailUsedItem(it[0])
             }, {
-              Log.e(TAG, it.localizedMessage)
+              Log.e(TAG, it.localizedMessage!!)
             })
         )
         return true

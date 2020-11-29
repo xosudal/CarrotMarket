@@ -2,10 +2,14 @@ package com.study.carrotmarket.view.chat
 
 import android.Manifest
 import android.content.ClipData
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
@@ -15,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.common.net.MediaType
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
 import com.study.carrotmarket.constant.UsedItems
@@ -54,18 +59,21 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
 
         presenter = WriteUsedArticlePresenter(applicationContext, this)
 
+        requestPermission()
+
         article_content_edittext.hint = getString(R.string.used_content_hint, "도화동")
         upload_img_constrant.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(
-                Intent.createChooser(intent, "Select Picture"),
-                PICK_IMAGE_MULTIPLE
-            )
+            Intent().apply {
+                type = "image/*"
+                action = Intent.ACTION_GET_CONTENT
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+                startActivityForResult(Intent.createChooser(
+                    this, "Select Picture"), PICK_IMAGE_MULTIPLE)
+            }
         }
 
+        /* Upload Image Adapter */
         uploadImageAdapter = UploadImageAdapter(this)
         photo_recycler_view.adapter = uploadImageAdapter
         photo_recycler_view.layoutManager = LinearLayoutManager(
@@ -73,7 +81,9 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
             RecyclerView.HORIZONTAL,
             false
         )
+    }
 
+    private fun requestPermission() {
         val permission =
             ActivityCompat.checkSelfPermission(
                 applicationContext,
@@ -94,7 +104,6 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
                 REQUEST_EXTERNAL_STORAGE
             )
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -115,10 +124,10 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
     }
 
     private fun sendUsedArticle() {
-/*        if(!isValidateChecker()) {
+        if(!isValidateChecker()) {
             Toast.makeText(this, "입력 값을 확인해 주세요.", Toast.LENGTH_SHORT).show()
             return
-        }*/
+        }
 
         val usedItem = UsedItems(
             "코코몽",
@@ -134,11 +143,11 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
     }
 
     private fun isValidateChecker() :Boolean {
-        if(uploadImageAdapter.itemCount > 1 &&
+        if(uploadImageAdapter.itemCount > 0 &&
             Integer.parseInt(price_edittext.text.toString()) > 0 &&
             category_textview.text.isNotEmpty() &&
-            title_edittext.text.length > 5 &&
-            article_content_edittext.text.length > 10) return true
+            title_edittext.text.isNotEmpty() &&
+            article_content_edittext.text.length > 3) return true
 
         Log.d(
             TAG,
@@ -158,7 +167,7 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
 
         view.category_listview.apply {
             this.adapter = adapter
-            this.setOnItemClickListener { parent, view, position, id ->
+            this.setOnItemClickListener { _, _, position, _ ->
                 this@WriteUsedArticleActivity.category_textview?.text = categoryList[position]
                 alertDialog.dismiss()
             }
@@ -167,32 +176,32 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d(TAG, "onActivityResult ${data?.clipData}")
-        try {
-            // When an Image is picked
-            if (requestCode === PICK_IMAGE_MULTIPLE && resultCode === RESULT_OK) {
-                // Get the Image from data
-                if (data?.clipData != null) {
-                    Log.d(TAG, "Data: ${data.data}")
-                    val mClipData: ClipData? = data.clipData
-                    for (i in 0 until mClipData!!.itemCount) {
-                        val item = mClipData.getItemAt(i)
-                        val uri: Uri = item.uri
+        Log.d(TAG, "onActivityResult clipData:${data?.clipData}, data=${data?.data}")
 
-                        uploadImageAdapter.addItem(uri)
+        // When an Image is picked
+        if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK) {
+            // Get the Image from data
+            data?.let { content ->
+                content.data.let { single -> // Only one
+                    if (single != null) {
+                        uploadImageAdapter.addItem(single)
                     }
-                    image_count.text = "${uploadImageAdapter.itemCount} / 10"
                 }
-            } else {
-                Toast.makeText(
-                    this, "You haven't picked Image",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, "Something went wrong : $e", Toast.LENGTH_LONG)
-                .show()
-            Log.d(TAG, "onActivityResult, error : $e")
+                content.clipData.let { multiple -> // Multiple
+                    if (multiple != null) {
+                        val clipData = data.clipData
+                        for (i in 0 until clipData!!.itemCount) {
+                            uploadImageAdapter.addItem(clipData.getItemAt(i).uri)
+                        }
+                        image_count.text = "${uploadImageAdapter.itemCount} / 10"
+                    }
+                }
+            }?: Log.d(TAG, "content(data) is null")
+        } else {
+            Toast.makeText(
+                this, getString(R.string.hasnot_select_images),
+                Toast.LENGTH_LONG
+            ).show()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
