@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.study.carrotmarket.R
@@ -38,12 +40,12 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment,
     override fun getItemCount(): Int = dataSet.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         dataSet[position].apply {
+            val multiOption = MultiTransformation( CenterCrop(), RoundedCorners(20))
+
             Glide.with(mFragment).load("http://csh0303.iptime.org:8080/static/$nickname/$id/item_0.png").apply(
-                RequestOptions.bitmapTransform(
-                RoundedCorners(50)
-            )).into(holder.imageView)
+                RequestOptions.bitmapTransform(multiOption)
+            ).into(holder.imageView)
             holder.nameView.text = title
             holder.priceView.text = DecimalFormat().format(price).toString()
             holder.addressView.text = region
