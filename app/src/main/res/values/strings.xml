@@ -43,6 +43,10 @@
     <string name="offer_price">가격제안 받기</string>
     <string name="won_currency">₩</string>
     <string name="choose_images">업로드할 사진 선택</string>
+    <string name="refresh">새로고침</string>
+    <string name="report">신고하기</string>
+    <string name="restrict_user_article">이 사용자의 글 보지 않기</string>
+    <string name="share_article">공유하기</string>
 
     <string-array name="category_list">
         <item>디지털/가전</item>

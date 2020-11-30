@@ -128,12 +128,8 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.write_menu, menu)
+        menuInflater.inflate(R.menu.menu_write, menu)
         return true
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

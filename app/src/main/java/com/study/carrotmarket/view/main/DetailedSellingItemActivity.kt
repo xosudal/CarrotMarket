@@ -2,6 +2,8 @@ package com.study.carrotmarket.view.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,8 +12,8 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.DetailUsedItemResponse
-
 import kotlinx.android.synthetic.main.activity_detailed_selling_item.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class DetailedSellingItemActivity : AppCompatActivity() {
     private val TAG = DetailedSellingItemActivity::class.java.simpleName
@@ -19,6 +21,15 @@ class DetailedSellingItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed_selling_item)
+
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
+        toolbar_title?.text = ""
 
         val imgUriList = ArrayList<String>()
 
@@ -29,6 +40,7 @@ class DetailedSellingItemActivity : AppCompatActivity() {
             for(i in 0 until (detail.images)) {
                 imgUriList.add("http://csh0303.iptime.org:8080/static/${detail.nickname}/${detail.id}/item_$i.png")
             }
+            Log.d(TAG, "list count: ${imgUriList.size}")
 
             main_selling_detailed_image_pager.adapter = SellingItemImagePagerAdapter(imgUriList)
 
@@ -38,7 +50,6 @@ class DetailedSellingItemActivity : AppCompatActivity() {
             selling_item_category.text = it.category
             selling_item_content.text = it.desc
             manner_temp.text = it.manner_temp.toString()
-
         }
 
         Glide
@@ -48,28 +59,39 @@ class DetailedSellingItemActivity : AppCompatActivity() {
             .into(main_selling_detailed_user_profile_image)
     }
 
-    inner class SellingItemImagePagerAdapter(val imgUrls: ArrayList<String>): PagerAdapter() {
-        override fun getCount(): Int = imgUrls.size
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_used_article, menu)
+        return true
+    }
 
-        val context = this@DetailedSellingItemActivity
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    inner class SellingItemImagePagerAdapter(private val imgUrls: ArrayList<String>): PagerAdapter() {
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val imgView = ImageView(context)
-            container.addView(imgView, position)
-            Log.d("SellingImagePager", "instantiateItem. ${imgUrls[position]}")
+            val context = container.context
+            val imgView = ImageView(context).apply {
+                scaleType = ImageView.ScaleType.CENTER_CROP
+            }
+
+            Log.d("SellingImagePager", "size:${imgUrls.size}, instantiateItem. ${imgUrls[position]}")
             Glide.with(context).load(imgUrls[position]).into(imgView)
 
+            container.addView(imgView)
             return imgView
-        }
-        override fun isViewFromObject(view: View, `object`: Any): Boolean {
-            // 여기를 무조건 true로 하면 이미지가 잘 나오지 않는다.....
-            return view == (`object` as ImageView)
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-            Log.d("SellingImagePager", "destroy")
             container.removeView(`object` as View)
-
         }
+        override fun isViewFromObject(view: View, obj: Any): Boolean {
+            return view == obj
+        }
+        override fun getCount(): Int = imgUrls.size
     }
 }
 

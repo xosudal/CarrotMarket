@@ -21,6 +21,7 @@ class UploadImageAdapter(private var removeItem : RemoveItem) : RecyclerView.Ada
     override fun onBindViewHolder(holder: UploadImageViewHolder, position: Int) {
         val context = holder.itemView.context
         Glide.with(context).load(mUploadImagesItems[position]).into(holder.thumbnail)
+        holder.thumbnail.clipToOutline = true
 
         holder.remove.setOnClickListener {
             removeItem(position)
