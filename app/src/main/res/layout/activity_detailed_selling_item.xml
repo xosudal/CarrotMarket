@@ -20,7 +20,7 @@
                 android:layout_height="300dp"
                 app:layout_constraintTop_toTopOf="@+id/toolbar2" />
             <include
-                android:id="@+id/used_article_toolbar"
+                android:id="@+id/detailed_selling_toolbar"
                 layout="@layout/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

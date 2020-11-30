@@ -47,7 +47,7 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment,
                 RequestOptions.bitmapTransform(multiOption)
             ).into(holder.imageView)
             holder.nameView.text = title
-            holder.priceView.text = DecimalFormat().format(price).toString()
+            holder.priceView.text = mFragment.getString(R.string.price_with_currency, DecimalFormat().format(price).toString())
             holder.addressView.text = region
             holder.itemView.setOnClickListener{itemClick(dataSet[position])}
         }
