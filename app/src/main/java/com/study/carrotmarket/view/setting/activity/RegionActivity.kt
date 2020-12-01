@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,44 +21,44 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.LocationInfo
+import com.study.carrotmarket.model.setting.RegionListModel
+import com.study.carrotmarket.presenter.setting.RegionPresenter
+import com.study.carrotmarket.view.setting.adapter.Region
+import com.study.carrotmarket.view.setting.adapter.RegionRecyclerView
 import kotlinx.android.synthetic.main.activity_region.*
 import kotlinx.android.synthetic.main.layout_region.view.*
 import kotlinx.android.synthetic.main.toolbar_region.*
 
-class RegionActivity : AppCompatActivity() {
+@RequiresApi(Build.VERSION_CODES.N)
+class RegionActivity : AppCompatActivity(), Region {
     private lateinit var regionRecyclerView:RegionRecyclerView
-    private lateinit var regionList:List<LocationInfo>
-    private lateinit var originRegionList:List<LocationInfo>
 
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: RegionLocationCallback
-    private lateinit var currentLatLng: LatLng
+    private lateinit var presenter:RegionPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_region)
 
-        regionRecyclerView = RegionRecyclerView()
+        presenter = RegionPresenter(this)
+        presenter.initLocation()
+
+        presenter.createRegionList()
+
+        regionRecyclerView = RegionRecyclerView(this).apply {
+            setRegionList(RegionListModel.regionList)
+        }
+
         region_recyclerview.apply {
             adapter = regionRecyclerView
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
         }
 
-        originRegionList = RegionSettingActivity.regionTotalList.sortedBy {
-            it.distance
-        }
 
-        regionList = originRegionList
 
         region_layout_current_location_find.setOnClickListener {
-            if (::currentLatLng.isInitialized) {
-                calRegionListByDistance()
-                regionList = originRegionList.sortedBy { it.distance }
+                presenter.calRegionListByDistance()
+                regionRecyclerView.setRegionList(RegionListModel.regionList)
                 regionRecyclerView.notifyDataSetChanged()
-            } else {
-                Toast.makeText(this,"3D Fix 전입니다. 잠시 후 다시 시도해주세요.",Toast.LENGTH_SHORT).show()
-            }
         }
 
         toolbar_iv_cancel.run {
@@ -76,124 +78,31 @@ class RegionActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 toolbar_iv_cancel.visibility = if (count > 0) View.VISIBLE else View.GONE
-                search(s.toString())
+                regionRecyclerView.setRegionList(presenter.search(s.toString()))
+                regionRecyclerView.notifyDataSetChanged()
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
-
         })
-
-        initLocation()
-    }
-
-    inner class RegionRecyclerView : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = layoutInflater.inflate(R.layout.layout_region, parent,false)
-            return RegionViewHolder(view)
-        }
-
-        inner class RegionViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val viewHolder = (holder as RegionViewHolder).itemView
-            viewHolder.tv_region.text = StringBuilder().apply {
-                append(regionList[position].province)
-                if (regionList[position].province != "") append(" ")
-                append(regionList[position].city)
-                append(" ")
-                append(regionList[position].district)
-                if (regionList[position].district != "") append(" ")
-                append(regionList[position].neighborhood)
-            }.toString()
-
-            viewHolder.layout_region.setOnClickListener {
-                val intent = Intent(baseContext, RegionSettingActivity::class.java).apply {
-                    putExtra("selectList",regionList[position])
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                }
-                setResult(RESULT_OK,intent)
-                finish()
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return regionList.size
-        }
-    }
-
-    private fun search(word:String) {
-        regionList = originRegionList.filter {it.toString().contains(word)}
-        regionRecyclerView.notifyDataSetChanged()
     }
 
     override fun onResume() {
         super.onResume()
-        registerLocationListener()
+        presenter.registerLocationListener()
     }
+
     override fun onStop() {
         super.onStop()
-        unRegisterLocationListener()
+        presenter.unRegisterLocationListener()
     }
 
-    private fun initLocation() {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        locationCallback = RegionLocationCallback()
-        locationRequest = LocationRequest()
-        ActivityCompat.requestPermissions(this,arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION),1000)
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 10000
-        locationRequest.fastestInterval = 5000
-    }
-
-    private fun registerLocationListener() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("heo","permission not granted")
-            return
+    override fun sendResultIntent(list:LocationInfo) {
+        val intent = Intent(baseContext, RegionSettingActivity::class.java).apply {
+            putExtra("selectList",list)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
-    }
-
-    private fun unRegisterLocationListener() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
-
-    inner class RegionLocationCallback : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            super.onLocationResult(locationResult)
-            val currentLocation = locationResult?.lastLocation
-            currentLocation?.run {
-                currentLatLng = LatLng(latitude,longitude)
-            }
-        }
-    }
-
-    private fun calRegionListByDistance() {
-        for (list in originRegionList) list.distance = betweenDistance(
-            currentLatLng.latitude,
-            currentLatLng.longitude,
-            list.latitude,
-            list.longitude
-        )
-    }
-
-    private fun betweenDistance(
-        latitude1: Double,
-        longitude1: Double,
-        latitude2: Double,
-        longitude2: Double
-    ): Float {
-        val standard = Location("Standard").apply {
-            latitude = latitude1
-            longitude = longitude1
-        }
-        val comparison = Location("Comparison").apply {
-            latitude = latitude2
-            longitude = longitude2
-        }
-        return standard.distanceTo(comparison)
+        setResult(RESULT_OK,intent)
+        finish()
     }
 }

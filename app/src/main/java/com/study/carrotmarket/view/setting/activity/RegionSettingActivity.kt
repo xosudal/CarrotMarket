@@ -1,6 +1,7 @@
 package com.study.carrotmarket.view.setting.activity
 
 import android.content.Intent
+import android.content.res.AssetManager
 import android.location.Location
 import android.os.Build
 import android.os.Bundle

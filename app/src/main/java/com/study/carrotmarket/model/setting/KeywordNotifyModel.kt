@@ -7,7 +7,10 @@ import org.json.JSONArray
 class KeywordNotifyModel (private val context: KeywordNotifyActivity) {
     private val keywordList = arrayListOf<String>()
 
-    fun saveKeyword() {
+    fun saveKeyword(list:ArrayList<String>) {
+        keywordList.clear()
+        keywordList.addAll(list)
+        Log.d("test",keywordList.toString())
         if (keywordList.isEmpty()) return
         val jArr = JSONArray()
         for (i in keywordList) {
@@ -16,7 +19,7 @@ class KeywordNotifyModel (private val context: KeywordNotifyActivity) {
         context.getPreferences(0).edit().putString("LIST",jArr.toString()).apply()
     }
 
-    fun loadKeyword() {
+    fun loadKeyword():ArrayList<String> {
         val loadStr : String? = context.getPreferences(0).getString("LIST", null)
         loadStr?.let {
             val jArr = JSONArray(it)
@@ -25,14 +28,6 @@ class KeywordNotifyModel (private val context: KeywordNotifyActivity) {
             }
         }
         Log.d("heo", keywordList.toString())
-    }
-
-    fun getSize():Int {
-        return keywordList.size
-    }
-
-    fun addKeyword(keyword:String) {
-        keywordList.add(keyword)
-        Log.d("heo", "add keyword : $keywordList")
+        return keywordList
     }
 }

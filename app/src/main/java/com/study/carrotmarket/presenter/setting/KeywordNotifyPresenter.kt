@@ -6,19 +6,11 @@ import com.study.carrotmarket.model.setting.KeywordNotifyModel
 class KeywordNotifyPresenter : KeywordNotifyContract.Presenter {
     override lateinit var model: KeywordNotifyModel
 
-    override fun saveKeyword() {
-        model.saveKeyword()
+    override fun saveKeyword(list:ArrayList<String>) {
+        model.saveKeyword(list)
     }
 
-    override fun loadKeyword() {
-        model.loadKeyword()
-    }
-
-    override fun getSize(): Int {
-        return model.getSize()
-    }
-
-    override fun addKeyword(keyword: String) {
-        model.addKeyword(keyword)
+    override fun loadKeyword():ArrayList<String> {
+        return model.loadKeyword()
     }
 }

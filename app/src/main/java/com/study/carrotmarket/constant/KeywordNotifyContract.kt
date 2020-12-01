@@ -8,9 +8,7 @@ interface KeywordNotifyContract {
 
     interface Presenter {
         var model:KeywordNotifyModel
-        fun saveKeyword()
-        fun loadKeyword()
-        fun getSize():Int
-        fun addKeyword(keyword:String)
+        fun saveKeyword(list:ArrayList<String>)
+        fun loadKeyword():ArrayList<String>
     }
 }

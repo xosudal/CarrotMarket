@@ -13,15 +13,16 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.study.carrotmarket.R
 import com.study.carrotmarket.model.setting.KeywordNotifyModel
 import com.study.carrotmarket.presenter.setting.KeywordNotifyPresenter
+import com.study.carrotmarket.view.setting.adapter.KeyWordNotifyRecyclerViewAdapter
+import com.study.carrotmarket.view.setting.adapter.Temp
 import kotlinx.android.synthetic.main.activity_key_word_notify.*
 import kotlinx.android.synthetic.main.layout_keyword.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.json.JSONArray
 
-class KeywordNotifyActivity : AppCompatActivity() {
+class KeywordNotifyActivity : AppCompatActivity(), Temp {
     private val MAXLIST = 30
-    var keywordList = arrayListOf<String>()
-    private lateinit var keywordAdapter:KeyWordNotifyRecyclerView
+    private lateinit var keywordAdapter:KeyWordNotifyRecyclerViewAdapter
 
     private lateinit var presenter:KeywordNotifyPresenter
 
@@ -34,7 +35,7 @@ class KeywordNotifyActivity : AppCompatActivity() {
             model = KeywordNotifyModel(this@KeywordNotifyActivity)
         }
 
-        keywordAdapter = KeyWordNotifyRecyclerView()
+        keywordAdapter = KeyWordNotifyRecyclerViewAdapter(this)
         keyword_recyclerview.apply {
             adapter = keywordAdapter
             layoutManager = FlexboxLayoutManager(context).apply {
@@ -44,7 +45,7 @@ class KeywordNotifyActivity : AppCompatActivity() {
         }
 
         keyword_edit_register_tv.setOnClickListener {
-            if (presenter.getSize() == MAXLIST) {
+            if (keywordAdapter.itemCount == MAXLIST) {
                 Toast.makeText(this,"키워드를 더 이상 입력할 수 없습니다.",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -52,9 +53,9 @@ class KeywordNotifyActivity : AppCompatActivity() {
             if (keyword_edit_tv.text.toString().isEmpty()) {
                 Toast.makeText(this,"키워드를 입력해주세요",Toast.LENGTH_SHORT).show()
             } else {
-                presenter.addKeyword(keyword_edit_tv.text.toString())
+                keywordAdapter.addKeyword(keyword_edit_tv.text.toString())
                 keyword_edit_tv.text = null
-                keyword_register_count.text = getString(R.string.keyword_count, keywordList.size)
+                keyword_register_count.text = getString(R.string.keyword_count, keywordAdapter.itemCount)
                 keywordAdapter.notifyDataSetChanged()
             }
         }
@@ -62,13 +63,13 @@ class KeywordNotifyActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        presenter.loadKeyword()
-        keyword_register_count.text = getString(R.string.keyword_count, presenter.getSize())
+        keywordAdapter.setKeywordList(presenter.loadKeyword())
+        keyword_register_count.text = getString(R.string.keyword_count, keywordAdapter.itemCount)
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.saveKeyword()
+        presenter.saveKeyword(keywordAdapter.getKeywordList())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -89,31 +90,6 @@ class KeywordNotifyActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    inner class KeyWordNotifyRecyclerView : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = layoutInflater.inflate(R.layout.layout_keyword, parent,false)
-
-            return KeyWordViewHolder(view)
-        }
-
-        inner class KeyWordViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val viewHolder = (holder as KeyWordViewHolder).itemView
-            viewHolder.tv_keyword.text =keywordList[position]
-            viewHolder.keyword_iv_layout.setOnClickListener {
-                TODO()
-                keywordList.removeAt(position)
-                keyword_register_count.text = getString(R.string.keyword_count, keywordList.size)
-                notifyDataSetChanged()
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return keywordList.size
-        }
-    }
-
     inner class RecyclerViewDecoration(private val divHeight: Int) : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(
             outRect: Rect,
@@ -125,5 +101,13 @@ class KeywordNotifyActivity : AppCompatActivity() {
             outRect.top = divHeight
             outRect.right = divHeight
         }
+    }
+
+    override fun updateKeywordCount(size: Int) {
+        keyword_register_count.text = getString(R.string.keyword_count, size)
+    }
+
+    override fun removeKeyword(position: Int) {
+        //presenter.removeKeyword(position)
     }
 }
