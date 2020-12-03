@@ -45,7 +45,7 @@ class RegionActivity : AppCompatActivity(), Region {
         presenter.createRegionList()
 
         regionRecyclerView = RegionRecyclerView(this).apply {
-            setRegionList(RegionListModel.regionList)
+            setRegionList(presenter.getRegionList())
         }
 
         region_recyclerview.apply {
@@ -53,11 +53,9 @@ class RegionActivity : AppCompatActivity(), Region {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
         }
 
-
-
         region_layout_current_location_find.setOnClickListener {
                 presenter.calRegionListByDistance()
-                regionRecyclerView.setRegionList(RegionListModel.regionList)
+                regionRecyclerView.setRegionList(presenter.getRegionList())
                 regionRecyclerView.notifyDataSetChanged()
         }
 

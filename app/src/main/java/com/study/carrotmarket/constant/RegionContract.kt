@@ -13,5 +13,6 @@ interface RegionContract {
         fun calRegionListByDistance()
         fun createRegionList()
         fun search(word:String):List<LocationInfo>
+        fun getRegionList():List<LocationInfo>
     }
 }

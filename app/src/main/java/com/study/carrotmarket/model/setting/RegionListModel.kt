@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.google.gson.Gson
 import com.study.carrotmarket.constant.LocationInfo
 import com.study.carrotmarket.view.setting.activity.RegionSettingActivity
 import org.json.JSONArray
@@ -78,5 +79,34 @@ object RegionListModel {
                 }
             }
         }
+    }
+
+    fun setProgressCount(progress:Int) {
+        context.getSharedPreferences("PROGRESS", Context.MODE_PRIVATE).edit().putInt("PROGRESS",progress).apply()
+    }
+
+    fun getProgressCount():Int {
+        return context.getSharedPreferences("PROGRESS", Context.MODE_PRIVATE).getInt("PROGRESS",0)
+    }
+    fun setSelectedNumber(num:Int) {
+        context.getSharedPreferences("SELECTED_NUMBER", Context.MODE_PRIVATE).edit().putInt("SELECTED_NUMBER",num).apply()
+    }
+    fun getSelectedNumber():Int {
+        return context.getSharedPreferences("SELECTED_NUMBER", Context.MODE_PRIVATE).getInt("SELECTED_NUMBER",1)
+    }
+
+    fun loadSelectedLocationList():Pair<LocationInfo?,LocationInfo?> {
+        val loadFirst : String? = context.getSharedPreferences("FIRST_LIST", Context.MODE_PRIVATE).getString("FIRST_LIST", null)
+        val loadSecond : String? = context.getSharedPreferences("SECOND_LIST", Context.MODE_PRIVATE).getString("SECOND_LIST", null)
+        val selectedFirstLocation = Gson().fromJson(loadFirst, LocationInfo::class.java) ?: LocationInfo("", "서울특별시", "강서구", "가양동", 37.5648322, 126.8342406)
+        val selectedSecondLocation = Gson().fromJson(loadSecond, LocationInfo::class.java)
+        return Pair(selectedFirstLocation, selectedSecondLocation)
+    }
+
+    fun saveSelectedLocationList(selectedFirstLocation:LocationInfo?, selectedSecondLocation:LocationInfo?) {
+        val first:String? = Gson().toJson(selectedFirstLocation)
+        val second:String? = Gson().toJson(selectedSecondLocation)
+        context.getSharedPreferences("FIRST_LIST", Context.MODE_PRIVATE).edit().putString("FIRST_LIST", first).apply()
+        context.getSharedPreferences("SECOND_LIST", Context.MODE_PRIVATE).edit().putString("SECOND_LIST", second).apply()
     }
 }

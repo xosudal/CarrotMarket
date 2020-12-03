@@ -44,6 +44,10 @@ class RegionPresenter(private val context: Context) : RegionContract.Presenter {
         RegionListModel.createRegionList()
     }
 
+    override fun getRegionList():List<LocationInfo> {
+        return RegionListModel.regionList
+    }
+
     private fun betweenDistance(
         latitude1: Double,
         longitude1: Double,
@@ -62,7 +66,6 @@ class RegionPresenter(private val context: Context) : RegionContract.Presenter {
     }
 
     override fun search(word: String):List<LocationInfo> {
-        Log.d("heo","test... search!!!!")
         return RegionListModel.regionList.filter {it.toString().contains(word)}
     }
 
