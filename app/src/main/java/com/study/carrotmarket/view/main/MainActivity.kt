@@ -22,14 +22,23 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.UserInfo
+import com.study.carrotmarket.constant.UserRequest
+import com.study.carrotmarket.model.RestApi
 import com.study.carrotmarket.view.chat.ChattingFragment
 import com.study.carrotmarket.view.chat.WriteBottomSheetDialogFragment
 import com.study.carrotmarket.view.neighborhood.NeighborhoodFragment
 import com.study.carrotmarket.view.setting.fragment.MyCarrotFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home.view.*
 import kotlinx.android.synthetic.main.layout_login_dialog.*
 import kotlinx.android.synthetic.main.toolbar.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -142,17 +151,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadTestAccountInformation() {
+        var userInfo:UserInfo = UserInfo()
         FirebaseFirestore.getInstance().collection("ProfileImage").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener {
             if (it == null) {
                 loadingDialog.dismiss()
                 return@addOnSuccessListener
             }
             if (it.data != null) {
-                val userInfo = UserInfo(it.data!!["imageUri"].toString(),it.data!!["nickName"].toString(),it.data!!["uid"].toString(),it.data!!["userId"].toString())
+                userInfo = UserInfo(it.data!!["imageUri"].toString(),it.data!!["nickName"].toString(),it.data!!["uid"].toString(),it.data!!["userId"].toString())
                 getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)?.edit()?.putString("USER_INFO", Gson().toJson(userInfo))?.apply()
+                Log.d("test",userInfo.toString())
                 loadingDialog.dismiss()
+                val userRequest = UserRequest("일라오이", "test@helloworld.com","010-1234-5678")
+                sendUserRequest(userRequest)
             }
         }
+    }
+
+    private fun sendUserRequest(userRequest:UserRequest) {
+        Log.d("test","sendUserRequest")
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val json = Gson().toJson(userRequest)
+        Log.d("test",json.toString())
+        val body = json.toRequestBody(mediaType)
+
+        val test = RestApi.setUser(body)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe( {
+                    Log.d("test", it)
+                }, {
+                    Log.d("test", it.toString())
+                }
+            )
     }
 }
 

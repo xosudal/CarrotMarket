@@ -31,9 +31,7 @@ class KeywordNotifyActivity : AppCompatActivity(), Temp {
         setContentView(R.layout.activity_key_word_notify)
         settingToolbar()
 
-        presenter = KeywordNotifyPresenter().apply {
-            model = KeywordNotifyModel(this@KeywordNotifyActivity)
-        }
+        presenter = KeywordNotifyPresenter()
 
         keywordAdapter = KeyWordNotifyRecyclerViewAdapter(this)
         keyword_recyclerview.apply {

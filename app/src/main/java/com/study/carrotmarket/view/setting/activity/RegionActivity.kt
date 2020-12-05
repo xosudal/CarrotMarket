@@ -1,32 +1,20 @@
 package com.study.carrotmarket.view.setting.activity
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.LocationInfo
-import com.study.carrotmarket.model.setting.RegionListModel
 import com.study.carrotmarket.presenter.setting.RegionPresenter
 import com.study.carrotmarket.view.setting.adapter.Region
 import com.study.carrotmarket.view.setting.adapter.RegionRecyclerView
 import kotlinx.android.synthetic.main.activity_region.*
-import kotlinx.android.synthetic.main.layout_region.view.*
 import kotlinx.android.synthetic.main.toolbar_region.*
 
 @RequiresApi(Build.VERSION_CODES.N)

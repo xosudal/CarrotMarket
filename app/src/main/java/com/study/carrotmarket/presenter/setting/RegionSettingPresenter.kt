@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.study.carrotmarket.constant.LocationInfo
 import com.study.carrotmarket.constant.RegionSettingContract
-import com.study.carrotmarket.model.setting.RegionListModel
+import com.study.carrotmarket.model.setting.SettingModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 class RegionSettingPresenter:RegionSettingContract.Presenter {
@@ -16,23 +16,23 @@ class RegionSettingPresenter:RegionSettingContract.Presenter {
     private var regionNearByList:ArrayList<LocationInfo> = arrayListOf()
 
     override fun loadRegionList() {
-        RegionListModel.loadRegionList()
+        SettingModel.loadRegionList()
     }
 
     override fun setProgressCount(progress: Int) {
-        RegionListModel.setProgressCount(progress)
+        SettingModel.setProgressCount(progress)
     }
 
     override fun getProgressCount(): Int {
-        return RegionListModel.getProgressCount()
+        return SettingModel.getProgressCount()
     }
 
     override fun setSelectedNumber(num: Int) {
-        RegionListModel.setSelectedNumber(num)
+        SettingModel.setSelectedNumber(num)
     }
 
     override fun getSelectedNumber(): Int {
-        return RegionListModel.getSelectedNumber()
+        return SettingModel.getSelectedNumber()
     }
 
     override fun calNearByRegion(position:Int) {
@@ -45,7 +45,7 @@ class RegionSettingPresenter:RegionSettingContract.Presenter {
                 else -> 0.0F
             }
 
-        val list = RegionListModel.regionBaseList.filter {
+        val list = SettingModel.regionBaseList.filter {
             it.distance < distance
         }.sortedBy {
             it.distance
@@ -57,11 +57,11 @@ class RegionSettingPresenter:RegionSettingContract.Presenter {
     }
 
     override fun setContext(context: Context) {
-        RegionListModel.setContext(context)
+        SettingModel.setContext(context)
     }
 
     override fun sortRegionList(currentPosition: LocationInfo) {
-        for (list in RegionListModel.regionBaseList) list.distance = betweenDistance(
+        for (list in SettingModel.regionBaseList) list.distance = betweenDistance(
             currentPosition.latitude,
             currentPosition.longitude,
             list.latitude,
@@ -74,11 +74,11 @@ class RegionSettingPresenter:RegionSettingContract.Presenter {
     }
 
     override fun loadSelectedLocationList(): Pair<LocationInfo?, LocationInfo?> {
-        return RegionListModel.loadSelectedLocationList()
+        return SettingModel.loadSelectedLocationList()
     }
 
     override fun saveSelectedLocationList(selectedFirstLocation: LocationInfo?, selectedSecondLocation: LocationInfo?) {
-        RegionListModel.saveSelectedLocationList(selectedFirstLocation, selectedSecondLocation)
+        SettingModel.saveSelectedLocationList(selectedFirstLocation, selectedSecondLocation)
     }
 
     private fun betweenDistance(

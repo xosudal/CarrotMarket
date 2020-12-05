@@ -5,14 +5,13 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.study.carrotmarket.constant.LocationInfo
 import com.study.carrotmarket.constant.RegionContract
-import com.study.carrotmarket.model.setting.RegionListModel
+import com.study.carrotmarket.model.setting.SettingModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 class RegionPresenter(private val context: Context) : RegionContract.Presenter {
@@ -22,30 +21,30 @@ class RegionPresenter(private val context: Context) : RegionContract.Presenter {
     private lateinit var currentLatLng: LatLng
 
     init {
-        RegionListModel.setContext(context)
-        RegionListModel.loadRegionList()
+        SettingModel.setContext(context)
+        SettingModel.loadRegionList()
     }
 
     override fun calRegionListByDistance() {
         if (!::currentLatLng.isInitialized) {
             return
         }
-        for (list in RegionListModel.regionList) list.distance = betweenDistance(
+        for (list in SettingModel.regionList) list.distance = betweenDistance(
             currentLatLng.latitude,
             currentLatLng.longitude,
             list.latitude,
             list.longitude
         )
 
-        RegionListModel.regionList = RegionListModel.regionList.sortedBy { it.distance }
+        SettingModel.regionList = SettingModel.regionList.sortedBy { it.distance }
     }
 
     override fun createRegionList() {
-        RegionListModel.createRegionList()
+        SettingModel.createRegionList()
     }
 
     override fun getRegionList():List<LocationInfo> {
-        return RegionListModel.regionList
+        return SettingModel.regionList
     }
 
     private fun betweenDistance(
@@ -66,7 +65,7 @@ class RegionPresenter(private val context: Context) : RegionContract.Presenter {
     }
 
     override fun search(word: String):List<LocationInfo> {
-        return RegionListModel.regionList.filter {it.toString().contains(word)}
+        return SettingModel.regionList.filter {it.toString().contains(word)}
     }
 
     override fun registerLocationListener() {
