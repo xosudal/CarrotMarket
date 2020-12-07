@@ -1,7 +1,6 @@
 package com.study.carrotmarket.presenter.setting
 
 import com.study.carrotmarket.constant.KeywordNotifyContract
-import com.study.carrotmarket.model.setting.KeywordNotifyModel
 import com.study.carrotmarket.model.setting.SettingModel
 
 class KeywordNotifyPresenter : KeywordNotifyContract.Presenter {

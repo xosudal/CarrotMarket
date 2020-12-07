@@ -4,21 +4,17 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.study.carrotmarket.R
-import com.study.carrotmarket.model.setting.KeywordNotifyModel
 import com.study.carrotmarket.presenter.setting.KeywordNotifyPresenter
 import com.study.carrotmarket.view.setting.adapter.KeyWordNotifyRecyclerViewAdapter
 import com.study.carrotmarket.view.setting.adapter.Temp
 import kotlinx.android.synthetic.main.activity_key_word_notify.*
-import kotlinx.android.synthetic.main.layout_keyword.view.*
 import kotlinx.android.synthetic.main.toolbar.*
-import org.json.JSONArray
 
 class KeywordNotifyActivity : AppCompatActivity(), Temp {
     private val MAXLIST = 30

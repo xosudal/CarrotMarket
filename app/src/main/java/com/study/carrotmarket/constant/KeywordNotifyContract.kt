@@ -1,7 +1,5 @@
 package com.study.carrotmarket.constant
 
-import com.study.carrotmarket.model.setting.KeywordNotifyModel
-
 interface KeywordNotifyContract {
     interface View {
     }

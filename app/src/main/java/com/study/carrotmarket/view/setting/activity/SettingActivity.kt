@@ -2,7 +2,6 @@ package com.study.carrotmarket.view.setting.activity
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
@@ -12,61 +11,40 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 import com.study.carrotmarket.R
+import com.study.carrotmarket.constant.SettingContract
+import com.study.carrotmarket.constant.TimePreference
+import com.study.carrotmarket.presenter.setting.SettingPresenter
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.dialog_disturb_time_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
-class SettingActivity : AppCompatActivity() {
-    private var data = SettingPreference()
-    private var time = DoNotDisturbTime()
-    private val alarmSoundList =
-        arrayOf(
-            "당근(귀요미 챙)",
-            "땅근(다인이), 당근이 아떠요~(다은이)",
-            "당근이 왔어요(BB)",
-            "당근 주세요(준환이)",
-            "애미야 당근 왔다(민주)",
-            "기본 알림음"
-        )
-    private val languageList =
-        arrayOf(
-            "English",
-            "한국어"
-        )
-
+class SettingActivity : AppCompatActivity(), SettingContract.View {
+    private lateinit var presenter:SettingPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
-
+        presenter = SettingPresenter().apply {
+            view = this@SettingActivity
+        }
         settingToolbar()
-        loadPreference()
 
         setting_switch_set_major_alarm.setOnCheckedChangeListener{ _, isChecked ->
-            this.getPreferences(0).edit().apply{
-                putBoolean("MAJOR_ALARM", isChecked)
-            }.apply()
+            presenter.settingPreference.majorAlarmIsChecked = isChecked
         }
 
         setting_switch_set_minor_alarm.setOnCheckedChangeListener{ _, isChecked ->
-            this.getPreferences(0).edit().apply{
-                putBoolean("MINOR_ALARM", isChecked)
-            }.apply()
+            presenter.settingPreference.minorAlarmIsChecked = isChecked
         }
 
         setting_switch_set_disturb.setOnCheckedChangeListener { _, isChecked ->
             setting_disturb_time_setting_layout.visibility = if (isChecked) View.VISIBLE else View.GONE
-            this.getPreferences(0).edit().apply{
-                putBoolean("DISTURB", isChecked)
-            }.apply()
+            presenter.settingPreference.disturbIsChecked = isChecked
         }
 
         setting_switch_set_vibrate.setOnCheckedChangeListener{ _, isChecked ->
-            this.getPreferences(0).edit().apply{
-                putBoolean("VIBRATE", isChecked)
-            }.apply()
+            presenter.settingPreference.vibrateIsChecked = isChecked
         }
 
         setting_disturb_time_setting_layout.setOnClickListener {
@@ -74,11 +52,11 @@ class SettingActivity : AppCompatActivity() {
         }
 
         setting_alarm_sound.setOnClickListener {
-            showDialogForAlarmSetting(alarmSoundList)
+            showDialogForAlarmSetting(presenter.getAlarmSoundList())
         }
 
         setting_language.setOnClickListener {
-            showDialogForLanguageSetting(languageList)
+            showDialogForLanguageSetting(presenter.getLanguageList())
         }
 
         setting_clear_app_cache.setOnClickListener {
@@ -92,14 +70,26 @@ class SettingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        setting_switch_set_major_alarm.isChecked = data.majorAlarmIsChecked
-        setting_switch_set_minor_alarm.isChecked = data.minorAlarmIsChecked
-        setting_switch_set_disturb.isChecked = data.disturbIsChecked
-        setting_switch_set_vibrate.isChecked = data.vibrateIsChecked
-        setting_disturb_time_setting_layout.visibility = if (data.disturbIsChecked) View.VISIBLE else View.GONE
-        setting_alarm_sound_tv.text = alarmSoundList[data.alarmSoundIndex]
-        setTextDistrubTime(time)
+        presenter.setContext(this)
+        presenter.loadPreference()
+        setPreference()
+        setTextDisturbTime(presenter.timePreference)
     }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.savePreference()
+    }
+
+    private fun setPreference() {
+        setting_switch_set_major_alarm.isChecked = presenter.settingPreference.majorAlarmIsChecked
+        setting_switch_set_minor_alarm.isChecked = presenter.settingPreference.minorAlarmIsChecked
+        setting_switch_set_disturb.isChecked = presenter.settingPreference.disturbIsChecked
+        setting_switch_set_vibrate.isChecked = presenter.settingPreference.vibrateIsChecked
+        setting_disturb_time_setting_layout.visibility = if (presenter.settingPreference.disturbIsChecked) View.VISIBLE else View.GONE
+        setting_alarm_sound_tv.text = presenter.getAlarmSoundList()[presenter.settingPreference.alarmSoundIndex]
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             android.R.id.home -> {
@@ -118,29 +108,15 @@ class SettingActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun loadPreference() {
-        data.majorAlarmIsChecked = this.getPreferences(0).getBoolean("MAJOR_ALARM", false)
-        data.minorAlarmIsChecked = this.getPreferences(0).getBoolean("MINOR_ALARM", false)
-        data.disturbIsChecked = this.getPreferences(0).getBoolean("DISTURB", false)
-        data.vibrateIsChecked = this.getPreferences(0).getBoolean("VIBRATE", false)
-        data.alarmSoundIndex = this.getPreferences(0).getInt("ALARM", 0)
-        data.language = this.getPreferences(0).getInt("LANGUAGUE",1)
-        time.fromHour = this.getPreferences(0).getInt("FROM_HOUR",23)
-        time.fromMinute = this.getPreferences(0).getInt("FROM_MINUTE",0)
-        time.toHour = this.getPreferences(0).getInt("TO_HOUR",8)
-        time.toMinute = this.getPreferences(0).getInt("TO_MINUTE",0)
-    }
-
     private fun showDialogForAlarmSetting(list: Array<String>) {
-        var index = data.alarmSoundIndex
+        var index = presenter.settingPreference.alarmSoundIndex
         AlertDialog.Builder(this).apply {
             setSingleChoiceItems(list, index) { _, which ->
                 index = which
             }
             setPositiveButton("확인") { _, _ ->
-                data.alarmSoundIndex = index
-                getPreferences(0).edit().putInt("ALARM", index).apply()
-                setting_alarm_sound_tv.text = alarmSoundList[data.alarmSoundIndex]
+                presenter.settingPreference.alarmSoundIndex = index
+                setting_alarm_sound_tv.text = list[presenter.settingPreference.alarmSoundIndex]
             }
             setNegativeButton("취소", null)
         }.create().show()
@@ -148,9 +124,8 @@ class SettingActivity : AppCompatActivity() {
 
     private fun showDialogForLanguageSetting(list: Array<String>) {
         AlertDialog.Builder(this).apply {
-            setSingleChoiceItems(list, data.language) { dialog, which ->
-                data.language = which
-                getPreferences(0).edit().putInt("LANGUAGE", data.language).apply()
+            setSingleChoiceItems(list, presenter.settingPreference.language) { dialog, which ->
+                presenter.settingPreference.language = which
                 dialog.dismiss()
             }
             setTitle("언어")
@@ -161,18 +136,10 @@ class SettingActivity : AppCompatActivity() {
         AlertDialog.Builder(this).apply {
             setMessage(R.string.dialog_text_cache)
             setPositiveButton("확인") { _, _ ->
-                clearCacheByUser()
+                presenter.clearCacheByUser()
             }
             setNegativeButton("취소", null)
         }.create().show()
-    }
-
-    private fun clearCacheByUser() {
-        if (cacheDir.delete()) {
-            Toast.makeText(this,"삭제되었습니다.",Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this,"삭제를 실패했습니다.",Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun showDialogForLogout() {
@@ -181,14 +148,14 @@ class SettingActivity : AppCompatActivity() {
             setMessage(R.string.dialog_text_logout_content)
             setPositiveButton("확인") { _, _ ->
                 Toast.makeText(context,"로그아웃!",Toast.LENGTH_SHORT).show()
-                FirebaseAuth.getInstance().signOut()
+                presenter.logOut()
             }
             setNegativeButton("취소", null)
         }.create().show()
     }
 
     private fun showTimePickerDialog() {
-        val hourSetting = time
+        val hourSetting = TimePreference()
         val dlg = Dialog(this)
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dlg.setContentView(R.layout.dialog_disturb_time_setting)
@@ -230,20 +197,18 @@ class SettingActivity : AppCompatActivity() {
         dlg.show()
 
         timePickerFrom.setOnTimeChangedListener { _, hour, minute ->
-            Log.d("heo","$hour, $minute")
             hourSetting.fromHour = hour
             hourSetting.fromMinute = minute
         }
 
         timePickerTo.setOnTimeChangedListener { _, hour, minute ->
-            Log.d("heo","$hour, $minute")
             hourSetting.toHour = hour
             hourSetting.toMinute = minute
         }
 
         dlg.dialog_time_setting_yes.setOnClickListener {
-            setPreferenceDistrubTime(hourSetting)
-            setTextDistrubTime(hourSetting)
+            presenter.timePreference = hourSetting
+            setTextDisturbTime(hourSetting)
             dlg.dismiss()
         }
 
@@ -252,19 +217,7 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
-
-
-    private fun setPreferenceDistrubTime (dntTime:DoNotDisturbTime) {
-        time = dntTime
-        this.getPreferences(0).edit().apply {
-            putInt("FROM_HOUR", time.fromHour)
-            putInt("FROM_MINUTE", time.fromMinute)
-            putInt("TO_HOUR", time.toHour)
-            putInt("TO_MINUTE", time.toMinute)
-        }.apply()
-    }
-
-    private fun setTextDistrubTime(dntTime:DoNotDisturbTime) {
+    private fun setTextDisturbTime(dntTime:TimePreference) {
         val from24Hour = if (dntTime.fromHour in 0..11) "오전" else "오후"
         val to24Hour = if (dntTime.toHour in 0..11) "오전" else "오후"
 
@@ -279,21 +232,12 @@ class SettingActivity : AppCompatActivity() {
             String.format("%02d",dntTime.toMinute),
             to24Hour)
     }
+
+    override fun showDeleteSuccess() {
+        Toast.makeText(this,"삭제되었습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showDeleteFail() {
+        Toast.makeText(this,"삭제를 실패했습니다.", Toast.LENGTH_SHORT).show()
+    }
 }
-
-
-
-data class SettingPreference(
-    var majorAlarmIsChecked: Boolean = false,
-    var minorAlarmIsChecked: Boolean = false,
-    var vibrateIsChecked: Boolean = false,
-    var disturbIsChecked: Boolean = false,
-    var alarmSoundIndex: Int = 0,
-    var language: Int = 1
-)
-data class DoNotDisturbTime (
-    var fromHour: Int = 23,
-    var fromMinute: Int = 0,
-    var toHour: Int = 8,
-    var toMinute : Int = 0
-)

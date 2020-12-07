@@ -18,32 +18,20 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.UserInfo
+import com.study.carrotmarket.presenter.setting.MyCarrotPresenter
 import com.study.carrotmarket.view.setting.activity.*
 import kotlinx.android.synthetic.main.fragment_mycarrot.*
 import kotlinx.android.synthetic.main.fragment_mycarrot.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MyCarrotFragment : Fragment() {
-    var fragmentView: View? = null
-
-    val PROFILE_EDIT = 1001
-
-    var photoUri: Uri? = null
-
-    lateinit var auth: FirebaseAuth
-
-    lateinit var storage:FirebaseStorage
-
-    lateinit var firestore:FirebaseFirestore
-
-    var userInfo: UserInfo? = UserInfo()
+    private var fragmentView: View? = null
+    private lateinit var presenter:MyCarrotPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        auth = FirebaseAuth.getInstance()
-        storage = FirebaseStorage.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        presenter = MyCarrotPresenter()
     }
 
     override fun onCreateView(
@@ -53,7 +41,7 @@ class MyCarrotFragment : Fragment() {
         // Inflate the layout for this fragment
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_mycarrot, container, false).apply {
             mycarrot_layout_userInformation?.setOnClickListener {
-                if (auth.currentUser == null) {
+                if (!presenter.isLogIn()) {
                     Toast.makeText(context,"로그인이 필요합니다.",Toast.LENGTH_SHORT).show()
                 } else {
                     startActivity(Intent(context, ProfileActivity::class.java))
@@ -134,13 +122,11 @@ class MyCarrotFragment : Fragment() {
             }
 
             mycarrot_imageview_userImage?.setOnClickListener {
-                if (auth.currentUser == null) {
+                if (!presenter.isLogIn()) {
                     Toast.makeText(context,"로그인이 필요합니다.",Toast.LENGTH_SHORT).show()
                 } else {
-                    val intent = Intent(context, ProfileEditActivity::class.java).apply {
-                        putExtra("USER_INFO", userInfo)
-                    }
-                    startActivityForResult(intent, PROFILE_EDIT)
+                    val intent = Intent(context, ProfileEditActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
@@ -148,27 +134,14 @@ class MyCarrotFragment : Fragment() {
         return fragmentView
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PROFILE_EDIT) {
-            if (resultCode == Activity.RESULT_OK) {
-                userInfo = data?.getParcelableExtra("USER_INFO")
-                val userInfoStr:String? = Gson().toJson(userInfo)
-                activity?.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)?.edit()?.putString("USER_INFO",userInfoStr)?.apply()
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
-        userInfo = Gson().fromJson(activity?.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)?.getString("USER_INFO",null),
-            UserInfo::class.java)
+        context?.let { presenter.setContext(it) }
         getProfile()
     }
 
     private fun getProfile() {
-        if (auth.currentUser == null) {
+        if (!presenter.isLogIn()) {
             mycarrot_imageview_userImage.setImageResource(R.drawable.ic_baseline_face_24)
             mycarrot_userInfo_tv.apply {
                 text = "로그인이 필요합니다"
@@ -176,21 +149,13 @@ class MyCarrotFragment : Fragment() {
             }
             return
         }
-        userInfo?.let {
-            mycarrot_userInfo_tv.text = "${it.userId}\n${it.uid}"
-            Glide.with(this).asBitmap().load(it.imageUri).circleCrop().into(mycarrot_imageview_userImage)
-        }
-        /*firestore.collection("ProfileImage").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener {
-            if (it == null) return@addOnSuccessListener
-            if (it.data != null) {
-                mycarrot_userInfo_tv.text = "${it.data!!["userId"]}\n${it.data!!["uid"]}"
-                Glide.with(this).asBitmap().load(it.data!!["imageUri"]).circleCrop().into(mycarrot_imageview_userImage)
-            }
-        }*/
+
+        mycarrot_userInfo_tv.text = "${presenter.getUserID()}\n${presenter.getUserRegion()}"
+        Glide.with(this).asBitmap().load(presenter.loadProfileUri()).circleCrop().into(mycarrot_imageview_userImage)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
+//      super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_mycarrot,menu)
     }
 
@@ -202,5 +167,4 @@ class MyCarrotFragment : Fragment() {
         }
         return true
     }
-
 }

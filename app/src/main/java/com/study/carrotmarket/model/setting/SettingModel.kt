@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.study.carrotmarket.constant.LocationInfo
+import com.study.carrotmarket.constant.SettingPreference
+import com.study.carrotmarket.constant.TimePreference
 import com.study.carrotmarket.view.setting.activity.RegionSettingActivity
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -16,6 +18,21 @@ object SettingModel {
     var regionList:List<LocationInfo> = listOf()
     private val keywordList = arrayListOf<String>()
     private lateinit var context: Context
+
+    private val alarmSoundList =
+        arrayOf(
+            "당근(귀요미 챙)",
+            "땅근(다인이), 당근이 아떠요~(다은이)",
+            "당근이 왔어요(BB)",
+            "당근 주세요(준환이)",
+            "애미야 당근 왔다(민주)",
+            "기본 알림음"
+        )
+    private val languageList =
+        arrayOf(
+            "English",
+            "한국어"
+        )
 
     fun setContext(context: Context) {
         this.context = context
@@ -93,6 +110,33 @@ object SettingModel {
 
     fun setNickname(nickname:String) {
         context.getSharedPreferences("NICKNAME", Context.MODE_PRIVATE).edit().putString("NICKNAME", nickname).apply()
+    }
+
+    fun saveSettingPreference(settingPreference: SettingPreference) {
+        val setting = Gson().toJson(settingPreference)
+        context.getSharedPreferences("SETTING", Context.MODE_PRIVATE).edit().putString("SETTING", setting).apply()
+    }
+
+    fun getSettingPreference():SettingPreference {
+        val setting = context.getSharedPreferences("SETTING", Context.MODE_PRIVATE).getString("SETTING", null)
+        return Gson().fromJson(setting, SettingPreference::class.java) ?: SettingPreference()
+    }
+
+    fun saveTimePreference(timePreference: TimePreference) {
+        val time = Gson().toJson(timePreference)
+        context.getSharedPreferences("DISTURB_TIME", Context.MODE_PRIVATE).edit().putString("DISTURB_TIME", time).apply()
+    }
+
+    fun getTimePreference():TimePreference {
+        val time = context.getSharedPreferences("DISTURB_TIME", Context.MODE_PRIVATE).getString("DISTURB_TIME", null)
+        return Gson().fromJson(time, TimePreference::class.java) ?: TimePreference()
+    }
+
+    fun getAlarmSoundList():Array<String> {
+        return alarmSoundList
+    }
+    fun getLanguageList():Array<String> {
+        return languageList
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
