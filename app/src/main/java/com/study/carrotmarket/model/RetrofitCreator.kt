@@ -10,7 +10,10 @@ import java.util.concurrent.TimeUnit
 
 class RetrofitCreator {
     companion object {
-        const val CARROTMARKET_API_BASE_URL = "http://csh0303.iptime.org:8080"
+        /* Since July 2020, ip time domain has been restricted from issuing certification from CAA(Certificate Authority Authorization).
+           The ddns.net domain uses a certificate obtained from letsencrypt.org
+           PORT : http: 8080, https: 8443 */
+        const val CARROTMARKET_API_BASE_URL = "https://csh0303.ddns.net:8443"
 
         private fun defaultRetrofit(base_url: String): Retrofit {
             val gson = GsonBuilder()
