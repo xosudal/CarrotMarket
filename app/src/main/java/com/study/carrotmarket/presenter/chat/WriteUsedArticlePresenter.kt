@@ -12,10 +12,8 @@ import com.study.carrotmarket.constant.WriteUsedArticleContract
 import com.study.carrotmarket.model.CarrotMarketDataRepository
 import com.study.carrotmarket.view.chat.UploadImageAdapter
 import io.reactivex.disposables.CompositeDisposable
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
