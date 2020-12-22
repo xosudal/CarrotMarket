@@ -19,6 +19,8 @@ import com.google.gson.Gson
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.UserInfo
 import com.study.carrotmarket.presenter.setting.MyCarrotPresenter
+import com.study.carrotmarket.view.main.StoryActivity
+import com.study.carrotmarket.view.main.StoryEditActivity
 import com.study.carrotmarket.view.setting.activity.*
 import kotlinx.android.synthetic.main.fragment_mycarrot.*
 import kotlinx.android.synthetic.main.fragment_mycarrot.view.*
@@ -73,7 +75,8 @@ class MyCarrotFragment : Fragment() {
             }
 
             mycarrot_collect_list?.setOnClickListener {
-                startActivity(Intent(context,FollowingArticleActivity::class.java))
+                startActivity(Intent(context,StoryEditActivity::class.java))
+                //startActivity(Intent(context,FollowingArticleActivity::class.java))
             }
 
             mycarrot_neighbor_written?.setOnClickListener {

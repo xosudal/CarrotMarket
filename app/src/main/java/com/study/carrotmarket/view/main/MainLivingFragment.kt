@@ -51,7 +51,7 @@ class MainLivingFragment : Fragment() {
 
     }
 
-    fun getSampleCards(): List<MainLivingCardViewItem> {
+    private fun getSampleCards(): List<MainLivingCardViewItem> {
         return listOf(
             MainLivingCardViewItem(0, Date(Date().time - 10000), "서동재", "의정부지검 인증 181회", "부장님께 내 말씀좀 드려..", 18001),
             MainLivingCardViewItem(1, Date(Date().time - 1000000), "황시목", "서부지검 인증 18회", "아닌데요", 18010)
