@@ -1,13 +1,14 @@
 package com.study.carrotmarket.view.main
 
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.study.carrotmarket.R
+import com.study.carrotmarket.view.main.adapter.HorizontalPictureAdapter
 import kotlinx.android.synthetic.main.activity_story_edit.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.toolbar.toolbar
 import kotlinx.android.synthetic.main.toolbar.toolbar_title
 
@@ -16,7 +17,16 @@ class StoryEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_story_edit)
         settingToolbar()
-        photos_recyclerview.visibility = View.GONE
+
+        val adapter = HorizontalPictureAdapter()
+
+        photos_recyclerview.visibility = View.VISIBLE
+        photos_recyclerview.adapter = adapter
+        photos_recyclerview.layoutManager = LinearLayoutManager(
+            applicationContext,
+            RecyclerView.HORIZONTAL,
+            false
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
