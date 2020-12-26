@@ -1,6 +1,5 @@
 package com.study.carrotmarket.constant
 
-import android.database.Observable
 import com.study.carrotmarket.view.chat.UploadImageAdapter
 
 interface WriteUsedArticleContract {
@@ -18,7 +17,7 @@ interface WriteUsedArticleContract {
     }
 
     interface Presenter {
-        fun sendUsedArticle(usedItem: UsedItems, uploadImageAdapter: UploadImageAdapter): Boolean
+        fun sendUsedArticle(writeUsedItem: WriteUsedItemRequest, uploadImageAdapter: UploadImageAdapter): Boolean
         fun getSimpleUsedItem() : Boolean
     }
 }

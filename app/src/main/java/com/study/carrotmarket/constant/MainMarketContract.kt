@@ -8,6 +8,6 @@ interface MainMarketContract {
 
     interface Presenter {
         fun getSimpleUsedItem() : Boolean
-        fun getDetailUsedItem(id : Int) : Boolean
+        fun getDetailUsedItem(id : Int, e_mail : String) : Boolean
     }
 }

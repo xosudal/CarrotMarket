@@ -45,6 +45,11 @@
                 android:layout_height="30dp"/>
 
             <TextView
+                android:id="@+id/sellingItemTime"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"/>
+
+            <TextView
                 android:id="@+id/sellingItemPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"

@@ -13,9 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.study.carrotmarket.R
-import com.study.carrotmarket.constant.SellListItem
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
-import com.study.carrotmarket.constant.UsedItems
 import kotlinx.android.synthetic.main.layout_listview_item.view.*
 import java.text.DecimalFormat
 
@@ -29,6 +27,7 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment,
         val nameView: TextView = itemView.sellingItemName
         val priceView: TextView = itemView.sellingItemPrice
         val addressView: TextView = itemView.sellingItemAddress
+        val timeView : TextView = itemView.sellingItemTime
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,12 +42,13 @@ class SellingItemRecyclerAdapter(private val mFragment: Fragment,
         dataSet[position].apply {
             val multiOption = MultiTransformation( CenterCrop(), RoundedCorners(20))
 
-            Glide.with(mFragment).load("http://csh0303.iptime.org:8080/static/$nickname/$id/item_0.png").apply(
+            Glide.with(mFragment).load("https://csh0303.ddns.net:8443/static/$nickname/$id/item_0.png").apply(
                 RequestOptions.bitmapTransform(multiOption)
             ).into(holder.imageView)
             holder.nameView.text = title
             holder.priceView.text = mFragment.getString(R.string.price_with_currency, DecimalFormat().format(price).toString())
             holder.addressView.text = region
+            holder.timeView.text = modifiedTime.toString()
             holder.itemView.setOnClickListener{itemClick(dataSet[position])}
         }
     }

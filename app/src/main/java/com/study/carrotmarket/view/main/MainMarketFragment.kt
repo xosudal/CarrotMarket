@@ -54,7 +54,7 @@ class MainMarketFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Mai
         presenter = MainMarketPresenter(this)
 
         sellingAdapter = SellingItemRecyclerAdapter(this@MainMarketFragment, ArrayList<SimpleUsedItemResponse>()){
-            presenter.getDetailUsedItem(it.id)
+            presenter.getDetailUsedItem(it.id, it.e_mail)
         }
 
         with (view.main_market_recyclerview) {

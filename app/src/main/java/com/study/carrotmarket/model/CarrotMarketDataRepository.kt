@@ -1,10 +1,8 @@
 package com.study.carrotmarket.model
 
-import android.util.Log
 import com.study.carrotmarket.constant.CarrotMarketRepository
 import com.study.carrotmarket.constant.DetailUsedItemResponse
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
-import com.study.carrotmarket.constant.UsedItems
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,8 +16,8 @@ object CarrotMarketDataRepository : CarrotMarketRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getDetailUsedItem(id : Int): Observable<List<DetailUsedItemResponse>> {
-        return RestApi.getDetailUsedItem(id)
+    override fun getDetailUsedItem(id : Int, e_mail : String): Observable<DetailUsedItemResponse> {
+        return RestApi.getDetailUsedItem(id, e_mail)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
     }

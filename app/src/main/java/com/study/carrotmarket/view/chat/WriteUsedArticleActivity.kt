@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
-import com.study.carrotmarket.constant.UsedItems
+import com.study.carrotmarket.constant.WriteUsedItemRequest
 import com.study.carrotmarket.constant.WriteUsedArticleContract
 import com.study.carrotmarket.presenter.chat.WriteUsedArticlePresenter
 import kotlinx.android.synthetic.main.activity_write_usedarticle.*
@@ -146,14 +146,16 @@ class WriteUsedArticleActivity : AppCompatActivity(), RemoveItem, WriteUsedArtic
             return
         }
 
-        val usedItem = UsedItems(
+        val usedItem = WriteUsedItemRequest(
             "코코몽",
-            "서울시 도화동",
+            "서울시 마포구 도화동",
+            "dora2.mong@lge.com",
             Integer.parseInt(price_edittext.text.toString().replace(",", "")),
             category_textview.text.toString(),
             uploadImageAdapter.itemCount,
             title_edittext.text.toString(),
-            article_content_edittext.text.toString()
+            article_content_edittext.text.toString(),
+            get_offer.isChecked
         )
 
         presenter.sendUsedArticle(usedItem, uploadImageAdapter)

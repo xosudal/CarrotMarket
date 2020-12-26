@@ -7,7 +7,7 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import com.google.gson.Gson
-import com.study.carrotmarket.constant.UsedItems
+import com.study.carrotmarket.constant.WriteUsedItemRequest
 import com.study.carrotmarket.constant.WriteUsedArticleContract
 import com.study.carrotmarket.model.CarrotMarketDataRepository
 import com.study.carrotmarket.view.chat.UploadImageAdapter
@@ -21,9 +21,9 @@ import java.io.File
 class WriteUsedArticlePresenter(private val context : Context, private val view: WriteUsedArticleContract.View) : WriteUsedArticleContract.Presenter {
     private val TAG = WriteUsedArticlePresenter::class.java.simpleName
 
-    override fun sendUsedArticle(usedItem: UsedItems, uploadImageAdapter: UploadImageAdapter): Boolean {
+    override fun sendUsedArticle(writeUsedItem: WriteUsedItemRequest, uploadImageAdapter: UploadImageAdapter): Boolean {
         val body = MultipartBody.Builder()
-            .addFormDataPart("nickname", usedItem.nickname)
+            .addFormDataPart("nickname", writeUsedItem.nickname)
 
         for(item in 0 until uploadImageAdapter.itemCount) {
             getRealPathFromUri(uploadImageAdapter.getItem(item))?.let {
@@ -32,7 +32,7 @@ class WriteUsedArticlePresenter(private val context : Context, private val view:
                 body.addFormDataPart("item_$item", "item_$item.png", requestBody)
             }
         }
-        val jsonString = Gson().toJson(usedItem)
+        val jsonString = Gson().toJson(writeUsedItem)
         body.addFormDataPart("data", jsonString)
 
         val dispose = CarrotMarketDataRepository.sendUsedArticle(body.build().parts)
