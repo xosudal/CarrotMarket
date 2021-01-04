@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/reply_layout">
     <ImageView
         android:id="@+id/story_chat_user_image"
         android:layout_width="40dp"
@@ -11,7 +12,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginStart="8dp"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,7 +23,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        android:minHeight="100dp">
+        android:minHeight="100dp"
+        android:layout_marginStart="8dp"
+        android:paddingBottom="8dp">
         <TextView
             android:id="@+id/story_chat_nickname"
             android:layout_width="wrap_content"
@@ -29,21 +33,24 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textStyle="bold"
-            android:text="nickname"/>
+            android:text="nickname"
+            android:paddingBottom="8dp"/>
         <TextView
             android:id="@+id/story_chat_user_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="강서구 가양동 * 인증 3회"
             app:layout_constraintTop_toBottomOf="@id/story_chat_nickname"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingBottom="8dp"/>
         <TextView
             android:id="@+id/story_chat_main_content_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/story_chat_user_info"
-            android:text="본문입니다\n내용"/>
+            android:text="본문입니다\n내용"
+            android:paddingBottom="16dp"/>
         <TextView
             android:id="@+id/story_chat_reply_tv"
             android:layout_width="wrap_content"
@@ -57,13 +64,42 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/story_chat_reply_tv"
             app:layout_constraintTop_toBottomOf="@id/story_chat_main_content_tv"
-            android:text="공감 하기"/>
+            android:text="공감 하기"
+            android:layout_marginStart="16dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/story_chat_recyclerview"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/child_reply_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        android:layout_marginStart="56dp"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/child_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_face_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/child_tv_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_border_1dp"
+            app:layout_constraintStart_toEndOf="@id/child_iv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="댓글을 입력해주세요"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="16dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

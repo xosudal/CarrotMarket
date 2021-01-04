@@ -1,5 +1,6 @@
 package com.study.carrotmarket.view.main.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.study.carrotmarket.constant.MainLivingCardViewItem
 import com.study.carrotmarket.util.toHumanReadable
 import kotlinx.android.synthetic.main.layout_living_cardview.view.*
 
-class MainLivingCardViewRecyclerAdapter(private val mFragment: Fragment, private val dataset: List<MainLivingCardViewItem>): RecyclerView.Adapter<MainLivingCardViewRecyclerAdapter.ViewHolder>() {
+class MainLivingCardViewRecyclerAdapter(private val mFragment: Fragment, private val dataset: List<MainLivingCardViewItem>, private val mainLiving: MainLiving): RecyclerView.Adapter<MainLivingCardViewRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardView: CardView = itemView.card_view
@@ -35,9 +36,9 @@ class MainLivingCardViewRecyclerAdapter(private val mFragment: Fragment, private
     override fun getItemCount(): Int = dataset.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        val profile:String = "https://randomuser.me/api/portraits/med/women/17.jpg"
         with(dataset[position]) {
-            Glide.with(mFragment).load("https://randomuser.me/api/portraits/med/women/17.jpg")
+            Glide.with(mFragment).load(profile)
                 .circleCrop().into(holder.profileView)
 
             holder.categoryView.text = "CATEGORY"
@@ -48,5 +49,13 @@ class MainLivingCardViewRecyclerAdapter(private val mFragment: Fragment, private
 
 
         }
+        holder.itemView.living_layout.setOnClickListener {
+            mainLiving.callActivity(profile, dataset[position])
+        }
     }
+}
+
+interface MainLiving {
+    //fun callActivity(profileUri:String, category:String, nickname:String, timestamp:String, userInfo:String, comment:String)
+    fun callActivity(profile:String, mainLiving:MainLivingCardViewItem)
 }

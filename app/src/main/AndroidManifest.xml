@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".view.main.StoryEditActivity"></activity>
+        <activity android:name=".view.main.StoryReplyActivity"/>
         <activity android:name=".view.main.StoryActivity" />
         <activity android:name=".view.main.NicknameSettingActivity" />
         <activity android:name=".view.setting.activity.ProfileEditActivity" />

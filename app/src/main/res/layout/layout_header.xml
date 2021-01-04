@@ -64,11 +64,22 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/story_main_content_tv"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="본문\n입니다\n\n\n\n\n\n\n중간\n\n\n\n\n\n\n\n\n\n\n끝입니다\n"
-        app:layout_constraintTop_toBottomOf="@id/story_user_layout"/>
+        app:layout_constraintTop_toBottomOf="@id/story_user_layout"
+        android:background="@drawable/division_layout">
+        <TextView
+            android:id="@+id/story_main_content_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingBottom="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/colorBlack"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

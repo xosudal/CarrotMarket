@@ -1,5 +1,6 @@
 package com.study.carrotmarket.view.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.MainLivingCardViewItem
+import com.study.carrotmarket.view.main.adapter.MainLiving
 import com.study.carrotmarket.view.main.adapter.MainLivingCardViewRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_main_living.view.*
 import java.util.*
@@ -22,7 +24,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MainLivingFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainLivingFragment : Fragment() {
+class MainLivingFragment : Fragment(), MainLiving {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -41,10 +43,9 @@ class MainLivingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main_living, container, false)
-
         with (view.main_living_cardview_recyclerview) {
             layoutManager = LinearLayoutManager(context!!)
-            adapter = MainLivingCardViewRecyclerAdapter(this@MainLivingFragment, getSampleCards())
+            adapter = MainLivingCardViewRecyclerAdapter(this@MainLivingFragment, getSampleCards(), this@MainLivingFragment)
         }
 
         return view
@@ -75,5 +76,13 @@ class MainLivingFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun callActivity(profile:String, mainLiving: MainLivingCardViewItem) {
+        val intent = Intent(context, StoryActivity::class.java).apply {
+            putExtra("PROFILE", profile)
+            putExtra("CONTENT", mainLiving)
+        }
+        startActivity(intent)
     }
 }
