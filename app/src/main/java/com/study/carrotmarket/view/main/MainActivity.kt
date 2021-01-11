@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
         navigation_bottom.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.navigation_home -> mainFragment
+                R.id.navigation_neighborhoodLife -> MainLivingFragment()
                 R.id.navigation_neighborhoohood -> NeighborhoodFragment()
-                R.id.navigation_write -> WriteBottomSheetDialogFragment()
                 R.id.navigation_chatting -> ChattingFragment()
                 R.id.navigation_mycarrot -> MyCarrotFragment()
                 else -> FragmentHome("Default")

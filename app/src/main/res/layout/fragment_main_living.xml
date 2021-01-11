@@ -10,5 +10,4 @@
         android:layout_height="match_parent"
         android:id="@+id/main_living_cardview_recyclerview"
         android:scrollbars="vertical"/>
-
 </FrameLayout>

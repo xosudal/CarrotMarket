@@ -9,18 +9,18 @@
         android:icon="@drawable/ic_home_black_24dp"/>
 
     <item
+        android:id="@+id/navigation_neighborhoodLife"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:title="@string/neighborhoodLife"
+        android:icon="@drawable/ic_brush_black_24dp"/>
+
+    <item
         android:id="@+id/navigation_neighborhoohood"
         android:enabled="true"
         app:showAsAction="ifRoom"
         android:title="@string/neighborhood"
         android:icon="@drawable/ic_pin_drop_black_24dp"/>
-
-    <item
-        android:id="@+id/navigation_write"
-        android:enabled="true"
-        app:showAsAction="ifRoom"
-        android:title="@string/write"
-        android:icon="@drawable/ic_brush_black_24dp"/>
 
     <item
         android:id="@+id/navigation_chatting"

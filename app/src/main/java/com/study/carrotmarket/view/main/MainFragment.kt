@@ -3,23 +3,17 @@ package com.study.carrotmarket.view.main
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import com.study.carrotmarket.R
-import com.study.carrotmarket.view.main.adapter.MainViewPagerAdapter
 import com.study.carrotmarket.view.main.adapter.SpinnerAdapter
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 class MainFragment : Fragment(){
-
     private val TAG = this.javaClass.simpleName
 
     private lateinit var rView: View
@@ -62,30 +56,8 @@ class MainFragment : Fragment(){
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
-
-        val viewPager = rView.findViewById(R.id.viewpager_main_fragment) as ViewPager
-        viewPager.let {
-            it.adapter = MainViewPagerAdapter(childFragmentManager)
-            it.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(rView.main_tablayout))
-        }
-        val tabLayout = rView.main_tablayout
-        Log.d(TAG, "tablayout null ? ${tabLayout == null}")
-        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewPager.currentItem = tab?.position!!
-            }
-
-        })
-            return rView
-
+        fragmentManager?.beginTransaction()?.replace(R.id.content, MainMarketFragment())?.commit()
+        return rView
     }
 
     override fun onDestroyView() {
@@ -94,5 +66,4 @@ class MainFragment : Fragment(){
         Log.d(TAG, "onDestroyView")
 
     }
-
 }
