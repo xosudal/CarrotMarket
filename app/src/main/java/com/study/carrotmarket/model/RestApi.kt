@@ -16,8 +16,8 @@ class RestApi {
             @Part uploadImgs : List<MultipartBody.Part>
         ) : Single<String>
 
-        @GET("/used/getAllUsedItem")
-        fun getSimpleUsedItem() : Observable<List<SimpleUsedItemResponse>>
+        @GET("/used/getAllUsedItems")
+        fun getSimpleUsedItem(@Query("_timestamp") timnstmap : Int, @Query("_limit") limit : Int) : Observable<List<SimpleUsedItemResponse>>
 
         @GET("/used/getDetailUsedItem")
         fun getDetailUsedItem(@Query("_id") id : Int, @Query("_email") e_mail: String): Observable<DetailUsedItemResponse>
@@ -40,7 +40,7 @@ class RestApi {
             return RetrofitCreator.create(
                 UsedArticleImpl::class.java,
                 RetrofitCreator.CARROTMARKET_API_BASE_URL
-            ).getSimpleUsedItem()
+            ).getSimpleUsedItem(0, 5)
         }
 
         fun getDetailUsedItem(id : Int, e_mail : String): Observable<DetailUsedItemResponse> {
