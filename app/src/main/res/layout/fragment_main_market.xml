@@ -35,6 +35,7 @@
             app:fabSize="mini"
             app:borderWidth="0dp"
             app:fab_colorNormal="@color/coral"
+            app:fab_label="동네홍보"
             android:src="@drawable/ic_baseline_house_white_24"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -44,6 +45,7 @@
             app:fabSize="mini"
             app:borderWidth="0dp"
             app:fab_colorNormal="@color/coral"
+            app:fab_label="중고거래"
             android:src="@drawable/ic_baseline_brush_white_24"/>
     </com.github.clans.fab.FloatingActionMenu>
 
