@@ -10,6 +10,7 @@ import com.study.carrotmarket.R
 import com.study.carrotmarket.constant.MainLivingCardViewItem
 import com.study.carrotmarket.view.main.adapter.MainLiving
 import com.study.carrotmarket.view.main.adapter.MainLivingCardViewRecyclerAdapter
+import com.study.carrotmarket.view.neighborhood.NeighborhoodLifeArticleActivity
 import kotlinx.android.synthetic.main.fragment_main_living.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
@@ -34,11 +35,20 @@ class MainLivingFragment : Fragment(), MainLiving {
         }
 
         activity?.toolbar_title?.text = "동네생활"
+
+        view.fab.setOnClickListener {
+            startActivity(Intent(context, NeighborhoodLifeArticleActivity::class.java))
+        }
+
         return view
     }
 
     private fun getSampleCards(): List<MainLivingCardViewItem> {
         return listOf(
+            MainLivingCardViewItem(0, Date(Date().time - 10000), "서동재", "의정부지검 인증 181회", "부장님께 내 말씀좀 드려..", 18001),
+            MainLivingCardViewItem(1, Date(Date().time - 1000000), "황시목", "서부지검 인증 18회", "아닌데요", 18010),
+            MainLivingCardViewItem(0, Date(Date().time - 10000), "서동재", "의정부지검 인증 181회", "부장님께 내 말씀좀 드려..", 18001),
+            MainLivingCardViewItem(1, Date(Date().time - 1000000), "황시목", "서부지검 인증 18회", "아닌데요", 18010),
             MainLivingCardViewItem(0, Date(Date().time - 10000), "서동재", "의정부지검 인증 181회", "부장님께 내 말씀좀 드려..", 18001),
             MainLivingCardViewItem(1, Date(Date().time - 1000000), "황시목", "서부지검 인증 18회", "아닌데요", 18010)
         )
