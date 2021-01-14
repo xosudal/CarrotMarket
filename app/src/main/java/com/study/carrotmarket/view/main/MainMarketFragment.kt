@@ -54,9 +54,11 @@ class MainMarketFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Mai
         val view = inflater.inflate(R.layout.fragment_main_market, container, false).apply {
             fab_menu.setClosedOnTouchOutside(true)
             fab_sub1.setOnClickListener {
+                fab_menu.close(true)
                 startActivity(Intent(context, NeighborhoodAdvertisementArticleActivity::class.java))
             }
             fab_sub2.setOnClickListener {
+                fab_menu.close(true)
                 startActivity(Intent(context, WriteUsedArticleActivity::class.java))
             }
         }
