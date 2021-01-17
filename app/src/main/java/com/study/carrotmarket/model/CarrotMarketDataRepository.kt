@@ -27,4 +27,10 @@ object CarrotMarketDataRepository : CarrotMarketRepository {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun sendUserInfo(data : List<MultipartBody.Part> ): Single<String> {
+        return RestApi.updateUser(data)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

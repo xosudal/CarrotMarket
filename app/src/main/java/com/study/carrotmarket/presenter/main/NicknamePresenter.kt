@@ -16,8 +16,8 @@ class NicknamePresenter:NicknameContract.Presenter {
     override lateinit var view: NicknameContract.View
 
     override fun setNickname(nickname: String) {
-        val userRequest = UserRequest(nickname, auth.currentUser?.email ?: "no ID","010-1234-5678")
-        sendUserRequest(userRequest)
+        //val userRequest = UserRequest(nickname, auth.currentUser?.email ?: "no ID","010-1234-5678")
+        //sendUserRequest(userRequest)
     }
 
     private fun sendUserRequest(userRequest: UserRequest) {
@@ -26,17 +26,5 @@ class NicknamePresenter:NicknameContract.Presenter {
         val json = Gson().toJson(userRequest)
         Log.d("test",json.toString())
         val body = json.toRequestBody(mediaType)
-
-        val test = RestApi.setUser(body)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe( {
-                Log.d("test", it)
-                view.dismissLoadingDialog()
-            }, {
-                Log.d("test", it.toString())
-                view.dismissLoadingDialog()
-            }
-            )
     }
 }

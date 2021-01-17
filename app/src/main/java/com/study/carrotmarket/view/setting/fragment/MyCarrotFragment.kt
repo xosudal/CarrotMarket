@@ -3,10 +3,12 @@ package com.study.carrotmarket.view.setting.fragment
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.study.carrotmarket.R
 import com.study.carrotmarket.presenter.setting.MyCarrotPresenter
 import com.study.carrotmarket.view.main.StoryActivity
@@ -143,7 +145,7 @@ class MyCarrotFragment : Fragment() {
         }
 
         mycarrot_userInfo_tv.text = "${presenter.getUserID()}\n${presenter.getUserRegion()}"
-        Glide.with(this).asBitmap().load(presenter.loadProfileUri()).circleCrop().into(mycarrot_imageview_userImage)
+        Glide.with(this).asBitmap().load(FirebaseAuth.getInstance().currentUser?.photoUrl/*presenter.loadProfileUri()*/).circleCrop().into(mycarrot_imageview_userImage)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

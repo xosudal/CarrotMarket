@@ -162,8 +162,6 @@ class MainActivity : AppCompatActivity() {
                 getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)?.edit()?.putString("USER_INFO", Gson().toJson(userInfo))?.apply()
                 Log.d("test",userInfo.toString())
                 loadingDialog.dismiss()
-                val userRequest = UserRequest("일라오이", "test@helloworld.com","010-1234-5678")
-                sendUserRequest(userRequest)
             }
         }
     }

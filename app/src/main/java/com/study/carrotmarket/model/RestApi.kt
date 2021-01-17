@@ -17,15 +17,23 @@ class RestApi {
         ) : Single<String>
 
         @GET("/used/getAllUsedItems")
-        fun getSimpleUsedItem(@Query("_timestamp") timnstmap : Int, @Query("_limit") limit : Int) : Observable<List<SimpleUsedItemResponse>>
+        fun getSimpleUsedItem(@Query("_timestamp") timestamp : Int, @Query("_limit") limit : Int) : Observable<List<SimpleUsedItemResponse>>
 
         @GET("/used/getDetailUsedItem")
         fun getDetailUsedItem(@Query("_id") id : Int, @Query("_email") e_mail: String): Observable<DetailUsedItemResponse>
+    }
 
+    interface UserInfoImpl {
         @POST("/user/registerUser") // nick name 변경 시 updateUser
         fun setUser(
             @Body body : RequestBody
         ) : Observable<String>
+
+        @Multipart
+        @PUT("/user/updateUser")
+        fun updateUser(
+            @Part userInfo : List<MultipartBody.Part>
+        ) : Single<String>
     }
 
     companion object {
@@ -52,9 +60,16 @@ class RestApi {
 
         fun setUser(body : RequestBody) : Observable<String> {
             return RetrofitCreator.create(
-                UsedArticleImpl::class.java,
+                UserInfoImpl::class.java,
                 RetrofitCreator.CARROTMARKET_API_BASE_URL
             ).setUser(body)
+        }
+
+        fun updateUser(content : List<MultipartBody.Part>) : Single<String> {
+            return RetrofitCreator.create(
+                UserInfoImpl::class.java,
+                RetrofitCreator.CARROTMARKET_API_BASE_URL
+            ).updateUser(content)
         }
     }
 }

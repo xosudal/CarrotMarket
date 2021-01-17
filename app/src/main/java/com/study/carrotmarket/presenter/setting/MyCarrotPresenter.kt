@@ -22,7 +22,7 @@ class MyCarrotPresenter:MyCarrotContract.Presenter {
     }
 
     override fun getUserID(): String? {
-        return auth.currentUser?.email
+        return auth.currentUser?.displayName
     }
 
     override fun getUserRegion(): String {
