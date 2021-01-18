@@ -1,6 +1,7 @@
 package com.study.carrotmarket.model
 
 import com.study.carrotmarket.constant.DetailUsedItemResponse
+import com.study.carrotmarket.constant.ResponseUpdateUser
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -33,7 +34,7 @@ class RestApi {
         @PUT("/user/updateUser")
         fun updateUser(
             @Part userInfo : List<MultipartBody.Part>
-        ) : Single<String>
+        ) : Single<List<ResponseUpdateUser>>
     }
 
     companion object {
@@ -65,7 +66,7 @@ class RestApi {
             ).setUser(body)
         }
 
-        fun updateUser(content : List<MultipartBody.Part>) : Single<String> {
+        fun updateUser(content : List<MultipartBody.Part>) : Single<List<ResponseUpdateUser>> {
             return RetrofitCreator.create(
                 UserInfoImpl::class.java,
                 RetrofitCreator.CARROTMARKET_API_BASE_URL

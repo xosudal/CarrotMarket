@@ -2,6 +2,7 @@ package com.study.carrotmarket.model
 
 import com.study.carrotmarket.constant.CarrotMarketRepository
 import com.study.carrotmarket.constant.DetailUsedItemResponse
+import com.study.carrotmarket.constant.ResponseUpdateUser
 import com.study.carrotmarket.constant.SimpleUsedItemResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -28,7 +29,7 @@ object CarrotMarketDataRepository : CarrotMarketRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun sendUserInfo(data : List<MultipartBody.Part> ): Single<String> {
+    override fun sendUserInfo(data : List<MultipartBody.Part> ): Single<List<ResponseUpdateUser>> {
         return RestApi.updateUser(data)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())

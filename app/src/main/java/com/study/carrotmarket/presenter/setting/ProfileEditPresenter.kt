@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.gson.Gson
@@ -130,7 +129,7 @@ class ProfileEditPresenter:ProfileEditContract.Presenter {
         val fileName:String = file?.name ?: ""
 
         val userRequest = UserRequest(
-            nickname,
+            "Clozer",
             email,
             "010-1234-5678",
             "가양동",
@@ -141,13 +140,14 @@ class ProfileEditPresenter:ProfileEditContract.Presenter {
 
         body.addFormDataPart("data", jsonUserRequest)
 
-        val temp = File("/data/data/com.study.carrotmarket/files/images/1610728430226.png")
-        val requestBody = temp.asRequestBody("image/*".toMediaTypeOrNull())
-        body.addFormDataPart("item_${fileName}", "item_${fileName}.png", requestBody)
+        val requestBody = file?.asRequestBody("image/*".toMediaTypeOrNull())
+        if (requestBody != null) {
+            body.addFormDataPart("item_${fileName}", "item_${fileName}.png", requestBody)
+        }
 
         val dispose = CarrotMarketDataRepository.sendUserInfo(body.build().parts)
             .subscribe({
-                Log.d("test", "success : $it")
+                Log.d("test","[subscribe] success!! photo Uri : ${it[0].profileUri}")
                 if (file != null) {
                     deleteFilesInImageDir(file.name)
                 }

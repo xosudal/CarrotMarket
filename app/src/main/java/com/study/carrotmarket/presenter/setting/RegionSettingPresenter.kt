@@ -79,6 +79,7 @@ class RegionSettingPresenter:RegionSettingContract.Presenter {
 
     override fun saveSelectedLocationList(selectedFirstLocation: LocationInfo?, selectedSecondLocation: LocationInfo?) {
         SettingModel.saveSelectedLocationList(selectedFirstLocation, selectedSecondLocation)
+        // TODO : send location info to server
     }
 
     private fun betweenDistance(

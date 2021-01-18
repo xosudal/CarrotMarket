@@ -8,5 +8,5 @@ interface CarrotMarketRepository {
     fun sendUsedArticle(data : List<MultipartBody.Part> ) : Single<String>
     fun getSimpleUsedItem() : Observable<List<SimpleUsedItemResponse>>
     fun getDetailUsedItem(id : Int, e_mail : String) : Observable<DetailUsedItemResponse>
-    fun sendUserInfo(data : List<MultipartBody.Part> ) : Single<String>
+    fun sendUserInfo(data : List<MultipartBody.Part> ) : Single<List<ResponseUpdateUser>>
 }
